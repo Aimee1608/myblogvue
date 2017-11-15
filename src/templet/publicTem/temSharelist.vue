@@ -45,13 +45,13 @@
                 </p>
             </div>
             <div class="viewdetail">
-                <a href="#/DetailShare" target="_blank">
+                <a class="tcolors-bg" href="#/DetailShare" target="_blank">
                     阅读全文>>
                 </a>
             </div>
         </el-col>
         <el-col class="viewmore">
-            <a href="#/Share">点击加载更多</a>
+            <a class="tcolors-bg" href="#/Share">点击加载更多</a>
         </el-col>
     </el-row>
 </template>
@@ -96,7 +96,7 @@
         text-align: center;
     }
     .s-item .viewdetail a{
-        background-color: #97dffd;
+        /*background-color: #97dffd;*/
         color:#fff;
         font-size: 12px;
         padding:5px 10px;
@@ -107,7 +107,7 @@
         width:100%;
     }
     .sharelistBox .viewmore a{
-        background:  #97dffd;
+        /*background:  #97dffd;*/
         /*padding:6px 0;*/
         border-radius: 5px;
         text-align: center;
@@ -117,7 +117,7 @@
         line-height: 30px;
         display: block;
     }
-    .sharelistBox .viewmore a:hover,.s-item .viewdetail a:hover{
+    /*.sharelistBox .viewmore a:hover,.s-item .viewdetail a:hover{
         background: #48456C;
-    }
+    }*/
 </style>

@@ -38,13 +38,13 @@
                 </div>
             </div>
         </section>
-        <section class="rs2" >
+        <section :class="fixDo?'rs2 fixed':'rs2'" @click="lovemeFun">
             <p>
                 Do you like me?
             </p>
             <div class="">
-                <i class="el-icon-star-on"></i>
-                <span>9999999</span>
+                <i :class="loveme?'heart active':'heart'"></i>
+                <span>99656</span>
             </div>
         </section>
         <section></section>
@@ -76,6 +76,9 @@
                 </li>
             </ul>
         </section>
+        <div :class="gotoTop?'toTop':'toTop goTop'" @click="toTopfun">
+            <img src="src/img/long.png" alt="">
+        </div>
     </div>
 </template>
 
@@ -83,17 +86,60 @@
     export default {
         data() { //选项 / 数据
             return {
-                fixDo:false
+                fixDo:false,
+                loveme:false,
+                gotoTop:false,
+                going:false,
             }
         },
         methods: { //事件处理器
-
+            lovemeFun:function(){
+                var that = this;
+                this.loveme = true;
+                var timer = setTimeout(function(){
+                    that.loveme = false;
+                    clearTimeout(timer);
+                },1500)
+            },
+            toTopfun:function(e){
+                var that = this;
+                this.gotoTop = false;
+                this.going = true;
+                var timer = setInterval(function(){
+                      //获取滚动条距离顶部高度
+                      var osTop = document.documentElement.scrollTop || document.body.scrollTop;
+                      var ispeed = Math.floor(-osTop / 7);
+                      document.documentElement.scrollTop = document.body.scrollTop = osTop+ispeed;
+                      //到达顶部，清除定时器
+                      if (osTop == 0) {
+                          that.going = false;
+                        clearInterval(timer);
+                      };
+                },30);
+            },
         },
         components: { //定义组件
 
         },
         created() { //生命周期函数
+            var that = this;
+            window.onscroll = function(){
+                 var t = document.documentElement.scrollTop || document.body.scrollTop;
+                // console.log(t);
+                if(!that.going){
+                    if(t>600){
+                        that.gotoTop = true;
+                    }else{
+                        that.gotoTop = false;
+                    }
+                }
+                if(t>1200){
+                    that.fixDo = true;
+                }else{
+                    that.fixDo = false;
+                }
 
+            }
         }
     }
 </script>
@@ -176,9 +222,15 @@
 /*************do you like me*******************/
 .rightlistBox .rs2{
     /*padding:10px 0 4px 0;*/
+    min-height: 100px;
+}
+.rightlistBox .rs2.fixed{
+    position: fixed;
+    top:40px;
+    width:22%;
 }
 .rightlistBox .rs2 p{
-    color:#e51c23;
+    color:#DF2050;
     cursor: pointer;
     font-size: 20px;
     margin-bottom: 10px;
@@ -189,14 +241,40 @@
     margin-top:10px;
 }
 .rightlistBox .rs2 div{
-    color:#e51c23;
+    color:#DF2050;
     cursor: pointer;
     text-align: center;
     font-size: 40px;
+    position: absolute;
+    width:100%;
+    height:100px;
+    line-height: 100px;
+    left:0;
+    top:30px;
 }
-.rightlistBox .rs2 div i{
+.rightlistBox .rs2 div i.heart{
     display: inline-block;
     text-align: center;
+    width: 100px;
+      height: 100px;
+     margin-left: -20px;
+     margin-top:-5px;
+      background: url(../../img/heart.png) no-repeat;
+      background-position: 0 0;
+      cursor: pointer;
+      -webkit-transition: background-position 1s steps(28);
+      transition: background-position 1s steps(28);
+      -webkit-transition-duration: 0s;
+      transition-duration: 0s;
+      vertical-align: middle;
+}
+.rightlistBox .rs2 div i.heart.active{
+    -webkit-transition-duration: 1s;
+        transition-duration: 1s;
+        background-position: -2800px 0;
+}
+.rightlistBox .rs2 div span{
+    margin-left: -30px;
 }
 /**********排队来说*************/
 .rightlistBox .rs3 .rs3-item{
@@ -245,5 +323,26 @@
 }
 .rightlistBox .rs4 li a:hover{
     color:#64609E;
+}
+
+
+/*回到顶部*/
+/*返回到顶部*/
+.toTop{
+    position: fixed;
+    right:40px;
+    top:-360px;
+    z-index: 99;
+    width:100px;
+    height:900px;
+    transition: all .5s ease-in-out;
+    cursor: pointer;
+}
+.goTop{
+    top:-900px;
+}
+.toTop img{
+    width:100%;
+    height:100%;
 }
 </style>

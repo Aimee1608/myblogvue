@@ -1,7 +1,7 @@
 <template>
     <div class="tmsgBox">
         <div class="tmsg-respond">
-            <h3>发表评论 <small>取消回复</small></h3>
+            <h3>发表评论 <small class="tcolorm">取消回复</small></h3>
             <form class="" >
                 <el-input
                   type="textarea"
@@ -71,7 +71,7 @@
                         <el-input v-model="web" placeholder="网址"></el-input>
                     </el-col>
                     <el-col :span="24" class="info-submit">
-                        <p>发送~</p>
+                        <p class="tcolors-bg">发送~</p>
                     </el-col>
                 </el-row>
             </form>
@@ -163,7 +163,6 @@
 }
 .tmsg-respond h3 small{
     font-size: smaller;
-    color:#64609E;
     cursor: pointer;
 }
 .tmsg-respond textarea{
@@ -325,17 +324,17 @@
     text-align: center;
 }
 .tmsg-r-info .info-submit p{
-    background: #97dffd;
+    /*background: #97dffd;*/
     color:#fff;
     border-radius: 5px;
     cursor: pointer;
-    transition: all .3s ease-in-out;
+    /*transition: all .3s ease-in-out;*/
     height:30px;
     line-height: 30px;
 }
-.tmsg-r-info .info-submit p:hover{
+/*.tmsg-r-info .info-submit p:hover{
     background: #47456d;
-}
+}*/
 /*评论列表*/
 .tmsg-comments .tmsg-comments-tip{
     display: block;
@@ -423,15 +422,10 @@
 .paginationBox li.active{
     color:#fff;
     border-radius: 50%;
-    /*border:1px solid #d3d3d3;*/
-    background: #64609E;
     width:45px;
     height:45px;
     line-height: 45px;
     margin:0 5px;
     padding:0;
-}
-.paginationBox li:hover{
-    color:#48456C;
 }
 </style>

@@ -73,7 +73,7 @@
                 </el-col>
             </el-row>
         </div>
-        <div class="headImgBox">
+        <div class="headImgBox" :style="{backgroundImage:headBg}">
             <div class="h-information">
                 <a href="#">
                     <img src="https://www.anotherhome.net/wp-content/uploads/2016/09/head.jpg" alt="">
@@ -84,9 +84,6 @@
                     </a>
                 </h2>
             </div>
-        </div>
-        <div :class="gotoTop?'toTop':'toTop goTop'" @click="toTopfun">
-            <img src="src/img/scroll.png" alt="">
         </div>
     </div>
 </template>
@@ -99,8 +96,7 @@
                 pMenu:true,//手机端菜单打开
                 // path:'',//当前打开页面的路径
                 input:'',//input输入内容
-                gotoTop:false,
-                going:false
+                headBg:'url(src/img/headbg05.jpg)'
             }
         },
         watch:{
@@ -119,22 +115,7 @@
             handleSelect(key, keyPath) {//pc菜单选择
                    console.log(key, keyPath);
             },
-            toTopfun:function(e){
-                var that = this;
-                this.gotoTop = false;
-                this.going = true;
-                var timer = setInterval(function(){
-                      //获取滚动条距离顶部高度
-                      var osTop = document.documentElement.scrollTop || document.body.scrollTop;
-                      var ispeed = Math.floor(-osTop / 7);
-                      document.documentElement.scrollTop = document.body.scrollTop = osTop+ispeed;
-                      //到达顶部，清除定时器
-                      if (osTop == 0) {
-                          that.going = false;
-                        clearInterval(timer);
-                      };
-                },30);
-            },
+
             handleIconClick(ev) {//搜索
                     //   console.log(this.state);
                       if(this.state!=""&&this.state!=undefined&&this.state!=null){
@@ -152,18 +133,7 @@
         created() { //生命周期函数
             var that = this;
             this.activeIndex = this.$router.currentRoute.path=='/'?'/Home':this.$router.currentRoute.path;
-            window.onscroll = function(){
-                 var t = document.documentElement.scrollTop || document.body.scrollTop;
-                // console.log(t);
-                if(!that.going){
-                    if(t>600){
-                        that.gotoTop = true;
-                    }else{
-                        that.gotoTop = false;
-                    }
-                }
 
-            }
         }
     }
 </script>
@@ -260,17 +230,14 @@
 
 .hideMenu ul.mlistmenu{
     width:100%;
-    /*height:500px;*/
     position: absolute;
     left:0;
     top:100%;
     box-sizing: border-box;
     z-index: 999;
     box-shadow:0 2px 6px 0 rgba(0,0,0,.12),0 0 8px 0 rgba(0,0,0,.04);
-    /*display: none;*/
     background:#48456C;
     color:#fff;
-
 }
 .hideMenu .el-submenu .el-menu{
     background:#64609E;
@@ -295,7 +262,6 @@
     padding-left: 40px;
     width: 100%;
     box-sizing: border-box;
-
 }
 .mobileBox .searchBox .el-input__inner{
     display: block;
@@ -314,7 +280,6 @@
 .headImgBox{
     height:650px;
     position: relative;
-    background-image: url(https://diygod.b0.upaiyun.com/header-sagiri.jpg);
     width:100%;
     background-size: cover;
     background-position: center 50%;
@@ -360,22 +325,5 @@
     font-weight: 700;
 }
 
-/*返回到顶部*/
-.toTop{
-    position: fixed;
-    right:50px;
-    top:-360px;
-    z-index: 2;
-    width:70px;
-    height:900px;
-    transition: all .5s ease-in-out;
-    cursor: pointer;
-}
-.goTop{
-    top:-900px;
-}
-.toTop img{
-    width:100%;
-    height:100%;
-}
+
 </style>
