@@ -292,6 +292,11 @@ a {
   .hidden {
     display: none!important;
   }
+  div.rightlistBox .rs2.fixed {
+    position: relative;
+    top: 0;
+    width: auto;
+  }
 }
 @media screen and (min-width: 991px) {
   .headBox li.el-menu-item,

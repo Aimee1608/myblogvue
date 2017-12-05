@@ -94,12 +94,7 @@
 
 <style>
 
-.tcommonBox  header h2 .el-rate,.rateBox{
-    display:inline-block;
-}
-.tcommonBox  header h2 .el-rate i{
-    font-size: 16px;
-}
+
 .detailBox .article-content{
     font-size: 15px;
     white-space: normal;

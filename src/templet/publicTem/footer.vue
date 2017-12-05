@@ -14,7 +14,7 @@
                 © 2017 <a href="#">Anotherhome</a>. 由 <a href="#">Wordpress</a> 强力驱动. Theme By <a href="#">Amativeness</a>. <a href="#">站点地图</a>. 鲁ICP备16000184号.
             </p>
             <p>
-                Made with <i class="el-icon-star-on"></i>  by DIYgod.
+                <span>Made with</span> <img class="fheart" src="src/img/heart02.png"/>  <span>by DIYgod.</span>
             </p>
         </div>
     </div>
@@ -57,13 +57,13 @@
     left:0;
     position: absolute;
     padding:15px 0 10px 0;
-    z-index: 2;
+    z-index: 1;
     width: 100!important;
 }
 .footBack .footer-img{
     background:url(https://diygod.b0.upaiyun.com/footer01.png) no-repeat 50%;
     height:368px;
-    z-index: 1;
+    z-index: 2;
     position: absolute;
     width:100%;
 }
@@ -75,5 +75,23 @@
 }
 .footBack a:hover{
     color:#000;
+}
+.footBack .fheart{
+    width:25px;
+    height:25px;
+    margin-top:-10px;
+    top:5px;
+    position: relative;
+
+    /*padding-top:0px;*/
+    vertical-align: baseline;
+
+    -webkit-animation: heartScale 1.33s ease-in-out infinite;
+    animation: heartScale 1.33s ease-in-out infinite;
+}
+@keyframes heartScale {
+    0%{transform: scale(1)}
+    50%{transform: scale(0.8)}
+    100%{transform: scale(1)}
 }
 </style>

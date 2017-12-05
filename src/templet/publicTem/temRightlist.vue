@@ -268,6 +268,10 @@
       transition-duration: 0s;
       vertical-align: middle;
 }
+.rightlistBox .rs2 div i.heart:hover{
+    transform: scale(1.15);
+    -webkit-transform: scale(1.15);
+}
 .rightlistBox .rs2 div i.heart.active{
     -webkit-transition-duration: 1s;
         transition-duration: 1s;
