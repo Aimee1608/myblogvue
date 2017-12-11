@@ -2,7 +2,7 @@
     <div class="rightlistBox">
         <section >
             <div class="r1-head">
-                <img src="https://diygod.b0.upaiyun.com/snjz.jpg" alt="">
+                <img src="src/img/snjz.jpg" alt="">
                 <h1>
                     <span>网红</span>diygod
                 </h1>
@@ -11,28 +11,28 @@
                 <p>你能抓到我么？</p>
                 <div class="catch-me">
                     <div class="">
-                        <el-tooltip class="item" effect="dark" content="Top Center 提示文字" placement="top">
-                            <a href="#"><i class="el-icon-share"></i></a>
+                        <el-tooltip class="item" effect="dark" content="Github" placement="top">
+                            <a href="https://github.com/Aimee1608" target="_blank"><i class="fa fa-fw fa-github"></i></a>
                         </el-tooltip>
-                        <el-tooltip class="item" effect="dark" content="Top Center 提示文字" placement="top">
-                            <a href="#"><i class="el-icon-share"></i></a>
+                        <el-tooltip class="item" effect="dark" content="QQ" placement="top">
+                            <a href="src/img/QQ.jpg" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
                         </el-tooltip>
-                        <el-tooltip class="item" effect="dark" content="Top Center 提示文字" placement="top">
-                            <a href="#"><i class="el-icon-share"></i></a>
+                        <el-tooltip class="item" effect="dark" content="微博" placement="top">
+                            <a href="https://weibo.com/u/2242812941?refer_flag=1001030101_&is_all=1" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
                         </el-tooltip>
                     </div>
                     <div class="">
-                        <el-tooltip class="item" effect="dark" content="Top Center 提示文字" placement="top">
-                            <a href="#"><i class="el-icon-share"></i></a>
+                        <el-tooltip class="item" effect="dark" content="微信公众号" placement="top">
+                            <a href="src/img/erwm.jpg" target="_blank"><i class="fa fa-fw fa-wechat"></i></a>
                         </el-tooltip>
-                        <el-tooltip class="item" effect="dark" content="Top Center 提示文字" placement="top">
-                            <a href="#"><i class="el-icon-share"></i></a>
+                        <el-tooltip class="item" effect="dark" content="CSDN" placement="top">
+                            <a href="http://blog.csdn.net/Aimee1608" target="_blank"><i class="">C</i></a>
                         </el-tooltip>
-                        <el-tooltip class="item" effect="dark" content="Top Center 提示文字" placement="top">
-                            <a href="#"><i class="el-icon-share"></i></a>
+                        <el-tooltip class="item" effect="dark" content="简历模板" placement="top">
+                            <a href="#" target="_blank"><i class="fa fa-fw fa-file-code-o"></i></a>
                         </el-tooltip>
-                        <el-tooltip class="item" effect="dark" content="Top Center 提示文字" placement="top">
-                            <a href="#"><i class="el-icon-share"></i></a>
+                        <el-tooltip class="item" effect="dark" content="更多" placement="top">
+                            <a href="#/Aboutme" target="_blank"><i class="el-icon-more"></i></a>
                         </el-tooltip>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                 <li class="rs3-item" v-for="(item,index) in 6" key="item">
                     <a href="#">
                         <div class="rs3-photo">
-                            <img src="https://www.anotherhome.net/wp-content/uploads/2016/09/head.jpg" alt="">
+                            <img src="src/img/head.jpg" alt="">
                         </div>
                         <div class="rs3-inner">
                             <p class="rs3-author">忆山南 在「留言板」中说:</p>
@@ -93,6 +93,7 @@
             }
         },
         methods: { //事件处理器
+            //do you love me  点击
             lovemeFun:function(){
                 var that = this;
                 this.loveme = true;
@@ -207,7 +208,7 @@
 }
 .rightlistBox .r1-body .catch-me a i{
     display: inline-block;
-    font-size: 16px;
+    font-size: 18px;
     width:42px;
     height:42px;
     line-height: 42px;

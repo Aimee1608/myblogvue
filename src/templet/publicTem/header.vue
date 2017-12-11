@@ -8,10 +8,10 @@
                             <el-menu-item index="/Home">首页</el-menu-item>
                             <el-submenu index="/Share">
                               <template slot="title">分类</template>
-                              <el-menu-item index="/Share">技术分享</el-menu-item>
-                              <el-menu-item index="/Share">闲言碎语</el-menu-item>
-                              <el-menu-item index="/Share">事件簿</el-menu-item>
-                              <el-menu-item index="/Share">创作集</el-menu-item>
+                              <el-menu-item index="/Share?classId=1">技术分享</el-menu-item>
+                              <el-menu-item index="/Share?classId=2">闲言碎语</el-menu-item>
+                              <el-menu-item index="/Share?classId=3">事件簿</el-menu-item>
+                              <el-menu-item index="/Share?classId=4">创作集</el-menu-item>
                             </el-submenu>
                             <el-submenu index="/Aboutme">
                               <template slot="title">实验室</template>
@@ -76,7 +76,7 @@
         <div class="headImgBox" :style="{backgroundImage:headBg}">
             <div class="h-information">
                 <a href="#">
-                    <img src="https://www.anotherhome.net/wp-content/uploads/2016/09/head.jpg" alt="">
+                    <img src="../../img/head.jpg" alt="">
                 </a>
                 <h2 class="h-description">
                     <a href="#">

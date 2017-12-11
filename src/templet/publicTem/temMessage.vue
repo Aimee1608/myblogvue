@@ -15,43 +15,7 @@
                     </div>
                     <div class="OwO-body">
                         <ul class="OwO-items OwO-items-show">
-                            <li class="OwO-item">😂</li>
-                            <li class="OwO-item">😀</li>
-                            <li class="OwO-item">😅</li>
-                            <li class="OwO-item">😊</li>
-                            <li class="OwO-item">🙂</li>
-                            <li class="OwO-item">🙃</li>
-                            <li class="OwO-item">😌</li>
-                            <li class="OwO-item">😍</li>
-                            <li class="OwO-item">😘</li>
-                            <li class="OwO-item">😜</li>
-                            <li class="OwO-item">😝</li>
-                            <li class="OwO-item">😏</li>
-                            <li class="OwO-item">😒</li>
-                            <li class="OwO-item">🙄</li>
-                            <li class="OwO-item">😳</li>
-                            <li class="OwO-item">😡</li>
-                            <li class="OwO-item">😔</li>
-                            <li class="OwO-item">😫</li>
-                            <li class="OwO-item">😱</li>
-                            <li class="OwO-item">😭</li>
-                            <li class="OwO-item">💩</li>
-                            <li class="OwO-item">👻</li>
-                            <li class="OwO-item">🙌</li>
-                            <li class="OwO-item">🖕</li>
-                            <li class="OwO-item">👍</li>
-                            <li class="OwO-item">👫</li>
-                            <li class="OwO-item">👬</li>
-                            <li class="OwO-item">👭</li>
-                            <li class="OwO-item">🌚</li>
-                            <li class="OwO-item">🌝</li>
-                            <li class="OwO-item">🙈</li>
-                            <li class="OwO-item">💊</li>
-                            <li class="OwO-item">😶</li>
-                            <li class="OwO-item">🙏</li>
-                            <li class="OwO-item">🍦</li>
-                            <li class="OwO-item">🍉</li>
-                            <li class="OwO-item">😣</li>
+                            <li class="OwO-item" v-for="(oitem,index) in OwOlist" v-key="oitem" @click="choseEmoji(oitem)">{{oitem}}</li>
                         </ul>
                         <div class="OwO-bar">
                             <ul class="OwO-packages">
@@ -71,7 +35,7 @@
                         <el-input v-model="web" placeholder="网址"></el-input>
                     </el-col>
                     <el-col :span="24" class="info-submit">
-                        <p class="tcolors-bg">发送~</p>
+                        <p class="tcolors-bg" @click="sendMsg">发送~</p>
                     </el-col>
                 </el-row>
             </form>
@@ -129,6 +93,44 @@
                 web:'',//用户网址
                 pBody:true,//表情打开控制
                 currentPage:1,//分页
+                OwOlist:[
+                    '😂',
+                    '😀',
+                    '😅',
+                    '😊',
+                    '🙂',
+                    '🙃',
+                    '😌',
+                    '😍',
+                    '😘',
+                    '😜',
+                    '😝',
+                    '😏',
+                    '😒',
+                    '🙄',
+                    '😳',
+                    '😡',
+                    '😔',
+                    '😫',
+                    '😱',
+                    '😭',
+                    '💩',
+                    '👻',
+                    '🙌',
+                    '🖕',
+                    '👍',
+                    '👫',
+                    '👭',
+                    '🌚',
+                    '🌝',
+                    '🙈',
+                    '💊',
+                    '😶',
+                    '🙏',
+                    '🍦',
+                    '🍉',
+                    '😣'
+                ]
             }
         },
         methods: { //事件处理器
@@ -137,7 +139,19 @@
             },
             handleCurrentChange(val) {//当前页
               console.log(`当前页: ${val}`);
-            }
+          },
+          //选择表情包
+          choseEmoji:function(inner){
+              this.textarea += inner;
+          },
+          //发送图片
+          sendMsg:function(){
+              var that = this;
+              var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/ ;
+              if(that.name&&reg.test(that.mail)&&that.web){
+
+              }
+          }
         },
         components: { //定义组件
 

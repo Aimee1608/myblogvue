@@ -4,12 +4,6 @@
         <div class="container">
             <el-row  :gutter="30">
                 <el-col :sm="24" :md="16" style="transition:all .5s ease-out;margin-bottom:30px;">
-                    <div class="shareTitle">
-                        <div class="ui label">
-                            <a href="#">创作集</a>
-                        </div>
-                    </div>
-
                     <wbc-sharelist></wbc-sharelist>
                 </el-col>
                 <el-col :sm="24"  :md="8" >
@@ -41,6 +35,7 @@ import temRightlist from '../publicTem/temRightlist.vue'
             'wbc-rightlist':temRightlist,
             'wbc-footer':footer
         },
+
         created() { //生命周期函数
 
         }
@@ -48,11 +43,5 @@ import temRightlist from '../publicTem/temRightlist.vue'
 </script>
 
 <style>
-.shareTitle{
-    margin-bottom: 40px;
-    position: relative;
-    border-radius: 5px;
-    background: #fff;
-    padding:15px;
-}
+
 </style>
