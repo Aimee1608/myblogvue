@@ -15,7 +15,7 @@
                     </div>
                     <div class="OwO-body">
                         <ul class="OwO-items OwO-items-show">
-                            <li class="OwO-item" v-for="(oitem,index) in OwOlist" v-key="oitem" @click="choseEmoji(oitem)">{{oitem}}</li>
+                            <li class="OwO-item" v-for="(oitem,index) in OwOlist" key="oitem" @click="choseEmoji(oitem)">{{oitem}}</li>
                         </ul>
                         <div class="OwO-bar">
                             <ul class="OwO-packages">
@@ -62,11 +62,37 @@
                             <section>
                                 <p>留言留言硫酸钾点击的</p>
                                 <div class="tmsg-replay">
-                                    <a href="#">回复</a>
+                                    <a href="javascript:void(0);" @click="respondMsg">回复</a>
                                 </div>
                             </section>
                         </article>
+                        <ul class="tmsg-commentlist" style="padding-left:60px;">
+                            <li class="tmsg-c-item" v-for="item in 3" key="item">
+                                <article class="">
+                                    <header>
+                                        <img src="src/img/tou.jpg" alt="">
+
+                                            <div class="i-name">
+                                                小花花
+                                            </div>
+                                            <div class="i-class">
+                                                天然呆
+                                            </div>
+                                            <div class="i-time">
+                                                <time>2017年11月4日 10:45</time>
+                                            </div>
+                                    </header>
+                                    <section>
+                                        <p>留言留言硫酸钾点击的</p>
+                                        <div class="tmsg-replay">
+                                            <a href="javascript:void(0);" @click="respondMsg">回复</a>
+                                        </div>
+                                    </section>
+                                </article>
+                            </li>
+                        </ul>
                     </li>
+
                 </ul>
                 <div class="paginationBox">
                     <el-pagination
@@ -151,6 +177,9 @@
               if(that.name&&reg.test(that.mail)&&that.web){
 
               }
+          },
+          respondMsg:function(){
+
           }
         },
         components: { //定义组件
@@ -359,9 +388,13 @@
 }
 .tmsg-commentlist {
     margin-bottom:20px;
+
+}
+.tmsg-commentshow>.tmsg-commentlist{
+    border-bottom: 1px solid #e5eaed;
 }
 .tmsg-c-item{
-    border-bottom: 1px solid #e5eaed;
+    border-top: 1px solid #e5eaed;
 }
 .tmsg-c-item article{
     margin:20px 0;
@@ -376,6 +409,9 @@
     float: left;
     transition: all .4s ease-in-out;
     margin-right: 15px;
+}
+.tmsg-c-item article header img:hover{
+    transform: rotate(360deg);
 }
 .tmsg-c-item article header .i-name{
     font-size: 14px;

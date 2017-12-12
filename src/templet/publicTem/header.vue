@@ -24,13 +24,17 @@
                             <el-menu-item index="/Friendslink">伙伴</el-menu-item>
                             <el-menu-item index="/Message">留言板</el-menu-item>
                             <el-menu-item index="/Aboutme">关于</el-menu-item>
+                            <el-menu-item index="/login">登录</el-menu-item>
                             <div index="" class="pcsearchbox">
-                                <el-input
-                                  placeholder=""
-                                  icon="search"
-                                  v-model="input"
-                                  :on-icon-click="pchandleIconClick">
-                                </el-input>
+                                <i class="el-icon-search pcsearchicon"></i>
+                                <div class="pcsearchinput">
+                                    <el-input
+                                      placeholder="搜索"
+                                      icon="search"
+                                      v-model="input"
+                                      :on-icon-click="pchandleIconClick">
+                                    </el-input>
+                                </div>
                             </div>
                         </el-menu>
                     </div>
@@ -42,10 +46,10 @@
                                      <el-menu-item index="/Home">首页</el-menu-item>
                                      <el-submenu index="/Share" >
                                          <template slot="title">分类</template>
-                                          <el-menu-item index="/Share">技术分享</el-menu-item>
-                                          <el-menu-item index="/Share">闲言碎语</el-menu-item>
-                                          <el-menu-item index="/Share">事件簿</el-menu-item>
-                                          <el-menu-item index="/Share">创作集</el-menu-item>
+                                         <el-menu-item index="/Share?classId=1">技术分享</el-menu-item>
+                                         <el-menu-item index="/Share?classId=2">闲言碎语</el-menu-item>
+                                         <el-menu-item index="/Share?classId=3">事件簿</el-menu-item>
+                                         <el-menu-item index="/Share?classId=4">创作集</el-menu-item>
                                      </el-submenu>
                                      <el-submenu index="2">
                                        <template slot="title">实验室</template>
@@ -150,7 +154,7 @@
     left:0;
     top:0;
     right:0;
-    z-index: 3;
+    z-index: 100;
 }
 
 .headBox li.is-active{
@@ -162,9 +166,9 @@
 }
 .headBox .el-menu{
     background:transparent;
-
+    border-bottom:none;
 }
-.headBox li.el-menu-item,.headBox .el-menu--horizontal .el-submenu .el-submenu__title{
+.headBox .el-menu-demo li.el-menu-item,.headBox .el-menu--horizontal .el-submenu .el-submenu__title{
     height:38px;
     line-height:38px;
     border-bottom: none;
@@ -174,7 +178,7 @@
     height:38px;
     line-height:38px;
 }
-.headBox .el-menu-item,.headBox .el-submenu__title,.headBox ,.headBox .el-submenu__title i.el-submenu__icon-arrow{
+.headBox ul li.el-menu-item,.headBox ul li.el-menu-item.is-active,.headBox ul li.el-menu-item:hover,.headBox .el-submenu  div.el-submenu__title,.headBox .el-submenu__title i.el-submenu__icon-arrow{
     color:#fff;
 }
 
@@ -202,14 +206,42 @@
 .headBox .pcsearchbox{
     padding: 0;
     max-width: 170px;
+    height:100%;
+    line-height: 38px;
     position: absolute;
-    top:6px;
+    top:0;
     right:0;
 }
+.headBox .pcsearchbox:hover .pcsearchinput{
+    opacity: 1;
+    /*transform: scaleX(1);*/
+    visibility: visible;
+}
+.headBox .pcsearchbox i.pcsearchicon{
+    color:#fff;
+}
+.headBox .pcsearchbox .pcsearchinput{
+    width:180px;
+    padding:10px 20px 10px 20px;
+    background: rgba(40,42,44,0.6);
+    border-radius: 0 0 2px 2px;
+    position: absolute;
+    right:0;
+    top:38px;
+    opacity: 0;
+    visibility: hidden;
+    /*transform: scaleX(0);*/
+    transform-origin: right;
+    transition: all 0.3s ease-out;
+}
+.headBox .pcsearchbox .el-input{
+    width: 100%;
+}
 .headBox .el-input__inner{
-    height:25px;
+    height:30px;
     border: none;
     background:#fff;
+    /*border: 1px solid #333;*/
     border-radius: 2px;
     padding-right: 10px;
 }
@@ -238,6 +270,7 @@
     box-shadow:0 2px 6px 0 rgba(0,0,0,.12),0 0 8px 0 rgba(0,0,0,.04);
     background:#48456C;
     color:#fff;
+    border-right: none;
 }
 .hideMenu .el-submenu .el-menu{
     background:#64609E;
@@ -272,7 +305,13 @@
 .hideMenu ul.mlistmenu.pshow{
     display: block;
 }
+.hideMenu ul.mlistmenu .el-submenu__icon-arrow{
+    color:#fff;
+}
 
+.hideMenu>ul li.el-menu-item:hover,.hideMenu>ul li.el-menu-item.is-active{
+    background: #48576a;
+}
 
 
 
