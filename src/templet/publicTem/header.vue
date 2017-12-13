@@ -24,7 +24,6 @@
                             <el-menu-item index="/Friendslink">伙伴</el-menu-item>
                             <el-menu-item index="/Message">留言板</el-menu-item>
                             <el-menu-item index="/Aboutme">关于</el-menu-item>
-                            <el-menu-item index="/login">登录</el-menu-item>
                             <div index="" class="pcsearchbox">
                                 <i class="el-icon-search pcsearchicon"></i>
                                 <div class="pcsearchinput">
@@ -34,6 +33,22 @@
                                       v-model="input"
                                       :on-icon-click="pchandleIconClick">
                                     </el-input>
+                                </div>
+                            </div>
+                            <div class="userInfo">
+                                <div v-show="!haslogin" class="nologin">
+                                    <a href="#/Login">登录&nbsp;</a>|<a href="#/Login?login=0">&nbsp;注册</a>
+                                </div>
+                                <div v-show="haslogin" class="haslogin">
+                                    <i class="fa fa-fw fa-user-circle userImg"></i>
+                                    <ul class="haslogin-info">
+                                        <li>
+                                            <a href="#/UserInfo">个人中心</a>
+                                        </li>
+                                        <li>
+                                            <a href="">退出登录</a>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </el-menu>
@@ -62,6 +77,10 @@
                                      <el-menu-item index="/Friendslink">伙伴</el-menu-item>
                                      <el-menu-item index="/Message">留言板</el-menu-item>
                                      <el-menu-item index="/Aboutme">关于</el-menu-item>
+                                     <el-menu-item v-show="!haslogin" index="/Login">登录</el-menu-item>
+                                     <el-menu-item v-show="!haslogin" index="/Login?login=0">注册</el-menu-item>
+                                     <el-menu-item v-show="haslogin" index="/UserInfo">个人中心</el-menu-item>
+                                     <el-menu-item v-show="haslogin" index="">退出登录</el-menu-item>
                                 </el-menu>
                             </el-collapse-transition>
                             <div class="searchBox">
@@ -95,6 +114,7 @@
     export default {
         data() { //选项 / 数据
             return {
+                haslogin:false,
                 activeIndex: '/',
                 state: '',//icon点击状态
                 pMenu:true,//手机端菜单打开
@@ -125,7 +145,15 @@
                       if(this.state!=""&&this.state!=undefined&&this.state!=null){
                             this.$router.push({path:'/Foodlist?keywords='+this.state});
                       }
+            },
+            // 用户退出登录
+            userlogout:function(){
+                if(sessionStorage.getItem('userInfo')){
+                    sessionStorage.removeItem('userInfo');
+                    this.haslogin = false;
+                }
             }
+
 
         },
         mounted() {
@@ -137,7 +165,11 @@
         created() { //生命周期函数
             var that = this;
             this.activeIndex = this.$router.currentRoute.path=='/'?'/Home':this.$router.currentRoute.path;
-
+            if(sessionStorage.getItem('userInfo')){
+                that.haslogin = true;
+            }else{
+                that.haslogin = false;
+            }
         }
     }
 </script>
@@ -206,6 +238,7 @@
 .headBox .pcsearchbox{
     padding: 0;
     max-width: 170px;
+    /*min-width: 30px;*/
     height:100%;
     line-height: 38px;
     position: absolute;
@@ -219,6 +252,7 @@
 }
 .headBox .pcsearchbox i.pcsearchicon{
     color:#fff;
+    padding-left: 10px;
 }
 .headBox .pcsearchbox .pcsearchinput{
     width:180px;
@@ -246,6 +280,46 @@
     padding-right: 10px;
 }
 
+.headBox .userInfo{
+    height:100%;
+    line-height: 38px;
+    position: absolute;
+    right:30px;
+    top:0;
+    color:#fff;
+}
+.headBox .userInfo a{
+    color:#fff;
+    font-size: 13px;
+    transition: all 0.2s ease-out;
+}
+.headBox .userInfo a:hover{
+    color:#48456C;
+}
+.headBox .nologin{
+    text-align: right;
+}
+.headBox .haslogin {
+    text-align: right;
+    position: relative;
+    min-width: 80px;
+}
+.headBox .haslogin:hover ul{
+    visibility: visible;
+    opacity: 1;
+}
+.headBox .haslogin  ul{
+    background: rgba(40,42,44,0.6);
+    padding:5px 10px;
+    position: absolute;
+    right:0;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s ease-out;
+}
+.headBox .haslogin  ul li:first-child{
+    border-bottom: 1px solid #48456C;
+}
 
 /*******移动端*******/
 .mobileBox{

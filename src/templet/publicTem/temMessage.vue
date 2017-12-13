@@ -1,8 +1,8 @@
 <template>
-    <div class="tmsgBox">
-        <div class="tmsg-respond">
-            <h3>发表评论 <small class="tcolorm">取消回复</small></h3>
-            <form class="" >
+    <div class="tmsgBox" id="tmsgBox" >
+        <div class="tmsg-respond" id="respondChild">
+            <h3>发表评论 <small v-show="isRespond" class="tcolorm" @click="removeRespond">取消回复</small></h3>
+            <form class=""  >
                 <el-input
                   type="textarea"
                   :rows="2"
@@ -24,23 +24,14 @@
                         </div>
                     </div>
                 </div>
-                <el-row class="tmsg-r-info" :gutter="15">
-                    <el-col :span="8">
-                        <el-input v-model="name" placeholder="昵称*"></el-input>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-input v-model="mail" placeholder="邮箱*"></el-input>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-input v-model="web" placeholder="网址"></el-input>
-                    </el-col>
+                <el-row class="tmsg-r-info">
                     <el-col :span="24" class="info-submit">
                         <p class="tcolors-bg" @click="sendMsg">发送~</p>
                     </el-col>
                 </el-row>
             </form>
         </div>
-        <div class="tmsg-comments">
+        <div class="tmsg-comments" id="tmsgComments">
             <a href="#" class="tmsg-comments-tip">活捉 14 条</a>
             <div class="tmsg-commentshow">
                 <ul class="tmsg-commentlist">
@@ -61,8 +52,8 @@
                             </header>
                             <section>
                                 <p>留言留言硫酸钾点击的</p>
-                                <div class="tmsg-replay">
-                                    <a href="javascript:void(0);" @click="respondMsg">回复</a>
+                                <div class="tmsg-replay" @click="respondMsg">
+                                    回复
                                 </div>
                             </section>
                         </article>
@@ -84,8 +75,8 @@
                                     </header>
                                     <section>
                                         <p>留言留言硫酸钾点击的</p>
-                                        <div class="tmsg-replay">
-                                            <a href="javascript:void(0);" @click="respondMsg">回复</a>
+                                        <div class="tmsg-replay" @click="respondMsg">
+                                            回复
                                         </div>
                                     </section>
                                 </article>
@@ -94,16 +85,7 @@
                     </li>
 
                 </ul>
-                <div class="paginationBox">
-                    <el-pagination
-                     @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page.sync="currentPage"
-                     :page-size="100"
-                     layout="total, prev, pager, next"
-                     :total="1000">
-                   </el-pagination>
-                </div>
+                <h1 class="tcolors-bg" >查看更多</h1>
             </div>
         </div>
     </div>
@@ -113,12 +95,12 @@
     export default {
         data() { //选项 / 数据
             return {
+                respondBox:'',//评论表单
+                listDom:'',//评论列表
+                tmsgBox:'',//总评论盒子
+                isRespond:false,
                 textarea: '',//文本框输入内容
-                name:'',//用户姓名
-                mail:'',//用户邮箱
-                web:'',//用户网址
                 pBody:true,//表情打开控制
-                currentPage:1,//分页
                 OwOlist:[
                     '😂',
                     '😀',
@@ -160,26 +142,25 @@
             }
         },
         methods: { //事件处理器
-            handleSizeChange(val) {//分页处理
-              console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {//当前页
-              console.log(`当前页: ${val}`);
-          },
           //选择表情包
           choseEmoji:function(inner){
               this.textarea += inner;
+              // console.log(this.textarea);
           },
           //发送图片
           sendMsg:function(){
               var that = this;
               var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/ ;
-              if(that.name&&reg.test(that.mail)&&that.web){
-
-              }
           },
-          respondMsg:function(){
-
+          respondMsg:function(event){
+              var dom = event.currentTarget;
+              dom = dom.parentNode;
+              this.isRespond = true;
+              dom.appendChild(this.respondBox);
+          },
+          removeRespond:function(){
+              this.isRespond = false;
+              this.tmsgBox.insertBefore(this.respondBox,this.listDom);
           }
         },
         components: { //定义组件
@@ -187,6 +168,13 @@
         },
         created() { //生命周期函数
 
+        },
+        mounted(){//页面加载完成后
+            //获取页面元素
+            this.respondBox = document.getElementById('respondChild');
+            this.tmsgBox = document.getElementById('tmsgBox');
+            this.listDom = document.getElementById('tmsgComments');
+            // console.log(this.respondBox);
         }
     }
 </script>
@@ -366,7 +354,7 @@
     margin: 10px 0;
     text-align: center;
 }
-.tmsg-r-info .info-submit p{
+.tmsg-r-info .info-submit p,.tmsg-commentshow h1{
     /*background: #97dffd;*/
     color:#fff;
     border-radius: 5px;
@@ -374,6 +362,7 @@
     /*transition: all .3s ease-in-out;*/
     height:30px;
     line-height: 30px;
+    text-align: center;
 }
 /*.tmsg-r-info .info-submit p:hover{
     background: #47456d;
@@ -439,43 +428,9 @@
 }
 .tmsg-c-item article section .tmsg-replay{
     margin:10px 0;
-
-}
-.tmsg-c-item article section .tmsg-replay a{
     font-size: 12px;
     color:#64609E;
+    cursor: pointer;
 }
-/*分页*/
-.paginationBox{
-    text-align: center;
-    height:45px;
-    line-height: 45px;
-    margin:10px 0;
-}
-.paginationBox .el-pagination{
-    padding:0;
-    height:45px;
-    line-height: 45px;
-}
-.paginationBox .el-pagination span,.paginationBox .el-pagination button{
-    height:45px;
-    line-height: 45px;
-    border: none;
-}
-.paginationBox .el-pager li{
-    padding:0 10px;
-    height:45px;
-    height:auto;
-    line-height: 45px;
-    border:none;
-}
-.paginationBox li.active{
-    color:#fff;
-    border-radius: 50%;
-    width:45px;
-    height:45px;
-    line-height: 45px;
-    margin:0 5px;
-    padding:0;
-}
+
 </style>

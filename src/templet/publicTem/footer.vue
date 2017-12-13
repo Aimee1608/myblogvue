@@ -61,7 +61,7 @@
     width: 100!important;
 }
 .footBack .footer-img{
-    background:url(https://diygod.b0.upaiyun.com/footer01.png) no-repeat 50%;
+    background:url(../../img/footer01.png) no-repeat 50%;
     height:368px;
     z-index: 2;
     position: absolute;
