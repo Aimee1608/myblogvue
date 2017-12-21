@@ -1,81 +1,69 @@
 <template>
 
     <el-row class="sharelistBox">
-        <div v-if="this.$route.name=='Share'" class="shareTitle">
+        <div v-if="this.$route.name=='Share'&&!this.$route.query.keywords" class="shareTitle">
             <div class="ui label" >
                 <a  :href="'#/Share?classId='+classId">{{className}}</a>
             </div>
-            <ul v-if="className=='技术分享'" class="shareclassTwo" >
-                <li v-for="(citem,index) in shareClass[0].detshare">
-                    <a :href="'#/Share?classId='+classId+'&classtwoId='+citem.classId" :class="citem.classId==classtwoId?'active':''">{{citem.name}}</a>
+            <ul v-if="sonclassList" class="shareclassTwo" >
+                <li v-for="(citem,index) in sonclassList">
+                    <a :href="'#/Share?classId='+classId+'&classtwoId='+citem.class_id" :class="citem.class_id==classtwoId?'active':''">{{citem.cate_name}}</a>
                 </li>
             </ul>
         </div>
-        <el-col :span="24" class="s-item tcommonBox" v-for="(item,index) in 10" key="item">
+        <el-col :span="24" class="s-item tcommonBox" v-for="(item,index) in articleList" key="item">
             <span class="s-round-date">
                 <span class="month">10月</span>
                 <span class="day">17</span>
             </span>
             <header>
                 <h1>
-                    <a href="#/DetailShare" target="_blank">
-                        bilibili2RSS — 使用 RSS 订阅 bilibili up主和番剧
+                    <a :href="'#/DetailShare?aid='+item.id" target="_blank">
+                        {{item.title}}
                     </a>
                 </h1>
                 <h2>
-                    <i class="el-icon-star-off"></i>发表于<i class="el-icon-time"></i> 2017年10月17日 • <i class="el-icon-date"></i>553 次围观 • <i class="el-icon-edit"></i>活捉 11 条
+                    <i class="el-icon-star-off"></i>发表于<i class="el-icon-time"></i> {{item.create_time}} • <i class="el-icon-date"></i>{{item.browse_count}} 次围观 • <i class="el-icon-edit"></i>活捉 {{item.comment_count}} 条
                 </h2>
                 <div class="ui label">
-                    <a href="#/Share">创作集</a>
+                    <a :href="'#/Share?classId='+item.class_id">{{item.cate_name}}</a>
                 </div>
             </header>
             <div class="article-content">
                 <p>
-                    作为一种过气技术，提供 RSS 订阅源的网站越来越少，每个网站都想把用户尽可能长时间地绑在自己那里，而 RSS 可能会造成负面效果
+                    {{item.description}}
                 </p>
                 <p>
-                    但在这个内容爆炸时代，只要意识到了「我被信息所绑架」这个问题后，用户自然会想要一种更高级的聚合信息和动态更新解决方案，比如 RSS
-                </p>
-                <p>
-                    这里提供了使用 RSS 订阅 bilibili up主和番剧的解决方案
-                </p>
-                <p>
-                    订阅up主：<a href="">https://api.prprpr.me/bilibili2rss/user/6997378</a>
-                </p>
-                <p>
-                    订阅番剧：<a href="">https://api.prprpr.me/bilibili2rss/user/6997378</a>
-                </p>
-                <p>
-                    项目名叫 bilibili2RSS，开源在 <a href="#">GitHub</a>
-                </p>
-                <p>
-                    另外可以使用相关项目 <a href="#">Weibo2RSS</a> 订阅喜欢的微博博主
-                </p>
-                <p>
-                    Enjoy!
+                    <img :src="'http://'+item.image" alt="" class="fitImg">
                 </p>
             </div>
             <div class="viewdetail">
-                <a class="tcolors-bg" href="#/DetailShare" target="_blank">
+                <a class="tcolors-bg" :href="'#/DetailShare?aid='+item.id" target="_blank">
                     阅读全文>>
                 </a>
             </div>
         </el-col>
         <el-col class="viewmore">
-            <a class="tcolors-bg" href="#/Share">点击加载更多</a>
+            <a v-show="hasMore" class="tcolors-bg" href="javascript:void(0);" @click="addMoreFun">点击加载更多</a>
+            <a v-show="!hasMore" class="tcolors-bg" href="javascript:void(0);">暂无更多数据</a>
         </el-col>
     </el-row>
 </template>
 
 <script>
+import {ShowArticleAll,ArtClassData} from '../../pubJS/server.js'
     export default {
         name:'Share',
         data() { //选项 / 数据
             return {
-                classId:1,
+                artId:0,
+                classId:0,
+                sendId:'',
                 className:'',
+                sonclassList:'',//二级分类
                 classtwoId:5,
                 keywords:'',
+                hasMore:true,
                 shareClass:[
                     {classId:1,name:'技术分享',detshare:[
                         {classId:5,name:'移动端H5',pid:1},
@@ -90,56 +78,60 @@
                     {classId:3,name:'事件簿'},
                     {classId:4,name:'创作集'}
                 ],
-                queryClass:1
+                queryClass:1,
+                articleList:'',
             }
         },
         methods: { //事件处理器
-            // showSearchShowList:function(initpage){//展示数据
-            //     this.classId = (this.$route.query.classId==undefined?'':parseInt(this.$route.query.classId));//获取传参的classId
-            //     this.keywords = this.$route.query.keywords==undefined?'':this.$route.query.keywords;//获取传参的keywords
-            //     // console.log(this.$route.query,this.classId,this.keywords,this.pageId,initpage);
-            //     if(initpage){
-            //         this.pageId=0;
-            //         this.temCardList = [];
-            //     }
-            //     searchShowList(this.pageId,this.keywords,this.classId,(result)=>{
-            //         if(result.code==1001){
-            //             var msg = result.data;
-            //             // console.log(result.data);
-            //             if(msg.length>0&&msg.length<8){
-            //                 this.hasMore = false
-            //             }else{
-            //                 this.hasMore = true;
-            //             }
-            //             if(initpage==0){
-            //                 this.temCardList = this.temCardList.concat(msg);
-            //             }else{
-            //                 this.temCardList = msg;
-            //             }
-            //             this.pageId = msg[msg.length-1].id;
-            //             // console.log(this.temCardList);
-            //         }else if(result.code==1003){
-            //             this.hasMore = false;
-            //         }
-            //     })
-            // },
-            // addMoreFun:function(){//查看更多
-            //     this.showSearchShowList(false);
-            // },
-            // routeChange:function(ifif){
-            //     this.showSearchShowList(true);
-            // }
-            routeChange:function(){
+            showSearchShowList:function(initpage){//展示数据
                 var that = this;
-                that.classId = that.$route.query.classId==undefined?'':parseInt(that.$route.query.classId);//获取传参的classId
+                that.classId = (that.$route.query.classId==undefined?0:parseInt(that.$route.query.classId));//获取传参的classId
                 that.keywords = that.$route.query.keywords==undefined?'':that.$route.query.keywords;//获取传参的keywords
-                that.classtwoId = that.$route.query.classtwoId==undefined?'':parseInt(that.$route.query.classtwoId);
-                console.log(that.classId);
+                that.classtwoId = that.$route.query.classtwoId==undefined?'':parseInt(that.$route.query.classtwoId);//获取传参的classtwoId
+                that.sendId = that.classtwoId?that.classtwoId:that.classId;
+
+                // console.log(that.classId);
+                ArtClassData(function(msg){
+                    // console.log(msg);
+                    that.shareClass = msg;
+                })
+                //判断当前显示的分类名称 以及子分类
                 for(var i=0;i<that.shareClass.length;i++){
-                    if(that.classId==that.shareClass[i].classId){
-                        that.className = that.shareClass[i].name;
+                    if(that.classId==that.shareClass[i].class_id){
+                        that.className = that.shareClass[i].cate_name;
+                        if(that.shareClass[i].ChildsSon&&that.shareClass[i].ChildsSon.length>0){
+                            that.sonclassList = that.shareClass[i].ChildsSon;
+                        }else{
+                            that.sonclassList = '';
+                        }
                     }
                 }
+                if(initpage){//初始化 文章id为0开始
+                    that.artId=0;
+                    that.articleList = [];
+                }
+                ShowArticleAll(that.artId,that.sendId,that.keywords,(result)=>{
+                    if(result.code==1001){
+                        var msg = result.data;
+                        // console.log(result.data);
+                        if(msg.length>0&&msg.length<8){
+                            that.hasMore = false
+                        }else{
+                            that.hasMore = true;
+                        }
+                        that.articleList = that.articleList.concat(msg);
+                        that.atrId = msg[msg.length-1].id;
+                    }else if(result.code==1003){
+                        that.hasMore = false;
+                    }
+                })
+            },
+            addMoreFun:function(){//查看更多
+                this.showSearchShowList(false);
+            },
+            routeChange:function(){
+                var that = this;
+                this.showSearchShowList(true);
             }
         },
         components: { //定义组件
@@ -150,14 +142,7 @@
            '$route':'routeChange'
          },
         created() { //生命周期函数
-            this.classId = (this.$route.query.classId==undefined?'':parseInt(this.$route.query.classId));//获取传参的classId
-            this.keywords = this.$route.query.keywords==undefined?'':this.$route.query.keywords;//获取传参的keywords
-            // classList((msg)=>{//分类列表
-            //     this.classList = msg;
-            //     // console.log(msg);
-            // });
-            // this.showSearchShowList(true);
-            console.log(this.$route);
+            // console.log(this.$route);
             var that = this;
             that.routeChange();
         }

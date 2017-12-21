@@ -6,43 +6,21 @@
             </span>
             <header>
                 <h1>
-                    <a href="#/DetailShare" target="_blank">
-                        bilibili2RSS — 使用 RSS 订阅 bilibili up主和番剧
+                    <a :href="'#/DetailShare?aid='+detailObj.id" target="_blank">
+                        {{detailObj.title}}
                     </a>
                 </h1>
                 <h2>
-                    <i class="el-icon-star-off"></i>发表于 2017年10月17日 • <i class="el-icon-date"></i>553 次围观 • <i class="el-icon-edit"></i>活捉 11 条 •   <span class="rateBox"><el-rate v-model="rateValue"></el-rate>4.75分（4票）</span>
+                    <i class="fa fa-fw fa-user"></i>发表于 {{detailObj.create_time}} •
+                    <i class="fa fa-fw fa-eye"></i>{{detailObj.browse_count}} 次围观 •
+                    <i class="fa fa-fw fa-comments"></i>活捉 {{detailObj.comment_count}} 条 •
+                    <span class="rateBox"><i class="fa fa-fw fa-heart"></i>{{detailObj.like_count?detailObj.like_count:0}}点赞</span>
                 </h2>
                 <div class="ui label">
-                    <a href="#">创作集</a>
+                    <a :href="'#/Share?classId='+detailObj.class_id">{{detailObj.cate_name}}</a>
                 </div>
             </header>
-            <div class="article-content">
-                <p>
-                    作为一种过气技术，提供 RSS 订阅源的网站越来越少，每个网站都想把用户尽可能长时间地绑在自己那里，而 RSS 可能会造成负面效果
-                </p>
-                <p>
-                    但在这个内容爆炸时代，只要意识到了「我被信息所绑架」这个问题后，用户自然会想要一种更高级的聚合信息和动态更新解决方案，比如 RSS
-                </p>
-                <p>
-                    这里提供了使用 RSS 订阅 bilibili up主和番剧的解决方案
-                </p>
-                <p>
-                    订阅up主：<a href="">https://api.prprpr.me/bilibili2rss/user/6997378</a>
-                </p>
-                <p>
-                    订阅番剧：<a href="">https://api.prprpr.me/bilibili2rss/user/6997378</a>
-                </p>
-                <p>
-                    项目名叫 bilibili2RSS，开源在 <a href="#">GitHub</a>
-                </p>
-                <p>
-                    另外可以使用相关项目 <a href="#">Weibo2RSS</a> 订阅喜欢的微博博主
-                </p>
-                <p>
-                    Enjoy!
-                </p>
-            </div>
+            <div class="article-content" v-html="detailObj.content"></div>
             <div class="dshareBox">
                 分享到:
                 <a href="#" class="ds-weibo"><i class="fa fa-fw fa-weibo"></i></a>
@@ -60,7 +38,9 @@
                         <i></i>
                     </div>
                 </a>
-
+                <div class="dlikeBox">
+                    <i :class="likeArt?'fa fa-fw fa-heart':'fa fa-fw fa-heart-o'" @click="likeHandle"></i>喜欢 | {{likeCount}}
+                </div>
             </div>
             <div class="donate">
                 <div class="donate-word">
@@ -85,20 +65,46 @@
 </template>
 
 <script>
+import {getArticleInfo} from '../../pubJS/server.js'
     export default {
         data() { //选项 / 数据
             return {
                 rateValue:2,
-                pdonate:true,//打开赞赏控制
+                pdonate:true,//打开赞赏控制,
+                detailObj:'',
+                likeArt:false,
+                likeCount:400,
             }
         },
         methods: { //事件处理器
+            likeHandle: function(msg){
+                // console.log();
+                var that = this;
+                if(!that.likeArt){
+                    that.likeCount+=1;
+                    that.likeArt = true;
+                }
 
+            },
+            routeChange:function(){
+                var that = this;
+                that.aid = that.$route.query.aid==undefined?1:parseInt(that.$route.query.aid);//获取传参的aid
+                getArticleInfo(that.aid,function(msg){
+                    console.log(msg);
+                    that.detailObj = msg;
+                    that.likeCount = msg.like_count?msg.like_count:0;
+                })
+            }
         },
+        watch: {
+           // 如果路由有变化，会再次执行该方法
+           '$route':'routeChange'
+         },
         components: { //定义组件
 
         },
         created() { //生命周期函数
+            this.routeChange();
 
         }
     }
@@ -116,6 +122,12 @@
 .detailBox .article-content p{
     margin:10px 0;
     line-height:24px;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+.detailBox .article-content pre{
+    word-wrap: break-word;
+    word-break: break-all;
 }
 .detailBox .viewdetail{
     margin:10px 0 ;
@@ -212,6 +224,20 @@
     border-width: 8px 6px 6px 6px;
     border-style: solid;
     border-color: #fff transparent transparent transparent;
+}
+/*点赞*/
+.dlikeBox{
+    display: inline-block;
+    padding:0 10px;
+    height:40px;
+    color: #e26d6d;
+    line-height: 40px;
+    border-radius: 40px;
+    border: 1px solid #e26d6d;
+    float:right;
+}
+.dlikeBox i{
+    cursor: pointer;
 }
 /*赞赏*/
 .donate-word{

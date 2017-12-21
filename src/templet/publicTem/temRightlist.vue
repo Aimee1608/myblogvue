@@ -44,7 +44,7 @@
             </p>
             <div class="">
                 <i :class="loveme?'heart active':'heart'"></i>
-                <span>99656</span>
+                <span>{{likeNum}}</span>
             </div>
         </section>
         <section></section>
@@ -53,14 +53,14 @@
                 这些人都排着队来跟我说话
             </h2>
             <ul class="rs3-textwidget">
-                <li class="rs3-item" v-for="(item,index) in 6" key="item">
-                    <a href="#">
+                <li class="rs3-item" v-for="(item,index) in artCommentList" key="item">
+                    <a :href="'#/DetailShare?aid='+item.id">
                         <div class="rs3-photo">
-                            <img src="src/img/head.jpg" alt="">
+                            <img :src="item.avatar"  onerror="this.onerror=null;this.src='src/img/tou.jpg'">
                         </div>
                         <div class="rs3-inner">
-                            <p class="rs3-author">忆山南 在「留言板」中说:</p>
-                            <p class="rs3-text">大佬|´・ω・)ノ 想知道这个主题怎么用 刚搭建wordpress 想借用大佬的主题φ(￣∇￣o)</p>
+                            <p class="rs3-author">{{item.nickname}} 在「{{item.title}}」中说:</p>
+                            <p class="rs3-text">{{item.content}}</p>
                         </div>
                     </a>
                 </li>
@@ -71,8 +71,8 @@
                 大家都排队来看这些
             </h2>
             <ul>
-                <li v-for="(item,index) in 6" key="item">
-                    <a href="#">女朋友的微博情绪监控</a> —— 29,152 次围观
+                <li v-for="(item,index) in browseList" key="item">
+                    <a href="#">{{item.title}}</a> —— {{item.browse_count}} 次围观
                 </li>
             </ul>
         </section>
@@ -82,7 +82,9 @@
     </div>
 </template>
 
+
 <script>
+import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pubJS/server.js'
     export default {
         data() { //选项 / 数据
             return {
@@ -90,17 +92,26 @@
                 loveme:false,
                 gotoTop:false,
                 going:false,
+                browseList:'',
+                artCommentList:'',
+                likeNum:0,
+                initLikeNum:0,
             }
         },
         methods: { //事件处理器
             //do you love me  点击
             lovemeFun:function(){
                 var that = this;
+                if(!this.loveme){
+                    that.likeNum+=1;
+                    GetLike(1,function(){
+                    })
+                }
                 this.loveme = true;
                 var timer = setTimeout(function(){
                     that.loveme = false;
                     clearTimeout(timer);
-                },1500)
+                },3000)
             },
             toTopfun:function(e){
                 var that = this;
@@ -141,6 +152,19 @@
                 }
 
             }
+            //查询浏览量最多的10篇文章数据
+            ShowBrowseCount(function(data){
+                // console.log(data);
+                that.browseList = data;
+            });
+            //查询文章评论量最大的10篇文章
+            ShowArtCommentCount(function(data){
+                // console.log(data);
+                that.artCommentList = data;
+            })
+            showLikeData(function(data){
+                that.likeNum = that.initLikeNum = data;
+            })
         }
     }
 </script>

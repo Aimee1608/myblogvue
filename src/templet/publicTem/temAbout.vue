@@ -7,7 +7,10 @@
                 </a>
             </h1>
             <h2>
-                <i class="el-icon-star-off"></i>发表于 2017年10月17日 • <i class="el-icon-date"></i>553 次围观 • <i class="el-icon-edit"></i>活捉 11 条•   <span class="rateBox"><el-rate v-model="rateValue"></el-rate>4.75分（4票）</span>
+                <i class="fa fa-fw fa-user"></i>发表于 2017年10月17日 •
+                <i class="fa fa-fw fa-eye"></i>553 次围观 •
+                <i class="fa fa-fw fa-comments"></i>活捉 11 条•
+                <span class="rateBox"><i class="fa fa-fw fa-heart"></i>11点赞</span>
             </h2>
         </header>
         <section>

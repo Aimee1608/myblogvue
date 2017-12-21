@@ -91,7 +91,7 @@ body {
   font-size: 14px;
   color: #444!important;
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
   overflow-x: hidden;
   -webkit-overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
@@ -166,8 +166,6 @@ input[type="search"] {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
-  overflow-x: hidden;
-  -webkit-overflow-x: hidden;
   color: #444;
 }
 h1,
@@ -235,6 +233,13 @@ a {
 .tcommonBox section p {
   line-height: 24px;
   margin: 10px 0;
+}
+.tcommonBox header h2 .el-rate,
+.rateBox {
+  display: inline-block;
+}
+.tcommonBox header h2 .el-rate i {
+  font-size: 16px;
 }
 @media screen and (max-width: 700px) {
   .headBox {

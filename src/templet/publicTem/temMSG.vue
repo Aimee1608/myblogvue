@@ -20,20 +20,34 @@
 </template>
 
 <script>
+import {ArticleComment} from '../../pubJS/server.js'
     export default {
         data() { //选项 / 数据
             return {
                 rateValue:2,
+                aid:'',
+                comid:0,
             }
         },
         methods: { //事件处理器
-
+            routeChange:function(){
+                var that = this;
+                that.aid = that.$route.query.aid==undefined?1:parseInt(that.$route.query.aid);//获取传参的aid
+                ArticleComment(that.aid,that.comid,function(msg){
+                    console.log(msg);
+                    that.detailObj = msg;
+                })
+            }
         },
+        watch: {
+           // 如果路由有变化，会再次执行该方法
+           '$route':'routeChange'
+         },
         components: { //定义组件
 
         },
         created() { //生命周期函数
-
+            this.routeChange();
         }
     }
 </script>

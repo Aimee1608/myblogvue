@@ -32,50 +32,49 @@
             </form>
         </div>
         <div class="tmsg-comments" id="tmsgComments">
-            <a href="#" class="tmsg-comments-tip">活捉 14 条</a>
+            <a href="#" class="tmsg-comments-tip">活捉 {{commentList?commentList.length:0}} 条</a>
             <div class="tmsg-commentshow">
                 <ul class="tmsg-commentlist">
-                    <li class="tmsg-c-item" v-for="item in 10" key="item">
+                    <li class="tmsg-c-item" v-for="(item,index) in commentList" key="item.comment_id">
                         <article class="">
                             <header>
-                                <img src="src/img/tou.jpg" alt="">
-
-                                    <div class="i-name">
-                                        小花花
-                                    </div>
-                                    <div class="i-class">
-                                        天然呆
-                                    </div>
-                                    <div class="i-time">
-                                        <time>2017年11月4日 10:45</time>
-                                    </div>
+                                <img  :src="item.avatar"  onerror="this.onerror=null;this.src='src/img/tou.jpg'">
+                                <div class="i-name">
+                                    {{item.username}}
+                                </div>
+                                <div class="i-class">
+                                    天然呆
+                                </div>
+                                <div class="i-time">
+                                    <time>{{item.time}}</time>
+                                </div>
                             </header>
                             <section>
-                                <p>留言留言硫酸钾点击的</p>
-                                <div class="tmsg-replay" @click="respondMsg">
+                                <p>{{item.content}}</p>
+                                <div v-if="haslogin" class="tmsg-replay" @click="respondMsg">
                                     回复
                                 </div>
                             </section>
                         </article>
-                        <ul class="tmsg-commentlist" style="padding-left:60px;">
-                            <li class="tmsg-c-item" v-for="item in 3" key="item">
+                        <ul v-show="item.ChildsSon" class="tmsg-commentlist" style="padding-left:60px;">
+                            <li class="tmsg-c-item" v-for="(citem,cindex) in item.ChildsSon" key="citem">
                                 <article class="">
                                     <header>
-                                        <img src="src/img/tou.jpg" alt="">
+                                        <img :src="citem.avatar"  onerror="this.onerror=null;this.src='src/img/tou.jpg'">
 
                                             <div class="i-name">
-                                                小花花
+                                                {{citem.username}} <span>回复</span> {{item.username}}
                                             </div>
                                             <div class="i-class">
                                                 天然呆
                                             </div>
                                             <div class="i-time">
-                                                <time>2017年11月4日 10:45</time>
+                                                <time>{{citem.time}}</time>
                                             </div>
                                     </header>
                                     <section>
-                                        <p>留言留言硫酸钾点击的</p>
-                                        <div class="tmsg-replay" @click="respondMsg">
+                                        <p>{{citem.content}}</p>
+                                        <div v-show="haslogin" class="tmsg-replay" @click="respondMsg">
                                             回复
                                         </div>
                                     </section>
@@ -85,13 +84,16 @@
                     </li>
 
                 </ul>
-                <h1 class="tcolors-bg" >查看更多</h1>
+                <h1 v-show='hasMore' class="tcolors-bg" @click="addMoreFun" >查看更多</h1>
+                <h1 v-show='!hasMore' class="tcolors-bg" >没有更多</h1>
+
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import {ArticleComment} from '../../pubJS/server.js'
     export default {
         data() { //选项 / 数据
             return {
@@ -101,6 +103,11 @@
                 isRespond:false,
                 textarea: '',//文本框输入内容
                 pBody:true,//表情打开控制
+                commentList:'',//评论列表数据
+                pageId:0,
+                aid:0,//文章id
+                hasMore:true,
+                haslogin:false,
                 OwOlist:[
                     '😂',
                     '😀',
@@ -161,13 +168,63 @@
           removeRespond:function(){
               this.isRespond = false;
               this.tmsgBox.insertBefore(this.respondBox,this.listDom);
+          },
+          showCommentList: function(initData){//评论列表
+              var that = this;
+
+
+              that.aid = that.$route.query.aid==undefined?1:parseInt(that.$route.query.aid);//获取传参的aid
+              if(initData){
+                  that.pageId = 0;
+                  that.commentList = [];
+              }
+              ArticleComment(that.aid,that.pageId,function(result){//查询列表
+                //   console.log(result);
+                  if(result.code==1001){//查询数据
+                      var msg = result.data;
+                      console.log(result.data);
+                      if(msg.length>0&&msg.length<8){
+                          that.hasMore = false
+                      }else{
+                          that.hasMore = true;
+                      }
+
+                      that.commentList = that.commentList.concat(msg);
+
+                      that.atrId = msg[msg.length-1].id;
+
+                  }else if(result.code==1003){//查询数据为空
+                      that.hasMore = false;
+                  }
+              })
+
+          },
+          addMoreFun:function(){//查看更多
+              this.showCommentList(false);
+          },
+          routeChange:function(){
+              var that = this;
+              this.showCommentList(true);
           }
         },
         components: { //定义组件
 
         },
+        watch: {
+           // 如果路由有变化，会再次执行该方法
+           '$route':'routeChange'
+         },
         created() { //生命周期函数
-
+            // console.log(this.$route);
+            var that = this;
+            if(sessionStorage.getItem('userInfo')){
+                that.haslogin = true;
+                that.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+                console.log(that.userInfo);
+            }else{
+                that.haslogin = false;
+            }
+            that.routeChange();
         },
         mounted(){//页面加载完成后
             //获取页面元素

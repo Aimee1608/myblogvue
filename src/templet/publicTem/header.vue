@@ -8,10 +8,10 @@
                             <el-menu-item index="/Home">首页</el-menu-item>
                             <el-submenu index="/Share">
                               <template slot="title">分类</template>
-                              <el-menu-item index="/Share?classId=1">技术分享</el-menu-item>
-                              <el-menu-item index="/Share?classId=2">闲言碎语</el-menu-item>
+                              <el-menu-item v-for="(item,index) in classList" key="item.class_id" :index="'/Share?classId='+item.class_id" >{{item.cate_name}}</el-menu-item>
+                              <!-- <el-menu-item index="/Share?classId=2">闲言碎语</el-menu-item>
                               <el-menu-item index="/Share?classId=3">事件簿</el-menu-item>
-                              <el-menu-item index="/Share?classId=4">创作集</el-menu-item>
+                              <el-menu-item index="/Share?classId=4">创作集</el-menu-item> -->
                             </el-submenu>
                             <el-submenu index="/Aboutme">
                               <template slot="title">实验室</template>
@@ -46,7 +46,7 @@
                                             <a href="#/UserInfo">个人中心</a>
                                         </li>
                                         <li>
-                                            <a href="">退出登录</a>
+                                            <a href="javascript:void(0);" @click="userlogout">退出登录</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -61,10 +61,10 @@
                                      <el-menu-item index="/Home">首页</el-menu-item>
                                      <el-submenu index="/Share" >
                                          <template slot="title">分类</template>
-                                         <el-menu-item index="/Share?classId=1">技术分享</el-menu-item>
-                                         <el-menu-item index="/Share?classId=2">闲言碎语</el-menu-item>
+                                         <el-menu-item v-for="(item,index) in classList" :index="'/Share?classId='+item.class_id" >{{item.cate_name}}</el-menu-item>
+                                         <!-- <el-menu-item index="/Share?classId=2">闲言碎语</el-menu-item>
                                          <el-menu-item index="/Share?classId=3">事件簿</el-menu-item>
-                                         <el-menu-item index="/Share?classId=4">创作集</el-menu-item>
+                                         <el-menu-item index="/Share?classId=4">创作集</el-menu-item> -->
                                      </el-submenu>
                                      <el-submenu index="2">
                                        <template slot="title">实验室</template>
@@ -80,7 +80,7 @@
                                      <el-menu-item v-show="!haslogin" index="/Login">登录</el-menu-item>
                                      <el-menu-item v-show="!haslogin" index="/Login?login=0">注册</el-menu-item>
                                      <el-menu-item v-show="haslogin" index="/UserInfo">个人中心</el-menu-item>
-                                     <el-menu-item v-show="haslogin" index="">退出登录</el-menu-item>
+                                     <el-menu-item v-show="haslogin" index="" @click="userlogout">退出登录</el-menu-item>
                                 </el-menu>
                             </el-collapse-transition>
                             <div class="searchBox">
@@ -111,10 +111,13 @@
     </div>
 </template>
 <script>
+    import {ArtClassData} from '../../pubJS/server.js'
     export default {
         data() { //选项 / 数据
             return {
+                userInfo:'',
                 haslogin:false,
+                classList:'',
                 activeIndex: '/',
                 state: '',//icon点击状态
                 pMenu:true,//手机端菜单打开
@@ -134,10 +137,13 @@
                console.log(key, keyPath);
             },
             pchandleIconClick(ev) {//pc搜索
-                  console.log(ev);
+                if(this.input){
+                    this.$router.push({path:'/Share?keywords='+this.input});
+                }
+
             },
             handleSelect(key, keyPath) {//pc菜单选择
-                   console.log(key, keyPath);
+                //    console.log(key, keyPath);
             },
 
             handleIconClick(ev) {//搜索
@@ -148,10 +154,43 @@
             },
             // 用户退出登录
             userlogout:function(){
+                var that = this;
+                this.$confirm('是否确认退出?', '退出提示', {
+                     confirmButtonText: '确定',
+                     cancelButtonText: '取消',
+                     type: 'warning'
+                   }).then(() => {
+                       if(sessionStorage.getItem('userInfo')){
+                           sessionStorage.removeItem('userInfo');
+                           that.haslogin = false;
+                           that.$router.replace({path:that.$router.currentRoute.fullPath});
+                           this.$message({
+                             type: 'success',
+                             message: '退出成功!'
+                           });
+                       }
+
+
+                   }).catch(() => {
+                    //
+                   });
+
+            },
+            routeChange :function(){
+                var that = this;
+                this.activeIndex = this.$router.currentRoute.path=='/'?'/Home':this.$router.currentRoute.path;
+                console.log(this.$router.currentRoute);
                 if(sessionStorage.getItem('userInfo')){
-                    sessionStorage.removeItem('userInfo');
-                    this.haslogin = false;
+                    that.haslogin = true;
+                    that.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+                    console.log(that.userInfo);
+                }else{
+                    that.haslogin = false;
                 }
+                ArtClassData(function(msg){
+                    // console.log(msg);
+                    that.classList = msg;
+                })
             }
 
 
@@ -162,14 +201,13 @@
         components: { //定义组件
 
         },
+        watch: {
+           // 如果路由有变化，会再次执行该方法
+           '$route':'routeChange'
+         },
         created() { //生命周期函数
-            var that = this;
-            this.activeIndex = this.$router.currentRoute.path=='/'?'/Home':this.$router.currentRoute.path;
-            if(sessionStorage.getItem('userInfo')){
-                that.haslogin = true;
-            }else{
-                that.haslogin = false;
-            }
+            this.routeChange();
+
         }
     }
 </script>
