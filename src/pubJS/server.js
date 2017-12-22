@@ -106,8 +106,8 @@ const OtherComment = (leaveId,commentId,callback) =>{//分类类型ID（1：赞�
 
 
 //文章评论
-const setArticleComment = (content,user_id,article_id,leave_pid,callback) =>{
-    let url = portUrl + 'comment/setArticleComment?content='+content+'&user_id='+user_id+'&article_id='+article_id+'&leave_pid='+leave_pid;
+const setArticleComment = (content,user_id,article_id,leave_pid,pid,callback) =>{
+    let url = portUrl + 'comment/setArticleComment?content='+content+'&user_id='+user_id+'&article_id='+article_id+'&leave_pid='+leave_pid+'&pid='+pid;
     Vue.http.get(url).then(response => response.json()).then(num => {
             callback && callback(num);
     })
@@ -115,8 +115,8 @@ const setArticleComment = (content,user_id,article_id,leave_pid,callback) =>{
 
 
 //其他评论
-const setOuthComment = (content,user_id,article_id,leave_id,callback) =>{
-    let url = portUrl + 'comment/setOuthComment?content='+content+'&user_id='+user_id+'&article_id='+article_id+'&leave_id='+leave_id;
+const setOuthComment = (content,user_id,article_id,leave_id,pid,callback) =>{
+    let url = portUrl + 'comment/setOuthComment?content='+content+'&user_id='+user_id+'&article_id='+article_id+'&leave_id='+leave_id+'&pid='+pid;
     Vue.http.get(url).then(response => response.json()).then(num => {
             callback && callback(num);
     })

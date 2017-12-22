@@ -51,7 +51,7 @@
                             </header>
                             <section>
                                 <p>{{item.content}}</p>
-                                <div v-if="haslogin" class="tmsg-replay" @click="respondMsg(item.leave_pid)">
+                                <div v-if="haslogin" class="tmsg-replay" @click="respondMsg(item.comment_id,item.comment_id)">
                                     回复
                                 </div>
                             </section>
@@ -73,7 +73,7 @@
                                     </header>
                                     <section>
                                         <p>{{citem.content}}</p>
-                                        <div v-show="haslogin" class="tmsg-replay" @click="respondMsg(item.leave_pid)">
+                                        <div v-show="haslogin" class="tmsg-replay" @click="respondMsg(citem.comment_id,item.comment_id)">
                                             回复
                                         </div>
                                     </section>
@@ -108,8 +108,9 @@
                 hasMore:true,
                 haslogin:false,
                 userId:'',
-                leaveId:0,
-                leavePid:'',
+                leaveId:0,//回复评论的当前的commentId
+                leavePid:'',//赞赏等其他模块的分类id
+                pid:'',//回复评论的一级commentId
                 sendTip:'发送~',
                 OwOlist:[
                     '😂',
@@ -163,8 +164,9 @@
               if(that.textarea){
                   that.sendTip = '咻~~';
                   if(that.leaveId==0){
-                      setArticleComment(that.textarea,that.userId,that.aid,that.leavePid,function(msg){
-                          console.log(msg);
+                    //   console.log(that.textarea,that.userId,that.aid,that.leavePid,that.pid);
+                      setArticleComment(that.textarea,that.userId,that.aid,that.leavePid,that.pid,function(msg){
+                        //   console.log(msg);
                           that.textarea = '';
                           that.routeChange();
                           var timer02 = setTimeout(function(){
@@ -173,7 +175,7 @@
                           },1000)
                       })
                   }else{
-                      setOuthComment(that.textarea,that.userId,that.aid,that.leaveId,function(msg){
+                      setOuthComment(that.textarea,that.userId,that.aid,that.leaveId,that.pid,function(msg){
                           console.log(msg);
                           that.textarea = '';
                         that.routeChange();
@@ -188,11 +190,13 @@
 
               }
           },
-          respondMsg:function(pid){//回复留言
+          respondMsg:function(leavePid,pid){//回复留言
+              console.log(leavePid,pid);
               var dom = event.currentTarget;
               dom = dom.parentNode;
               this.isRespond = true;
-              this.leavePid = pid;
+              this.leavePid = leavePid;
+              this.pid = pid;
               dom.appendChild(this.respondBox);
           },
           removeRespond:function(){//取消回复留言
@@ -221,7 +225,7 @@
               function setData(result){
                   if(result.code==1001){//查询数据
                       var msg = result.data;
-                      console.log(result.data);
+                    //   console.log(result.data);
                       if(msg.length>0&&msg.length<8){
                           that.hasMore = false
                       }else{
