@@ -1,8 +1,8 @@
 <template>
         <div class="detailBox tcommonBox">
             <span class="s-round-date">
-                <span class="month">10月</span>
-                <span class="day">17</span>
+                <span class="month">{{showInitDate(detailObj.create_time,'month')}}月</span>
+                <span class="day">{{showInitDate(detailObj.create_time,'date')}}</span>
             </span>
             <header>
                 <h1>
@@ -11,10 +11,13 @@
                     </a>
                 </h1>
                 <h2>
-                    <i class="fa fa-fw fa-user"></i>发表于 {{detailObj.create_time}} •
+                    <i class="fa fa-fw fa-user"></i>发表于 {{showInitDate(detailObj.create_time,'all')}} •
                     <i class="fa fa-fw fa-eye"></i>{{detailObj.browse_count}} 次围观 •
                     <i class="fa fa-fw fa-comments"></i>活捉 {{detailObj.comment_count}} 条 •
-                    <span class="rateBox"><i class="fa fa-fw fa-heart"></i>{{detailObj.like_count?detailObj.like_count:0}}点赞</span>
+                    <span class="rateBox">
+                        <i class="fa fa-fw fa-heart"></i>{{likeCount}}点赞
+                        <i class="fa fa-fw fa-star"></i>{{collectCount}}收藏
+                    </span>
                 </h2>
                 <div class="ui label">
                     <a :href="'#/Share?classId='+detailObj.class_id">{{detailObj.cate_name}}</a>
@@ -38,8 +41,13 @@
                         <i></i>
                     </div>
                 </a>
-                <div class="dlikeBox">
-                    <i :class="likeArt?'fa fa-fw fa-heart':'fa fa-fw fa-heart-o'" @click="likeHandle"></i>喜欢 | {{likeCount}}
+                <div class="dlikeColBox">
+                    <div class="dlikeBox" @click="likecollectHandle(0)" >
+                        <i :class="likeArt?'fa fa-fw fa-heart':'fa fa-fw fa-heart-o'" ></i>喜欢 | {{likeCount}}
+                    </div>
+                    <div class="dcollectBox" @click="likecollectHandle(1)" >
+                        <i :class="collectArt?'fa fa-fw fa-star':'fa fa-fw fa-star-o'" ></i>收藏 | {{collectCount}}
+                    </div>
                 </div>
             </div>
             <div class="donate">
@@ -48,13 +56,13 @@
                 </div>
                 <el-row :class="pdonate?'donate-body':'donate-body donate-body-show'" :gutter="30">
                     <el-col  :span="8" :offset="4"  class="donate-item">
-                        <img src="https://diygod.b0.upaiyun.com/2016-08-25_wxd.png" alt="">
+                        <img :src="detailObj.wechat_image" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
                         <div class="donate-tip">
                             微信扫一扫，向我赞赏
                         </div>
                     </el-col>
                     <el-col :span="8"  class="donate-item">
-                        <img src="https://diygod.b0.upaiyun.com/2016-08-25_wxd.png" alt="">
+                        <img :src="detailObj.alipay_image" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
                         <div class="donate-tip">
                             支付宝扫一扫，向我赞赏
                         </div>
@@ -65,34 +73,86 @@
 </template>
 
 <script>
-import {getArticleInfo} from '../../pubJS/server.js'
+import {getArticleInfo,getArtCollect,getArtLike,initDate} from '../../pubJS/server.js'
     export default {
         data() { //选项 / 数据
             return {
-                rateValue:2,
+                aid:'',
                 pdonate:true,//打开赞赏控制,
                 detailObj:'',
                 likeArt:false,
                 likeCount:400,
+                collectCount:500,
+                collectArt:false,
+                haslogin:false,
+                userId:''
             }
         },
         methods: { //事件处理器
-            likeHandle: function(msg){
-                // console.log();
+            showInitDate:function(date,full){
+                    return initDate(date,full)
+            },
+            likecollectHandle: function(msg){//用户点击喜欢0,用户点击收藏1
                 var that = this;
-                if(!that.likeArt){
-                    that.likeCount+=1;
-                    that.likeArt = true;
+                if(that.haslogin){//判断是否登录
+                    if(msg==0){
+                        if(!that.likeArt){
+                            that.likeCount+=1;
+                            that.likeArt = true;
+                        }else{
+                            that.likeCount-=1;
+                            that.likeArt = false;
+                        }
+                        getArtLike(that.userId,that.aid,function(msg){
+                            console.log(msg);
+                        })
+                    }else{
+                        if(!that.collectArt){
+                            that.collectCount+=1;
+                            that.collectArt = true;
+                        }else{
+                            that.collectCount-=1;
+                            that.collectArt = false;
+                        }
+                        getArtCollect(that.userId,that.aid,function(msg){
+                            console.log(msg);
+                        })
+                    }
+                }else{//未登录 前去登录。
+                    that.$confirm('登录后即可点赞和收藏，是否前往登录页面?', '提示', {
+                      confirmButtonText: '确定',
+                      cancelButtonText: '取消',
+                      type: 'warning'
+                  }).then(() => {//确定，跳转至登录页面
+                      //储存当前页面路径，登录成功后跳回来
+                      sessionStorage.setItem('logUrl',that.$route.fullPath);
+                      that.$router.push({path:'/Login?login=1'});
+                    }).catch(() => {
+
+                    });
                 }
 
             },
             routeChange:function(){
                 var that = this;
                 that.aid = that.$route.query.aid==undefined?1:parseInt(that.$route.query.aid);//获取传参的aid
-                getArticleInfo(that.aid,function(msg){
+                //判断用户是否存在
+                if(sessionStorage.getItem('userInfo')){
+                    that.haslogin = true;
+                    that.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+                    that.userId = that.userInfo.user_id;
+                    console.log(that.userInfo);
+                }else{
+                    that.haslogin = false;
+                }
+                //获取详情接口
+                getArticleInfo(that.aid,that.userId,function(msg){
                     console.log(msg);
                     that.detailObj = msg;
                     that.likeCount = msg.like_count?msg.like_count:0;
+                    that.collectCount = msg.collect_count?msg.collect_count:0;
+                    that.likeArt = msg.user_like_start==0?false:true;
+                    that.collectArt = msg.user_collect_start==0?false:true;
                 })
             }
         },
@@ -104,6 +164,7 @@ import {getArticleInfo} from '../../pubJS/server.js'
 
         },
         created() { //生命周期函数
+            var that = this;
             this.routeChange();
 
         }
@@ -225,20 +286,22 @@ import {getArticleInfo} from '../../pubJS/server.js'
     border-style: solid;
     border-color: #fff transparent transparent transparent;
 }
-/*点赞*/
-.dlikeBox{
+/*点赞 收藏*/
+.dlikeColBox{
     display: inline-block;
-    padding:0 10px;
-    height:40px;
-    color: #e26d6d;
-    line-height: 40px;
-    border-radius: 40px;
-    border: 1px solid #e26d6d;
     float:right;
 }
-.dlikeBox i{
+.dlikeBox,.dcollectBox{
+    display: inline-block;
+    padding:0 10px;
+    height:35px;
+    color: #e26d6d;
+    line-height: 35px;
+    border-radius: 35px;
+    border: 1px solid #e26d6d;
     cursor: pointer;
 }
+
 /*赞赏*/
 .donate-word{
     margin:40px 0;

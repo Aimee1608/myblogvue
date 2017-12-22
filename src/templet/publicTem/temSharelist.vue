@@ -13,8 +13,8 @@
         </div>
         <el-col :span="24" class="s-item tcommonBox" v-for="(item,index) in articleList" key="item">
             <span class="s-round-date">
-                <span class="month">10月</span>
-                <span class="day">17</span>
+                <span class="month">{{showInitDate(item.create_time,'month')}}月</span>
+                <span class="day">{{showInitDate(item.create_time,'date')}}</span>
             </span>
             <header>
                 <h1>
@@ -23,7 +23,14 @@
                     </a>
                 </h1>
                 <h2>
-                    <i class="el-icon-star-off"></i>发表于<i class="el-icon-time"></i> {{item.create_time}} • <i class="el-icon-date"></i>{{item.browse_count}} 次围观 • <i class="el-icon-edit"></i>活捉 {{item.comment_count}} 条
+                    <i class="fa fa-fw fa-user"></i>发表于
+                    <i class="fa fa-fw fa-clock-o"></i>{{showInitDate(item.create_time,'all')}} •
+                    <i class="fa fa-fw fa-eye"></i>{{item.browse_count}} 次围观 •
+                    <i class="fa fa-fw fa-comments"></i>活捉 {{item.comment_count}} 条 •
+                    <span class="rateBox">
+                        <i class="fa fa-fw fa-heart"></i>{{item.like_count?item.like_count:0}}点赞 •
+                        <i class="fa fa-fw fa-star"></i>{{item.collect_count?item.collect_count:0}}收藏
+                    </span>
                 </h2>
                 <div class="ui label">
                     <a :href="'#/Share?classId='+item.class_id">{{item.cate_name}}</a>
@@ -51,7 +58,7 @@
 </template>
 
 <script>
-import {ShowArticleAll,ArtClassData} from '../../pubJS/server.js'
+import {ShowArticleAll,ArtClassData,initDate} from '../../pubJS/server.js'
     export default {
         name:'Share',
         data() { //选项 / 数据
@@ -82,7 +89,11 @@ import {ShowArticleAll,ArtClassData} from '../../pubJS/server.js'
                 articleList:'',
             }
         },
+
         methods: { //事件处理器
+            showInitDate: function(oldDate,full){
+                return initDate(oldDate,full)
+            },
             showSearchShowList:function(initpage){//展示数据
                 var that = this;
                 that.classId = (that.$route.query.classId==undefined?0:parseInt(that.$route.query.classId));//获取传参的classId
@@ -113,7 +124,7 @@ import {ShowArticleAll,ArtClassData} from '../../pubJS/server.js'
                 ShowArticleAll(that.artId,that.sendId,that.keywords,(result)=>{
                     if(result.code==1001){
                         var msg = result.data;
-                        // console.log(result.data);
+                        console.log(result.data);
                         if(msg.length>0&&msg.length<8){
                             that.hasMore = false
                         }else{

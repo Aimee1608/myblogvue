@@ -50,8 +50,8 @@ const ShowArticleAll = (artId,cateId,articleName,callback) =>{
 
 
 //查询文章详情
-const getArticleInfo = (artId,callback) =>{
-    let url = portUrl + 'article/getArticleInfo?art_id='+artId;
+const getArticleInfo = (artId,userId,callback) =>{
+    let url = portUrl + 'article/getArticleInfo?art_id='+artId+'&user_id='+userId;
     Vue.http.get(url).then(response => response.json()).then(num => {
         if(num.code==1001){
             callback && callback(num.data);
@@ -106,8 +106,8 @@ const OtherComment = (leaveId,commentId,callback) =>{//分类类型ID（1：赞�
 
 
 //文章评论
-const setArticleComment = (content,user_id,article_id,leave_pic,callback) =>{
-    let url = portUrl + 'comment/setArticleComment?content='+content+'&user_id='+user_id+'&article_id='+article_id+'&leave_pic='+leave_pic;
+const setArticleComment = (content,user_id,article_id,leave_pid,callback) =>{
+    let url = portUrl + 'comment/setArticleComment?content='+content+'&user_id='+user_id+'&article_id='+article_id+'&leave_pid='+leave_pid;
     Vue.http.get(url).then(response => response.json()).then(num => {
             callback && callback(num);
     })
@@ -115,8 +115,8 @@ const setArticleComment = (content,user_id,article_id,leave_pic,callback) =>{
 
 
 //其他评论
-const setOuthComment = (content,user_id,article_id,leave_pic,callback) =>{
-    let url = portUrl + 'comment/setOuthComment?content='+content+'&user_id='+user_id+'&article_id='+article_id+'&leave_pic='+leave_pic;
+const setOuthComment = (content,user_id,article_id,leave_id,callback) =>{
+    let url = portUrl + 'comment/setOuthComment?content='+content+'&user_id='+user_id+'&article_id='+article_id+'&leave_id='+leave_id;
     Vue.http.get(url).then(response => response.json()).then(num => {
             callback && callback(num);
     })
@@ -176,24 +176,76 @@ const AboutMeData = (callback) =>{
 }
 
 //文章点击收藏
-const getArtCollect = (callback) =>{
+const getArtCollect = (userId,artId,callback) =>{
+    let url = portUrl + 'article/getArtCollect?user_id='+userId+'&art_id='+artId;
+    Vue.http.get(url).then(response => response.json()).then(num => {
+        if(num.code==1001){
+            callback && callback(num.msg);
+        }else{
+            alert("查询失败");
+        }
+    })
+}
 
+//文章点击喜欢
+const getArtLike = (userId,artId,callback) =>{
+    let url = portUrl + 'article/getArtLike?user_id='+userId+'&art_id='+artId;
+    Vue.http.get(url).then(response => response.json()).then(num => {
+        if(num.code==1001){
+            callback && callback(num.msg);
+        }else{
+            alert("查询失败");
+        }
+    })
+}
+
+//查询赞赏数据
+const AdmireData = (callback) => {
+    let url = portUrl + 'outh/AdmireData';
+    Vue.http.get(url).then(response => response.json()).then(num => {
+        if(num.code==1001){
+            callback && callback(num);
+        }else{
+            alert("查询失败");
+        }
+    })
+}
+
+const initDate = (oldDate,full) => {
+    var odate = new Date(oldDate);
+    var year =  odate.getFullYear();
+    var month = odate.getMonth()<9? '0' + (odate.getMonth()+1) : odate.getMonth()+1;
+    var date = odate.getDate()<10? '0'+odate.getDate() : odate.getDate();
+    // console.log(year);
+    if(full=='all'){
+        return year+'年'+month+'月'+date+'日'
+    }else if(full=='year'){
+        return year
+    }else if(full== 'month'){
+        return odate.getMonth()+1
+    }else if(full == 'date'){
+        return date
+    }
 }
 
 export {
-        getRegister,
-        UserLogin,
-        ArtClassData,
-        ShowArticleAll,
-        getArticleInfo,
-        ShowBrowseCount,
-        ShowArtCommentCount,
-        ArticleComment,
-        OtherComment,
-        setArticleComment,
-        setOuthComment,
-        showLikeData,
-        GetLike,
-        FriendUrlData,
-        AboutMeData
+        getRegister,//注册
+        UserLogin,//登录
+        ArtClassData,//分类
+        ShowArticleAll,//查询文章列表
+        getArticleInfo,//文章详情
+        ShowBrowseCount,//流量量做多的文章
+        ShowArtCommentCount,//评论最多的文章
+        ArticleComment,//文章评论列表
+        OtherComment,//其他评论列表
+        setArticleComment,//设置文章评论
+        setOuthComment,//设置其他评论
+        showLikeData,//do you like me
+        GetLike,//设置 do you like me
+        FriendUrlData,//友情链接数据
+        AboutMeData,//关于我文章编写
+        getArtCollect,//文章收藏
+        getArtLike,//文章点赞
+        AdmireData,//赞赏数据
+        initDate//设置时间
     }

@@ -26,7 +26,7 @@
                 </div>
                 <el-row class="tmsg-r-info">
                     <el-col :span="24" class="info-submit">
-                        <p class="tcolors-bg" @click="sendMsg">发送~</p>
+                        <p class="tcolors-bg" @click="sendMsg">{{sendTip}}</p>
                     </el-col>
                 </el-row>
             </form>
@@ -51,7 +51,7 @@
                             </header>
                             <section>
                                 <p>{{item.content}}</p>
-                                <div v-if="haslogin" class="tmsg-replay" @click="respondMsg">
+                                <div v-if="haslogin" class="tmsg-replay" @click="respondMsg(item.leave_pid)">
                                     回复
                                 </div>
                             </section>
@@ -60,10 +60,9 @@
                             <li class="tmsg-c-item" v-for="(citem,cindex) in item.ChildsSon" key="citem">
                                 <article class="">
                                     <header>
-                                        <img :src="citem.avatar"  onerror="this.onerror=null;this.src='src/img/tou.jpg'">
-
+                                            <img :src="citem.avatar"  onerror="this.onerror=null;this.src='src/img/tou.jpg'">
                                             <div class="i-name">
-                                                {{citem.username}} <span>回复</span> {{item.username}}
+                                                {{citem.username}} <span>回复</span> {{citem.reply_name}}
                                             </div>
                                             <div class="i-class">
                                                 天然呆
@@ -74,7 +73,7 @@
                                     </header>
                                     <section>
                                         <p>{{citem.content}}</p>
-                                        <div v-show="haslogin" class="tmsg-replay" @click="respondMsg">
+                                        <div v-show="haslogin" class="tmsg-replay" @click="respondMsg(item.leave_pid)">
                                             回复
                                         </div>
                                     </section>
@@ -93,7 +92,7 @@
 </template>
 
 <script>
-    import {ArticleComment} from '../../pubJS/server.js'
+    import {ArticleComment,OtherComment,setArticleComment,setOuthComment} from '../../pubJS/server.js'
     export default {
         data() { //选项 / 数据
             return {
@@ -108,6 +107,10 @@
                 aid:0,//文章id
                 hasMore:true,
                 haslogin:false,
+                userId:'',
+                leaveId:0,
+                leavePid:'',
+                sendTip:'发送~',
                 OwOlist:[
                     '😂',
                     '😀',
@@ -154,32 +157,68 @@
               this.textarea += inner;
               // console.log(this.textarea);
           },
-          //发送图片
-          sendMsg:function(){
+          //发送留言
+          sendMsg:function(){//留言
               var that = this;
-              var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/ ;
+              if(that.textarea){
+                  that.sendTip = '咻~~';
+                  if(that.leaveId==0){
+                      setArticleComment(that.textarea,that.userId,that.aid,that.leavePid,function(msg){
+                          console.log(msg);
+                          that.textarea = '';
+                          that.routeChange();
+                          var timer02 = setTimeout(function(){
+                              that.sendTip = '发送~';
+                              clearTimeout(timer02);
+                          },1000)
+                      })
+                  }else{
+                      setOuthComment(that.textarea,that.userId,that.aid,that.leaveId,function(msg){
+                          console.log(msg);
+                          that.textarea = '';
+                        that.routeChange();
+                      })
+                  }
+              }else{
+                  that.sendTip = '内容不能为空~'
+                  var timer = setTimeout(function(){
+                      that.sendTip = '发送~';
+                      clearTimeout(timer);
+                  },3000)
+
+              }
           },
-          respondMsg:function(event){
+          respondMsg:function(pid){//回复留言
               var dom = event.currentTarget;
               dom = dom.parentNode;
               this.isRespond = true;
+              this.leavePid = pid;
               dom.appendChild(this.respondBox);
           },
-          removeRespond:function(){
+          removeRespond:function(){//取消回复留言
               this.isRespond = false;
               this.tmsgBox.insertBefore(this.respondBox,this.listDom);
           },
           showCommentList: function(initData){//评论列表
               var that = this;
-
-
               that.aid = that.$route.query.aid==undefined?1:parseInt(that.$route.query.aid);//获取传参的aid
+              //判断当前用户是否登录
+              if(sessionStorage.getItem('userInfo')){
+                  that.haslogin = true;
+                  that.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
+                  that.userId = that.userInfo.user_id;
+                  console.log(that.userInfo);
+              }else{
+                  that.haslogin = false;
+              }
+              //是否重新加载数据 还是累计加载
               if(initData){
                   that.pageId = 0;
                   that.commentList = [];
               }
-              ArticleComment(that.aid,that.pageId,function(result){//查询列表
-                //   console.log(result);
+
+              //公用设置数据方法
+              function setData(result){
                   if(result.code==1001){//查询数据
                       var msg = result.data;
                       console.log(result.data);
@@ -196,7 +235,29 @@
                   }else if(result.code==1003){//查询数据为空
                       that.hasMore = false;
                   }
-              })
+              }
+              if(that.$route.name=='DetailShare'){//文章列表的评论
+                  that.leaveId = 0;
+                  ArticleComment(that.aid,that.pageId,function(result){//查询列表
+                        setData(result);
+                  })
+              }else{//其他评论
+                  if(that.$route.name == 'Reward'){//（1：赞赏 2：友情链接 3：留言板 4：关于我）
+                      that.leaveId = 1
+                  }else if(that.$route.name == 'Friendslink'){
+                      that.leaveId = 2
+                  }else if(that.$route.name == 'Message'){
+                      that.leaveId = 3
+                  }else if(that.$route.name == 'Aboutme'){
+                      that.leaveId = 4
+                  }
+                  OtherComment(that.leaveId,that.pageId,function(result){
+                      setData(result);
+                  })
+
+              }
+
+
 
           },
           addMoreFun:function(){//查看更多
@@ -217,13 +278,6 @@
         created() { //生命周期函数
             // console.log(this.$route);
             var that = this;
-            if(sessionStorage.getItem('userInfo')){
-                that.haslogin = true;
-                that.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-                console.log(that.userInfo);
-            }else{
-                that.haslogin = false;
-            }
             that.routeChange();
         },
         mounted(){//页面加载完成后

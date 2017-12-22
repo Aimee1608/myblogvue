@@ -6,9 +6,6 @@
                     赞赏
                 </a>
             </h1>
-            <h2>
-                <i class="el-icon-star-off"></i>发表于 2017年10月17日 • <i class="el-icon-date"></i>553 次围观 • <i class="el-icon-edit"></i>活捉 11 条•   <span class="rateBox"><el-rate v-model="rateValue"></el-rate>4.75分（4票）</span>
-            </h2>
         </header>
         <section>
             <div class="">
@@ -24,33 +21,35 @@
             <h1>@赞赏方式：</h1>
             <el-row   :gutter="30">
                 <el-col  :span="8" :offset="4"  class="donate-item">
-                    <img src="https://diygod.b0.upaiyun.com/2016-08-25_wxd.png" alt="">
+                    <img :src="rewardData.admire_code.wechat_image" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
                     <div class="donate-tip">
                         微信扫一扫，向我赞赏
                     </div>
                 </el-col>
                 <el-col :span="8"  class="donate-item">
-                    <img src="https://diygod.b0.upaiyun.com/2016-08-25_wxd.png" alt="">
+                    <img :src="rewardData.admire_code.alipay_image" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
                     <div class="donate-tip">
-                        微信扫一扫，向我赞赏
+                        支付宝扫一扫，向我赞赏
                     </div>
                 </el-col>
             </el-row>
             <h1>@赞赏记录：</h1>
             <el-table :data="tableData" border style="width: 100%" >
-                <el-table-column prop="date" label="日期" align="center" ></el-table-column>
+                <el-table-column prop="pay_time" label="日期" align="center" ></el-table-column>
                 <el-table-column prop="name" label="赞赏人"  align="center"></el-table-column>
-                <el-table-column prop="address" label="金额" align="center"></el-table-column>
+                <el-table-column prop="money" label="金额" align="center"></el-table-column>
           </el-table>
         </section>
     </div>
 </template>
 
 <script>
+    import {AdmireData,initDate} from '../../pubJS/server.js'
     export default {
         data() { //选项 / 数据
             return {
                 rateValue:2,
+                rewardData:'',
                 tableData: [{
                      date: '2016-05-02',
                      name: '王小虎',
@@ -71,13 +70,20 @@
             }
         },
         methods: { //事件处理器
-
+            showInitDate:function(date,full){
+                return initDate(date,full)
+            }
         },
         components: { //定义组件
 
         },
         created() { //生命周期函数
-
+            var that = this;
+            AdmireData(function(msg){
+                console.log(msg);
+                that.tableData = msg.data;
+                that.rewardData = msg;
+            })
         }
     }
 </script>

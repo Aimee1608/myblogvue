@@ -37,7 +37,7 @@
                             </div>
                             <div class="userInfo">
                                 <div v-show="!haslogin" class="nologin">
-                                    <a href="#/Login">登录&nbsp;</a>|<a href="#/Login?login=0">&nbsp;注册</a>
+                                    <a href="javascript:void(0);" @click="logoinFun(1)">登录&nbsp;</a>|<a href="javascript:void(0);" @click="logoinFun(0)">&nbsp;注册</a>
                                 </div>
                                 <div v-show="haslogin" class="haslogin">
                                     <i class="fa fa-fw fa-user-circle userImg"></i>
@@ -77,8 +77,8 @@
                                      <el-menu-item index="/Friendslink">伙伴</el-menu-item>
                                      <el-menu-item index="/Message">留言板</el-menu-item>
                                      <el-menu-item index="/Aboutme">关于</el-menu-item>
-                                     <el-menu-item v-show="!haslogin" index="/Login">登录</el-menu-item>
-                                     <el-menu-item v-show="!haslogin" index="/Login?login=0">注册</el-menu-item>
+                                     <el-menu-item v-show="!haslogin" index="" @click="logoinFun(1)">登录</el-menu-item>
+                                     <el-menu-item v-show="!haslogin" index="" @click="logoinFun(0)">注册</el-menu-item>
                                      <el-menu-item v-show="haslogin" index="/UserInfo">个人中心</el-menu-item>
                                      <el-menu-item v-show="haslogin" index="" @click="userlogout">退出登录</el-menu-item>
                                 </el-menu>
@@ -152,6 +152,16 @@
                             this.$router.push({path:'/Foodlist?keywords='+this.state});
                       }
             },
+            logoinFun: function(msg){//用户登录和注册跳转
+                // console.log(msg);
+                sessionStorage.setItem('logUrl',this.$route.fullPath);
+                // console.log(666,this.$router.currentRoute.fullPath);
+                if(msg==0){
+                    this.$router.push({path:'/Login?login=0'});
+                }else{
+                    this.$router.push({path:'/Login?login=1'});
+                }
+            },
             // 用户退出登录
             userlogout:function(){
                 var that = this;
@@ -163,7 +173,7 @@
                        if(sessionStorage.getItem('userInfo')){
                            sessionStorage.removeItem('userInfo');
                            that.haslogin = false;
-                           that.$router.replace({path:that.$router.currentRoute.fullPath});
+                           that.$router.replace({path:that.$route.fullPath});
                            this.$message({
                              type: 'success',
                              message: '退出成功!'
@@ -178,8 +188,8 @@
             },
             routeChange :function(){
                 var that = this;
-                this.activeIndex = this.$router.currentRoute.path=='/'?'/Home':this.$router.currentRoute.path;
-                console.log(this.$router.currentRoute);
+                this.activeIndex = this.$route.path=='/'?'/Home':this.$route.path;
+                // console.log(this.$router,this.$route);
                 if(sessionStorage.getItem('userInfo')){
                     that.haslogin = true;
                     that.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));

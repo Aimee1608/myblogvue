@@ -2,11 +2,11 @@
 <div class="tFriendsBox">
     <h1>棒棒哒</h1>
     <el-row>
-        <el-col :span="12" class="tf-item" v-for="item in 20" key="item">
-            <a href="#">
-                <img src="src/img/tou.jpg" alt="">
-                <h4>Aimee</h4>
-                <p>描述描述</p>
+        <el-col :span="12" class="tf-item" v-for="item in friendslink" key="item">
+            <a :href="item.url" target="_blank">
+                <img :src="item.image"  onerror="this.onerror=null;this.src='src/img/tou.jpg'">
+                <h4>{{item.name}}</h4>
+                <p>{{item.description}}</p>
             </a>
         </el-col>
     </el-row>
@@ -14,10 +14,11 @@
 </template>
 
 <script>
+import {FriendUrlData} from '../../pubJS/server.js'
 export default {
     data() { //选项 / 数据
         return {
-
+            friendslink:''
         }
     },
     methods: { //事件处理器
@@ -27,7 +28,11 @@ export default {
 
     },
     created() { //生命周期函数
-
+        var that = this;
+        FriendUrlData(function(msg){
+            console.log(msg);
+            that.friendslink = msg;
+        })
     }
 }
 </script>

@@ -6,12 +6,7 @@
                     关于我
                 </a>
             </h1>
-            <h2>
-                <i class="fa fa-fw fa-user"></i>发表于 2017年10月17日 •
-                <i class="fa fa-fw fa-eye"></i>553 次围观 •
-                <i class="fa fa-fw fa-comments"></i>活捉 11 条•
-                <span class="rateBox"><i class="fa fa-fw fa-heart"></i>11点赞</span>
-            </h2>
+            
         </header>
         <section>
             <p class="">
@@ -34,6 +29,7 @@
 </template>
 
 <script>
+import {AboutMeData} from '../../pubJS/server.js'
     export default {
         data() { //选项 / 数据
             return {
@@ -47,7 +43,9 @@
 
         },
         created() { //生命周期函数
-
+            AboutMeData(function(msg){
+                console.log(msg);
+            })
         }
     }
 </script>

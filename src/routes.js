@@ -22,7 +22,7 @@
 // ]
 //
 // export default routes
-//懒加载
+// //懒加载
 const routes =[
     {
         path: '/',

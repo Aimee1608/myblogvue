@@ -193,7 +193,12 @@ import {getRegister,UserLogin} from '../../pubJS/server.js'
                     UserLogin(that.email,that.password,function(msg){
                         if(msg.code==1010){//登录成功
                              sessionStorage.setItem('userInfo',JSON.stringify(msg.data));
-                            that.$router.push({path:'/'});
+                             if(sessionStorage.getItem('logUrl')){
+                                 that.$router.push({path:sessionStorage.getItem('logUrl')});
+                             }else{
+                                 that.$router.push({path:'/'});
+                             }
+
                         }else if(msg.code==2008||msg.code==2007){//邮箱或密码错误
                             that.loginErr = true;
                             that.loginTitle = '邮箱或密码错误';
@@ -236,9 +241,9 @@ import {getRegister,UserLogin} from '../../pubJS/server.js'
                     that.npasswordErr = true;
                 }
                 if(!that.nusernameErr&&!that.nemailErr&&!that.npasswordErr){
+                    that.fullscreenLoading = true;
                     getRegister(that.nusername,that.npassword,that.nemail,function(msg){
                         if(msg.code==1010){//注册成功
-                            that.fullscreenLoading = true;
                             var timer = setTimeout(function(){//注册中
                                 that.fullscreenLoading = false;
                                 that.err2005 = true;
@@ -246,9 +251,11 @@ import {getRegister,UserLogin} from '../../pubJS/server.js'
                                 clearTimeout(timer);
                             },3000)
                         }else if(msg.code==2002){//该邮箱已注册
+                            that.fullscreenLoading = false;
                             that.registerErr = true;
                             that.registerTitle = '该邮箱已注册,可直接登录';
                         }else{
+                            that.fullscreenLoading = false;
                             that.registerErr = true;
                             that.registerTitle = '注册失败';
                         }

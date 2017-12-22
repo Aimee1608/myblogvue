@@ -6,9 +6,7 @@
                     留言板
                 </a>
             </h1>
-            <h2>
-                <i class="el-icon-star-off"></i>发表于 2017年10月17日 • <i class="el-icon-date"></i>553 次围观 • <i class="el-icon-edit"></i>活捉 11 条•   <span class="rateBox"><el-rate v-model="rateValue"></el-rate>4.75分（4票）</span>
-            </h2>
+            
         </header>
         <section>
             <h2>有什么话要对我说吗？这里是你畅所欲言的地方，可以咨询，可以交流，可以感叹，可以发飙，但不可以订外卖。</h2>
