@@ -1,5 +1,5 @@
 import Vue from 'vue'
-
+import Vuex from 'vuex'
 // @param {[type]} id [数据id]
 // @param {[Function]} callback [回调参数]
 // @return {[type]} [返回类型]
@@ -175,21 +175,14 @@ const AboutMeData = (callback) =>{
     })
 }
 
-//文章点击收藏
-const getArtCollect = (userId,artId,callback) =>{
-    let url = portUrl + 'article/getArtCollect?user_id='+userId+'&art_id='+artId;
-    Vue.http.get(url).then(response => response.json()).then(num => {
-        if(num.code==1001){
-            callback && callback(num.msg);
-        }else{
-            alert("查询失败");
-        }
-    })
-}
-
-//文章点击喜欢
-const getArtLike = (userId,artId,callback) =>{
-    let url = portUrl + 'article/getArtLike?user_id='+userId+'&art_id='+artId;
+//文章点击收藏 点击喜欢
+const getArtLikeCollect = (userId,artId,islike,callback) =>{
+    var url = '';
+    if(islike==1){
+        url = portUrl + 'article/getArtCollect?user_id='+userId+'&art_id='+artId;
+    }else{
+        url = portUrl + 'article/getArtLike?user_id='+userId+'&art_id='+artId;
+    }
     Vue.http.get(url).then(response => response.json()).then(num => {
         if(num.code==1001){
             callback && callback(num.msg);
@@ -211,6 +204,56 @@ const AdmireData = (callback) => {
     })
 }
 
+//查询用户喜欢列表,查询用户收藏列表
+const getLikeCollectList = (userId,artId,articleName,islike,callback)=>{
+    var url = '';
+    if(islike==1){
+         url = portUrl + 'article/getLikeList?user_id='+userId+'&art_id='+artId+'&article_name='+articleName;
+    }else{
+         url = portUrl + 'article/getCollectList?user_id='+userId+'&art_id='+artId+'&article_name='+articleName;
+    }
+    Vue.http.get(url).then(response => response.json()).then(num => {
+            callback && callback(num);
+    })
+}
+
+//查询用户信息
+const getUserInfo = (userId,callback)=>{
+    let url = portUrl + 'Userinfo/getUserInfo?user_id='+userId;
+    Vue.http.get(url).then(response => response.json()).then(num => {
+        if(num.code==1001){
+            callback && callback(num);
+        }else{
+            alert("查询失败");
+        }
+    })
+}
+//修改用户信息
+const UserInfoSave = (obj,callback) =>{
+    let url = portUrl + 'Userinfo/UserInfoSave';
+    var data = {
+        'username':obj.username,
+        'user_img':obj.avatar,
+        'email':obj.email,
+        'sex':obj.sex,
+        'friend_start':obj.state,
+        'user_id':obj.user_id,
+        'frie_name':obj.name,
+        'frie_url':obj.url,
+        'frie_description':obj.description,
+        'friend_img':obj.image
+    };
+    console.log(data);
+    Vue.http.get(url,{params:data}).then(response => response.json()).then(num => {
+        if(num.code==1001){
+            callback && callback(num.msg);
+        }else{
+            alert("保存失败");
+        }
+    })
+}
+
+
 const initDate = (oldDate,full) => {
     var odate = new Date(oldDate);
     var year =  odate.getFullYear();
@@ -228,6 +271,8 @@ const initDate = (oldDate,full) => {
     }
 }
 
+
+
 export {
         getRegister,//注册
         UserLogin,//登录
@@ -244,8 +289,10 @@ export {
         GetLike,//设置 do you like me
         FriendUrlData,//友情链接数据
         AboutMeData,//关于我文章编写
-        getArtCollect,//文章收藏
-        getArtLike,//文章点赞
+        getArtLikeCollect,//文章收藏 文章点赞
         AdmireData,//赞赏数据
+        getLikeCollectList,//用户收藏喜欢列表
+        getUserInfo,//用户信息查询
+        UserInfoSave,//修改用户信息
         initDate//设置时间
     }

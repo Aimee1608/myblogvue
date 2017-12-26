@@ -42,10 +42,10 @@
                     </div>
                 </a>
                 <div class="dlikeColBox">
-                    <div class="dlikeBox" @click="likecollectHandle(0)" >
+                    <div class="dlikeBox" @click="likecollectHandle(1)" >
                         <i :class="likeArt?'fa fa-fw fa-heart':'fa fa-fw fa-heart-o'" ></i>喜欢 | {{likeCount}}
                     </div>
-                    <div class="dcollectBox" @click="likecollectHandle(1)" >
+                    <div class="dcollectBox" @click="likecollectHandle(2)" >
                         <i :class="collectArt?'fa fa-fw fa-star':'fa fa-fw fa-star-o'" ></i>收藏 | {{collectCount}}
                     </div>
                 </div>
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import {getArticleInfo,getArtCollect,getArtLike,initDate} from '../../pubJS/server.js'
+import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
     export default {
         data() { //选项 / 数据
             return {
@@ -92,10 +92,10 @@ import {getArticleInfo,getArtCollect,getArtLike,initDate} from '../../pubJS/serv
             showInitDate:function(date,full){
                     return initDate(date,full)
             },
-            likecollectHandle: function(msg){//用户点击喜欢0,用户点击收藏1
+            likecollectHandle: function(islike){//用户点击喜欢0,用户点击收藏1
                 var that = this;
                 if(that.haslogin){//判断是否登录
-                    if(msg==0){
+                    if(islike==1){
                         if(!that.likeArt){
                             that.likeCount+=1;
                             that.likeArt = true;
@@ -103,9 +103,6 @@ import {getArticleInfo,getArtCollect,getArtLike,initDate} from '../../pubJS/serv
                             that.likeCount-=1;
                             that.likeArt = false;
                         }
-                        getArtLike(that.userId,that.aid,function(msg){
-                            console.log(msg);
-                        })
                     }else{
                         if(!that.collectArt){
                             that.collectCount+=1;
@@ -114,10 +111,10 @@ import {getArticleInfo,getArtCollect,getArtLike,initDate} from '../../pubJS/serv
                             that.collectCount-=1;
                             that.collectArt = false;
                         }
-                        getArtCollect(that.userId,that.aid,function(msg){
-                            console.log(msg);
-                        })
                     }
+                    getArtLikeCollect(that.userId,that.aid,islike,function(msg){
+                        console.log(msg);
+                    })
                 }else{//未登录 前去登录。
                     that.$confirm('登录后即可点赞和收藏，是否前往登录页面?', '提示', {
                       confirmButtonText: '确定',

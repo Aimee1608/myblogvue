@@ -41,7 +41,7 @@
                     {{item.description}}
                 </p>
                 <p>
-                    <img :src="'http://'+item.image" alt="" class="fitImg">
+                    <img :src="item.image" alt="" class="fitImg">
                 </p>
             </div>
             <div class="viewdetail">
@@ -131,7 +131,8 @@ import {ShowArticleAll,ArtClassData,initDate} from '../../pubJS/server.js'
                             that.hasMore = true;
                         }
                         that.articleList = that.articleList.concat(msg);
-                        that.atrId = msg[msg.length-1].id;
+                        that.artId = msg[msg.length-1].id;
+                        console.log(that.artId);
                     }else if(result.code==1003){
                         that.hasMore = false;
                     }
@@ -200,43 +201,8 @@ import {ShowArticleAll,ArtClassData,initDate} from '../../pubJS/server.js'
         transition: all 0.5s ease-out;
         font-size: 15px;
     }
-    .s-item .article-coontent{
-        font-size: 15px;
-        white-space: normal;
-        word-wrap: break-word;
-        word-break: break-all;
-    }
-    .s-item .article-content p{
-        margin:10px 0;
-        line-height:24px;
-    }
-    .s-item .viewdetail{
-        margin:10px 0 ;
-        line-height: 24px;
-        text-align: center;
-    }
-    .s-item .viewdetail a{
-        /*background-color: #97dffd;*/
-        color:#fff;
-        font-size: 12px;
-        padding:5px 10px;
-        border-radius: 5px;
-    }
-    .sharelistBox .viewmore{
-        text-align: center;
-        width:100%;
-    }
-    .sharelistBox .viewmore a{
-        /*background:  #97dffd;*/
-        /*padding:6px 0;*/
-        border-radius: 5px;
-        text-align: center;
-        font-size: 14px;
-        color:#fff;
-        height:30px;
-        line-height: 30px;
-        display: block;
-    }
+
+
     /*.sharelistBox .viewmore a:hover,.s-item .viewdetail a:hover{
         background: #48456C;
     }*/

@@ -21,13 +21,13 @@
             <h1>@赞赏方式：</h1>
             <el-row   :gutter="30">
                 <el-col  :span="8" :offset="4"  class="donate-item">
-                    <img :src="rewardData.admire_code.wechat_image" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
+                    <img :src="rewardData.wechat_image" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
                     <div class="donate-tip">
                         微信扫一扫，向我赞赏
                     </div>
                 </el-col>
                 <el-col :span="8"  class="donate-item">
-                    <img :src="rewardData.admire_code.alipay_image" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
+                    <img :src="rewardData.alipay_image" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
                     <div class="donate-tip">
                         支付宝扫一扫，向我赞赏
                     </div>
@@ -80,9 +80,9 @@
         created() { //生命周期函数
             var that = this;
             AdmireData(function(msg){
-                console.log(msg);
+                // console.log(msg);
                 that.tableData = msg.data;
-                that.rewardData = msg;
+                that.rewardData = msg.admire_code;
             })
         }
     }

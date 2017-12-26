@@ -14,7 +14,7 @@
                 © 2017 <a href="#">Anotherhome</a>. 由 <a href="#">Wordpress</a> 强力驱动. Theme By <a href="#">Amativeness</a>. <a href="#">站点地图</a>. 鲁ICP备16000184号.
             </p>
             <p>
-                <span>Made with</span> <img class="fheart" src="src/img/heart02.png"/>  <span>by DIYgod.</span>
+                <span>Made with</span> <img class="fheart" src="src/img/heart02.png"/>  <span>by Aimee.</span>
             </p>
         </div>
     </div>

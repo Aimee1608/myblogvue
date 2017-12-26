@@ -169,6 +169,7 @@
                         //   console.log(msg);
                           that.textarea = '';
                           that.routeChange();
+                          that.removeRespond();
                           var timer02 = setTimeout(function(){
                               that.sendTip = '发送~';
                               clearTimeout(timer02);
@@ -178,6 +179,7 @@
                       setOuthComment(that.textarea,that.userId,that.aid,that.leaveId,that.pid,function(msg){
                           console.log(msg);
                           that.textarea = '';
+                          that.removeRespond();
                         that.routeChange();
                       })
                   }
@@ -234,7 +236,7 @@
 
                       that.commentList = that.commentList.concat(msg);
 
-                      that.atrId = msg[msg.length-1].id;
+                      that.pageId = msg[msg.length-1].comment_id;
 
                   }else if(result.code==1003){//查询数据为空
                       that.hasMore = false;

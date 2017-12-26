@@ -5,25 +5,25 @@
                 <el-col :span="24">
                     <div class="headBox">
                         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" :router="true">
-                            <el-menu-item index="/Home">首页</el-menu-item>
+                            <el-menu-item index="/Home"><i class="fa fa-wa fa-home"></i> 首页</el-menu-item>
                             <el-submenu index="/Share">
-                              <template slot="title">分类</template>
+                              <template slot="title"><i class="fa fa-wa fa-archive"></i> 分类</template>
                               <el-menu-item v-for="(item,index) in classList" key="item.class_id" :index="'/Share?classId='+item.class_id" >{{item.cate_name}}</el-menu-item>
                               <!-- <el-menu-item index="/Share?classId=2">闲言碎语</el-menu-item>
                               <el-menu-item index="/Share?classId=3">事件簿</el-menu-item>
                               <el-menu-item index="/Share?classId=4">创作集</el-menu-item> -->
                             </el-submenu>
                             <el-submenu index="/Aboutme">
-                              <template slot="title">实验室</template>
+                              <template slot="title"><i class="fa fa-wa fa-flask"></i> 实验室</template>
                               <el-menu-item index="">H5作品集</el-menu-item>
                               <el-menu-item index="">美食美荟网站</el-menu-item>
                               <el-menu-item index="">美食美荟小程序</el-menu-item>
                               <el-menu-item index="">简历模板</el-menu-item>
                             </el-submenu>
-                            <el-menu-item index="/Reward">赞赏</el-menu-item>
-                            <el-menu-item index="/Friendslink">伙伴</el-menu-item>
-                            <el-menu-item index="/Message">留言板</el-menu-item>
-                            <el-menu-item index="/Aboutme">关于</el-menu-item>
+                            <el-menu-item index="/Reward"><i class="fa fa-wa fa-cutlery"></i> 赞赏</el-menu-item>
+                            <el-menu-item index="/Friendslink"><i class="fa fa-wa fa-users"></i> 伙伴</el-menu-item>
+                            <el-menu-item index="/Message"><i class="fa fa-wa fa-pencil"></i> 留言板</el-menu-item>
+                            <el-menu-item index="/Aboutme"><i class="fa fa-wa fa-vcard"></i> 关于</el-menu-item>
                             <div index="" class="pcsearchbox">
                                 <i class="el-icon-search pcsearchicon"></i>
                                 <div class="pcsearchinput">
@@ -46,6 +46,12 @@
                                             <a href="#/UserInfo">个人中心</a>
                                         </li>
                                         <li>
+                                            <a href="#/LikeCollect?like=1">喜欢列表</a>
+                                        </li>
+                                        <li>
+                                            <a href="#/LikeCollect?like=2">收藏列表</a>
+                                        </li>
+                                        <li>
                                             <a href="javascript:void(0);" @click="userlogout">退出登录</a>
                                         </li>
                                     </ul>
@@ -58,29 +64,34 @@
                             <i @click="pMenu=!pMenu" class="el-icon-menu"></i>
                             <el-collapse-transition>
                                <el-menu :default-active="activeIndex" class="mlistmenu" v-show="!pMenu"  theme="dark" @open="handleOpen" @close="handleClose" :unique-opened="true" :router="true" >
-                                     <el-menu-item index="/Home">首页</el-menu-item>
+                                    <el-menu-item index="/Home"><i class="fa fa-wa fa-home"></i> 首页</el-menu-item>
                                      <el-submenu index="/Share" >
-                                         <template slot="title">分类</template>
+                                          <template slot="title"><i class="fa fa-wa fa-archive"></i> 分类</template>
                                          <el-menu-item v-for="(item,index) in classList" :index="'/Share?classId='+item.class_id" >{{item.cate_name}}</el-menu-item>
                                          <!-- <el-menu-item index="/Share?classId=2">闲言碎语</el-menu-item>
                                          <el-menu-item index="/Share?classId=3">事件簿</el-menu-item>
                                          <el-menu-item index="/Share?classId=4">创作集</el-menu-item> -->
                                      </el-submenu>
                                      <el-submenu index="2">
-                                       <template slot="title">实验室</template>
+                                            <template slot="title"><i class="fa fa-wa fa-flask"></i> 实验室</template>
                                            <el-menu-item index="/Home">H5作品集</el-menu-item>
                                            <el-menu-item index="/Home">美食美荟网站</el-menu-item>
                                            <el-menu-item index="/Home">美食美荟小程序</el-menu-item>
                                            <el-menu-item index="/Home">简历模板</el-menu-item>
                                      </el-submenu>
-                                     <el-menu-item index="/Reward">赞赏</el-menu-item>
-                                     <el-menu-item index="/Friendslink">伙伴</el-menu-item>
-                                     <el-menu-item index="/Message">留言板</el-menu-item>
-                                     <el-menu-item index="/Aboutme">关于</el-menu-item>
+                                     <el-menu-item index="/Reward"><i class="fa fa-wa fa-cutlery"></i> 赞赏</el-menu-item>
+                                     <el-menu-item index="/Friendslink"><i class="fa fa-wa fa-users"></i> 伙伴</el-menu-item>
+                                     <el-menu-item index="/Message"><i class="fa fa-wa fa-pencil"></i> 留言板</el-menu-item>
+                                     <el-menu-item index="/Aboutme"><i class="fa fa-wa fa-vcard"></i> 关于</el-menu-item>
                                      <el-menu-item v-show="!haslogin" index="" @click="logoinFun(1)">登录</el-menu-item>
                                      <el-menu-item v-show="!haslogin" index="" @click="logoinFun(0)">注册</el-menu-item>
-                                     <el-menu-item v-show="haslogin" index="/UserInfo">个人中心</el-menu-item>
-                                     <el-menu-item v-show="haslogin" index="" @click="userlogout">退出登录</el-menu-item>
+                                     <el-submenu v-show="haslogin" index="3">
+                                           <template slot="title"><i class="fa fa-wa fa-user-circle-o"></i> 我的</template>
+                                           <el-menu-item  index="/UserInfo">个人中心</el-menu-item>
+                                           <el-menu-item  index="/LikeCollect?like=1">喜欢的文章</el-menu-item>
+                                           <el-menu-item  index="/LikeCollect?like=2">收藏的文章</el-menu-item>
+                                           <el-menu-item  index="" @click="userlogout">退出登录</el-menu-item>
+                                     </el-submenu>
                                 </el-menu>
                             </el-collapse-transition>
                             <div class="searchBox">
@@ -216,6 +227,7 @@
            '$route':'routeChange'
          },
         created() { //生命周期函数
+            console.log( this.$store);
             this.routeChange();
 
         }
@@ -257,6 +269,9 @@
 .headBox .el-submenu li.el-menu-item{
     height:38px;
     line-height:38px;
+}
+.headBox li .fa-wa{
+    vertical-align: baseline;
 }
 .headBox ul li.el-menu-item,.headBox ul li.el-menu-item.is-active,.headBox ul li.el-menu-item:hover,.headBox .el-submenu  div.el-submenu__title,.headBox .el-submenu__title i.el-submenu__icon-arrow{
     color:#fff;
@@ -365,8 +380,11 @@
     opacity: 0;
     transition: all 0.3s ease-out;
 }
-.headBox .haslogin  ul li:first-child{
+.headBox .haslogin  ul li{
     border-bottom: 1px solid #48456C;
+}
+.headBox .haslogin  ul li:last-child{
+    border-bottom: 1px solid transparent;
 }
 
 /*******移动端*******/

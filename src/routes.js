@@ -23,10 +23,13 @@
 //
 // export default routes
 // //懒加载
+
+
 const routes =[
     {
         path: '/',
         component: resolve => require(['./templet/mainTem/Home.vue'],resolve),
+        
         name:'Home'
     },//默认首页
     {
@@ -73,7 +76,14 @@ const routes =[
         path:'/UserInfo',
         component: resolve => require(['./templet/mainTem/UserInfo.vue'],resolve),
         name:'UserInfo'
+    },//用户个人中心
+    {
+        path:'/LikeCollect',
+        component: resolve => require(['./templet/mainTem/LikeCollect.vue'],resolve),
+        name:'LikeCollect'
     }//用户个人中心
 ]
+
+
 
 export default routes
