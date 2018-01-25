@@ -24,23 +24,11 @@
                 </div>
             </header>
             <div class="article-content" v-html="detailObj.content"></div>
-            <div class="dshareBox">
+            <div class="dshareBox bdsharebuttonbox"  data-tag="share_1">
                 分享到:
-                <a href="#" class="ds-weibo"><i class="fa fa-fw fa-weibo"></i></a>
-                <a href="#" class="ds-qq"><i class="fa fa-fw fa-qq"></i></a>
-                <a href="#" class="ds-wechat">
-                    <i class="fa fa-fw fa-wechat"></i>
-                    <div class="wechatShare">
-                        <h4>微信扫一扫</h4>
-                        <div>
-                            <img src="src/img/erwm.jpg" alt="">
-                        </div>
-                        <p>
-                            微信扫一扫,右上角分享
-                        </p>
-                        <i></i>
-                    </div>
-                </a>
+                <a href="javascript:void(0);" class="ds-weibo fa fa-fw fa-weibo" data-cmd="tsina" ></a>
+                <a href="javascript:void(0);" class="ds-qq fa fa-fw fa-qq" data-cmd="tqq"></a>
+                <a href="javascript:void(0);" class="ds-wechat fa fa-fw fa-wechat" data-cmd="weixin"></a>
                 <div class="dlikeColBox">
                     <div class="dlikeBox" @click="likecollectHandle(1)" >
                         <i :class="likeArt?'fa fa-fw fa-heart':'fa fa-fw fa-heart-o'" ></i>喜欢 | {{likeCount}}
@@ -77,24 +65,24 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
     export default {
         data() { //选项 / 数据
             return {
-                aid:'',
+                aid:'',//文章ID
                 pdonate:true,//打开赞赏控制,
-                detailObj:'',
-                likeArt:false,
-                likeCount:400,
-                collectCount:500,
-                collectArt:false,
-                haslogin:false,
-                userId:''
+                detailObj:'',//返回详情数据
+                likeArt:false,//是否点赞
+                likeCount:400,//点赞数量
+                collectCount:500,//收藏数量
+                collectArt:false,//是否收藏
+                haslogin:false,//是否已经登录
+                userId:''//用户id
             }
         },
         methods: { //事件处理器
-            showInitDate:function(date,full){
+            showInitDate:function(date,full){//年月日的编辑
                     return initDate(date,full)
             },
             likecollectHandle: function(islike){//用户点击喜欢0,用户点击收藏1
                 var that = this;
-                if(that.haslogin){//判断是否登录
+                if(localStorage.getItem('userInfo')){//判断是否登录
                     if(islike==1){
                         if(!that.likeArt){
                             that.likeCount+=1;
@@ -120,31 +108,30 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
                       confirmButtonText: '确定',
                       cancelButtonText: '取消',
                       type: 'warning'
-                  }).then(() => {//确定，跳转至登录页面
-                      //储存当前页面路径，登录成功后跳回来
-                      sessionStorage.setItem('logUrl',that.$route.fullPath);
-                      that.$router.push({path:'/Login?login=1'});
-                    }).catch(() => {
+                      }).then(() => {//确定，跳转至登录页面
+                          //储存当前页面路径，登录成功后跳回来
+                          localStorage.setItem('logUrl',that.$route.fullPath);
+                          that.$router.push({path:'/Login?login=1'});
+                     }).catch(() => {//取消关闭弹窗
 
-                    });
+                     });
                 }
-
             },
             routeChange:function(){
                 var that = this;
                 that.aid = that.$route.query.aid==undefined?1:parseInt(that.$route.query.aid);//获取传参的aid
                 //判断用户是否存在
-                if(sessionStorage.getItem('userInfo')){
+                if(localStorage.getItem('userInfo')){
                     that.haslogin = true;
-                    that.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-                    that.userId = that.userInfo.user_id;
+                    that.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                    that.userId = that.userInfo.userId;
                     console.log(that.userInfo);
                 }else{
                     that.haslogin = false;
                 }
                 //获取详情接口
                 getArticleInfo(that.aid,that.userId,function(msg){
-                    console.log(msg);
+                    // console.log(msg);
                     that.detailObj = msg;
                     that.likeCount = msg.like_count?msg.like_count:0;
                     that.collectCount = msg.collect_count?msg.collect_count:0;
@@ -163,13 +150,11 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
         created() { //生命周期函数
             var that = this;
             this.routeChange();
-
         }
     }
 </script>
 
 <style>
-
 
 .detailBox .article-content{
     font-size: 15px;
@@ -239,49 +224,10 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
     opacity: 1;
     visibility: visible;
 }
-/*微信分享弹框*/
-.dshareBox .wechatShare{
-    opacity: 0;
-    visibility: hidden;
-    position: absolute;
-    top:-205px;
-    left:-83px;
-    width:200px;
-    height:192px;
-    color:#666;
-    font-size: 12px;
-    text-align: center;
-    background: #fff;
-    box-shadow: 0 2px 10px #aaa;
-    transition: all 0.2s ease-in;
-}
-.dshareBox .wechatShare h4{
-    height:26px;
-    line-height: 26px;
-    background: #f3f3f3;
-    color: #777;
-}
-.dshareBox .wechatShare div{
-    width: 105px;
-    margin: 10px auto;
-}
-.dshareBox .wechatShare div img{
-    width:100%;
-}
-.dshareBox .wechatShare p{
-    line-height: 16px;
-}
-.dshareBox .wechatShare i{
-    display: block;
-    position: absolute;
-    left: 50%;
-    margin-left: -6px;
-    bottom: -13px;
-    width: 0;
-    height: 0;
-    border-width: 8px 6px 6px 6px;
-    border-style: solid;
-    border-color: #fff transparent transparent transparent;
+.detailBox .bdshare-button-style0-32 a{
+    float:none;
+    background-image: none;
+    text-indent: inherit;
 }
 /*点赞 收藏*/
 .dlikeColBox{

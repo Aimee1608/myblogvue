@@ -6,23 +6,22 @@
                     关于我
                 </a>
             </h1>
-            
         </header>
         <section>
             <p class="">
-                <img src="src/img/message0.jpg" alt="">
+                <img src="src/img/aboutme.jpg" alt="" class="aboutmeImg">
             </p>
             <p>
-                欢迎来到Anotherhome！我是DIYgod，是一个可爱的蓝孩子，ACG爱好者，生活在2.5次元，前端小萌新，喜欢各种有趣的事物
+                欢迎来到Mango Ya！我是Aimee，是一个可爱的girl，前端程序媛，喜欢各种有趣的事物，爱好各种动手的小玩意儿
             </p>
             <p>
-                95小鲜肉，前端小萌新，
+                90后小美女😍，前端小萌新，
             </p>
             <p>
-                动漫爱好者，卖萌求抱走。
+                爱美食，爱动手做美食，想长胖的尽管来。
             </p>
             <p>
-                博客建于2014年2月9日，兴趣驱使，用于自由地发表言论与分享我想分享的东西
+                博客建于2017年2月9日，2018年1月23日更新到Vue
             </p>
         </section>
     </div>
@@ -51,5 +50,8 @@ import {AboutMeData} from '../../pubJS/server.js'
 </script>
 
 <style>
-
+.aboutmeImg{
+    width:300px;
+    height:300px;
+}
 </style>

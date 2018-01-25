@@ -31,7 +31,8 @@
                         </li>
                         <li>
                             <span class="leftTitle">电子邮件</span>
-                            <span>{{userInfoObj.email}}</span>
+                            <el-input v-model="userInfoObj.email" placeholder="email" ></el-input>
+
                         </li>
                         <li>
                             <span class="leftTitle">性别</span>
@@ -100,17 +101,17 @@
                         <li class="avatarlist">
                             <span class="leftTitle">头像</span>
                             <div class="avatar-uploader">
-                                <img  :src="userInfoObj.avatar"   onerror="this.onerror=null;this.src='src/img/tou.jpg'" class="avatar">
+                                <img  :src="userInfoObj.avatar?userInfoObj.avatar:'src/img/tou.jpg'"   onerror="this.onerror=null;this.src='src/img/tou.jpg'" class="avatar">
                             </div>
                         </li>
                         <li class="username">
                             <span class="leftTitle">昵称</span>
-                            <span>{{userInfoObj.username}}</span>
+                            <span>{{userInfoObj.username?userInfoObj.username:"无"}}</span>
 
                         </li>
                         <li>
                             <span class="leftTitle">电子邮件</span>
-                            <span>{{userInfoObj.email}}</span>
+                            <span>{{userInfoObj.email?userInfoObj.email:"无"}}</span>
                         </li>
                         <li>
                             <span class="leftTitle">性别</span>
@@ -126,20 +127,20 @@
                         </li>
                         <li >
                             <span class="leftTitle">网站名称</span>
-                            <span>{{userInfoObj.name}}</span>
+                            <span>{{userInfoObj.name?userInfoObj.name:"无"}}</span>
                         </li>
                         <li >
                             <span class="leftTitle">网站地址</span>
-                            <p class="rightInner">{{userInfoObj.url}}</p>
+                            <p class="rightInner">{{userInfoObj.url?userInfoObj.url:"无"}}</p>
                         </li>
                         <li >
                             <span class="leftTitle">网站简介</span>
-                            <p class="rightInner">{{userInfoObj.description}}</p>
+                            <p class="rightInner">{{userInfoObj.description?userInfoObj.description:"无"}}</p>
                         </li>
                         <li  class="avatarlist">
                             <span class="leftTitle">网站logo</span>
                             <div class="avatar-uploader">
-                                <img  :src="userInfoObj.image"  onerror="this.onerror=null;this.src='src/img/tou.jpg'"  class="avatar">
+                                <img  :src="userInfoObj.image?userInfoObj.image:'src/img/tou.jpg'"  onerror="this.onerror=null;this.src='src/img/tou.jpg'"  class="avatar">
                             </div>
                         </li>
                     </ul>
@@ -154,22 +155,22 @@
 <script>
 import header from '../publicTem/header.vue'
 import footer from '../publicTem/footer.vue'
-import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'
+import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信息，保存用户信息
     export default {
         data() { //选项 / 数据
             return {
                 isEdit: false,
                 userInfo:'',//本地存储的用户信
                 userInfoObj:'',//用户的信息
-                state:true
+                state:true //是否展示友链开关
             }
         },
         methods: { //事件处理器
-            handleAvatarSuccess(res, file) {
+            handleAvatarSuccess(res, file) {//上传头像
                 // console.log(res,file);
                 this.userInfoObj.avatar = URL.createObjectURL(file.raw);
             },
-            beforeAvatarUpload(file) {
+            beforeAvatarUpload(file) {//判断头像大小
                 const isJPG = file.type === 'image/jpeg';
                 const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -181,10 +182,10 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'
                 }
                 return isJPG && isLt2M;
             },
-            handleLogoSuccess(res, file) {
+            handleLogoSuccess(res, file) { //上传网站logo
                 this.userInfoObj.image = URL.createObjectURL(file.raw);
             },
-            beforeLogoUpload(file) {
+            beforeLogoUpload(file) { //控制网站logo图片大小
                 const isJPG = file.type === 'image/jpeg/png';
                 const isLt2M = file.size / 1024 / 1024 < 2;
 
@@ -196,41 +197,37 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'
                 }
                 return isJPG && isLt2M;
             },
-            saveInfoFun: function(){
+            saveInfoFun: function(){//保存编辑的用户信息
                 var that = this;
-                if(!that.userInfoObj.username){
+                if(!that.userInfoObj.username){ //昵称为必填
                      that.$message.error('昵称为必填项，请填写昵称');
+                     return;
                 }
                 if(that.state){
-                    if(!that.userInfoObj.url){
+                    if(!that.userInfoObj.url){//如果展示友链 网址为必填项
                          that.$message.error('请正确填写网址');
+                         return;
                     }
 
                 }
-                if(that.userInfoObj.username&&that.userInfoObj.url){
-                    that.userInfoObj.state = Number(that.state);
-                    UserInfoSave(that.userInfoObj,function(result){
-                        that.$message.success( '恭喜你，这是一条成功消息');
-                    })
-                }
+                that.userInfoObj.state = Number(that.state);
+                UserInfoSave(that.userInfoObj,function(result){//保存信息接口，返回展示页
+                    that.$message.success( '保存成功！');
+                    that.isEdit = false;
+                    that.routeChange() ;
+                })
 
             },
-            routeChange: function(){
+            routeChange: function(){//展示页面信息
                 var that = this;
-
                 // console.log(this.$router,this.$route);
-                if(sessionStorage.getItem('userInfo')){
+                if(localStorage.getItem('userInfo')){
                     that.haslogin = true;
-                    that.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-                    that.userId = that.userInfo.user_id;
+                    that.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                    that.userId = that.userInfo.userId;
                     getUserInfo(that.userId,function(msg){
-                        console.log(msg);
                         that.userInfoObj = msg.data;
-                        if(msg.data.state==1){
-                            that.state==true;
-                        }else{
-                            that.state==false;
-                        }
+                        that.state = msg.data.state==1?true:false;
                     })
                     console.log(that.userInfo);
                 }else{

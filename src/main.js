@@ -22,31 +22,34 @@ const router = new VueRouter({
 })
 
 
-const strobj = {
-    loading: false,
-    UserList: [], //用户列表
-    isLogin: 0,  //登录状态 0未登录  1001登录
-    ClassList:[],
-    UserInfo:[],
-}
-const vuexObj = new Vuex.Store({
-    state: {
-    strobj
-  },
-
-})
-
 
 /** 验证用户是否登录 **/
-router.beforeEach((to,from,next) => {
-    console.log(888);
-    console.log(Vue.store);
-    next();
-})
+// router.beforeEach((to,from,next) => {
+//     let token = sessionStorage.getItem('accessToken');  //获取token
+//     console.log(888);
+//     // next();
+//     if(to.matched.some( m => m.meta.auth )) {
+//       Vue.http.get('http://www.vuebook.com/port/login/isUserLogin', {params:{access_token: token}})
+//       .then(response => response.json()).then(num => {
+//           console.log(num,66);
+//           if(num.code==1001){
+//               next()
+//           }else{
+//               sessionStorage.removeItem('userInfo'); // 删除sessionStorage中的token值
+//               next()
+//           }
+//       })
+//     } else {
+//       next();
+//     }
+// })
+
+
+
 
 
 var vm = new Vue({
   el: '#app',
   router,
-  vuexObj
+
 })

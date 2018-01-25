@@ -32,7 +32,7 @@
                         </div> -->
                     </header>
                     <div class="article-content">
-                        <p>
+                        <p style="text-indent:2em;">
                             {{item.description}}
                         </p>
                         <p>
@@ -40,7 +40,7 @@
                         </p>
                     </div>
                     <div class="viewdetail">
-                        <a class="tcolors-bg" href="javascript:void(0);" @click="cancelLikeCollect(item.id)">取消{{like==1?'喜欢':'收藏'}}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a class="cancelbtn" href="javascript:void(0);" @click="cancelLikeCollect(item.id)">取消{{like==1?'喜欢':'收藏'}}</a>&nbsp;&nbsp;&nbsp;&nbsp;
                         <a class="tcolors-bg" :href="'#/DetailShare?aid='+item.id" target="_blank">
                             阅读全文>>
                         </a>
@@ -82,9 +82,9 @@ import {ShowArticleAll,initDate,getLikeCollectList,getArtLikeCollect} from '../.
             },
             showLikeCollectList: function(initpage){//展示数据
                 var that = this;
-                if(sessionStorage.getItem('userInfo')){
-                    that.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-                    that.userId = that.userInfo.user_id;
+                if(localStorage.getItem('userInfo')){
+                    that.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                    that.userId = that.userInfo.userId;
                     console.log(that.userInfo);
                 }
                 that.like = that.$route.query.like ==undefined?1:parseInt(that.$route.query.like);
@@ -152,5 +152,8 @@ import {ShowArticleAll,initDate,getLikeCollectList,getArtLikeCollect} from '../.
     color:#DF2050;
     margin-right: 10px;
     font-size: 30px;
+}
+.cancelbtn{
+    background: #efefef;
 }
 </style>

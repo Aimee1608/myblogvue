@@ -20,6 +20,13 @@ const UserLogin =  (email,password,callback) =>{
             callback && callback(num);
     })
 }
+//用户退出
+const LoginOut = (token,callback) =>{
+    let url = portUrl + 'login/LoginOut?token='+token;
+    Vue.http.get(url).then(response => response.json()).then(num => {
+            callback && callback(num);
+    })
+}
 //文章分类查询
 const ArtClassData = (callback) => {
     if(sessionStorage.getItem('classList')){
@@ -38,7 +45,23 @@ const ArtClassData = (callback) => {
         })
     }
 }
-
+const navMenList  = (callback) => {
+    if(sessionStorage.getItem('navMenList')){
+        var data = JSON.parse(sessionStorage.getItem('navMenList'));
+        callback && callback(data)
+    }else{
+        let url = portUrl + 'nav/navMenList';
+        Vue.http.get(url).then(response => response.json()).then(num => {
+            // console.log(num);
+            if(num.code==1001){
+                sessionStorage.setItem('navMenList',JSON.stringify(num.data));
+                callback && callback(num.data)
+            }else{
+                alert("查询失败")
+            }
+        })
+    }
+}
 
 //查询文章列表
 const ShowArticleAll = (artId,cateId,articleName,callback) =>{
@@ -271,12 +294,12 @@ const initDate = (oldDate,full) => {
     }
 }
 
-
-
 export {
         getRegister,//注册
         UserLogin,//登录
+        LoginOut,//退出登录
         ArtClassData,//分类
+        navMenList,//导航信息
         ShowArticleAll,//查询文章列表
         getArticleInfo,//文章详情
         ShowBrowseCount,//流量量做多的文章
@@ -294,5 +317,6 @@ export {
         getLikeCollectList,//用户收藏喜欢列表
         getUserInfo,//用户信息查询
         UserInfoSave,//修改用户信息
-        initDate//设置时间
+        initDate,//设置时间
+        vuexStore
     }

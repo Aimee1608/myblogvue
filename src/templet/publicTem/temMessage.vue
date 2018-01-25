@@ -15,7 +15,9 @@
                     </div>
                     <div class="OwO-body">
                         <ul class="OwO-items OwO-items-show">
-                            <li class="OwO-item" v-for="(oitem,index) in OwOlist" key="oitem" @click="choseEmoji(oitem)">{{oitem}}</li>
+                            <li class="OwO-item" v-for="(oitem,index) in OwOlist" key="oitem" @click="choseEmoji(oitem.title)">
+                                <img :src="'src/img/emot/image/'+oitem.url" alt="">
+                            </li>
                         </ul>
                         <div class="OwO-bar">
                             <ul class="OwO-packages">
@@ -43,14 +45,14 @@
                                     {{item.username}}
                                 </div>
                                 <div class="i-class">
-                                    天然呆
+                                    {{randomGet()}}
                                 </div>
                                 <div class="i-time">
                                     <time>{{item.time}}</time>
                                 </div>
                             </header>
                             <section>
-                                <p>{{item.content}}</p>
+                                <p v-html="analyzeEmoji(item.content)">{{analyzeEmoji(item.content)}}</p>
                                 <div v-if="haslogin" class="tmsg-replay" @click="respondMsg(item.comment_id,item.comment_id)">
                                     回复
                                 </div>
@@ -65,7 +67,7 @@
                                                 {{citem.username}} <span>回复</span> {{citem.reply_name}}
                                             </div>
                                             <div class="i-class">
-                                                天然呆
+                                                {{randomGet()}}
                                             </div>
                                             <div class="i-time">
                                                 <time>{{citem.time}}</time>
@@ -103,60 +105,125 @@
                 textarea: '',//文本框输入内容
                 pBody:true,//表情打开控制
                 commentList:'',//评论列表数据
-                pageId:0,
+                pageId:0,//当前第几页
                 aid:0,//文章id
                 hasMore:true,
                 haslogin:false,
-                userId:'',
+                userId:'',//用户id
                 leaveId:0,//回复评论的当前的commentId
                 leavePid:'',//赞赏等其他模块的分类id
                 pid:'',//回复评论的一级commentId
                 sendTip:'发送~',
-                OwOlist:[
-                    '😂',
-                    '😀',
-                    '😅',
-                    '😊',
-                    '🙂',
-                    '🙃',
-                    '😌',
-                    '😍',
-                    '😘',
-                    '😜',
-                    '😝',
-                    '😏',
-                    '😒',
-                    '🙄',
-                    '😳',
-                    '😡',
-                    '😔',
-                    '😫',
-                    '😱',
-                    '😭',
-                    '💩',
-                    '👻',
-                    '🙌',
-                    '🖕',
-                    '👍',
-                    '👫',
-                    '👭',
-                    '🌚',
-                    '🌝',
-                    '🙈',
-                    '💊',
-                    '😶',
-                    '🙏',
-                    '🍦',
-                    '🍉',
-                    '😣'
+                usertab:[//用户标签
+                    "天然呆",
+                    "小萌新",
+                    "学霸",
+                    "萌萌哒",
+                    "技术宅",
+                    "忠实粉"
+                ],
+                OwOlist:[//表情包和表情路径
+                    {'title':'微笑','url':'weixiao.gif'},
+                   {'title':'嘻嘻','url':'xixi.gif'},
+                   {'title':'哈哈','url':'haha.gif'},
+                   {'title':'可爱','url':'keai.gif'},
+                   {'title':'可怜','url':'kelian.gif'},
+                   {'title':'挖鼻','url':'wabi.gif'},
+                   {'title':'吃惊','url':'chijing.gif'},
+                   {'title':'害羞','url':'haixiu.gif'},
+                   {'title':'挤眼','url':'jiyan.gif'},
+                   {'title':'闭嘴','url':'bizui.gif'},
+                   {'title':'鄙视','url':'bishi.gif'},
+                   {'title':'爱你','url':'aini.gif'},
+                   {'title':'泪','url':'lei.gif'},
+                   {'title':'偷笑','url':'touxiao.gif'},
+                   {'title':'亲亲','url':'qinqin.gif'},
+                   {'title':'生病','url':'shengbing.gif'},
+                   {'title':'太开心','url':'taikaixin.gif'},
+                   {'title':'白眼','url':'baiyan.gif'},
+                   {'title':'右哼哼','url':'youhengheng.gif'},
+                   {'title':'左哼哼','url':'zuohengheng.gif'},
+                   {'title':'嘘','url':'xu.gif'},
+                   {'title':'衰','url':'shuai.gif'},
+                   {'title':'吐','url':'tu.gif'},
+                   {'title':'哈欠','url':'haqian.gif'},
+                   {'title':'抱抱','url':'baobao.gif'},
+                   {'title':'怒','url':'nu.gif'},
+                   {'title':'疑问','url':'yiwen.gif'},
+                   {'title':'馋嘴','url':'chanzui.gif'},
+                   {'title':'拜拜','url':'baibai.gif'},
+                   {'title':'思考','url':'sikao.gif'},
+                   {'title':'汗','url':'han.gif'},
+                   {'title':'困','url':'kun.gif'},
+                   {'title':'睡','url':'shui.gif'},
+                   {'title':'钱','url':'qian.gif'},
+                   {'title':'失望','url':'shiwang.gif'},
+                   {'title':'酷','url':'ku.gif'},
+                   {'title':'色','url':'se.gif'},
+                   {'title':'哼','url':'heng.gif'},
+                   {'title':'鼓掌','url':'guzhang.gif'},
+                   {'title':'晕','url':'yun.gif'},
+                   {'title':'悲伤','url':'beishang.gif'},
+                   {'title':'抓狂','url':'zhuakuang.gif'},
+                   {'title':'黑线','url':'heixian.gif'},
+                   {'title':'阴险','url':'yinxian.gif'},
+                   {'title':'怒骂','url':'numa.gif'},
+                   {'title':'互粉','url':'hufen.gif'},
+                   {'title':'书呆子','url':'shudaizi.gif'},
+                   {'title':'愤怒','url':'fennu.gif'},
+                   {'title':'感冒','url':'ganmao.gif'},
+                   {'title':'心','url':'xin.gif'},
+                   {'title':'伤心','url':'shangxin.gif'},
+                   {'title':'猪','url':'zhu.gif'},
+                   {'title':'熊猫','url':'xiongmao.gif'},
+                   {'title':'兔子','url':'tuzi.gif'},
+                   {'title':'OK','url':'ok.gif'},
+                   {'title':'耶','url':'ye.gif'},
+                   {'title':'GOOD','url':'good.gif'},
+                   {'title':'NO','url':'no.gif'},
+                   {'title':'赞','url':'zan.gif'},
+                   {'title':'来','url':'lai.gif'},
+                   {'title':'弱','url':'ruo.gif'},
+                   {'title':'草泥马','url':'caonima.gif'},
+                   {'title':'神马','url':'shenma.gif'},
+                   {'title':'囧','url':'jiong.gif'},
+                   {'title':'浮云','url':'fuyun.gif'},
+                   {'title':'给力','url':'geili.gif'},
+                   {'title':'围观','url':'weiguan.gif'},
+                   {'title':'威武','url':'weiwu.gif'},
+                   {'title':'话筒','url':'huatong.gif'},
+                   {'title':'蜡烛','url':'lazhu.gif'},
+                   {'title':'蛋糕','url':'dangao.gif'},
+                   {'title':'发红包','url':'fahongbao.gif'}
                 ]
             }
         },
         methods: { //事件处理器
           //选择表情包
           choseEmoji:function(inner){
-              this.textarea += inner;
-              // console.log(this.textarea);
+              this.textarea +='[' + inner + ']';
+          },
+          analyzeEmoji:function(cont){//编译表情替换成图片展示出来
+              var pattern1 = /\[[\u4e00-\u9fa5]+\]/g;
+                var pattern2 = /\[[\u4e00-\u9fa5]+\]/;
+                var content = cont.match(pattern1);
+                var str = cont;
+                if(content){
+                    for(var i=0;i<content.length;i++){
+                        for(var j=0;j<this.OwOlist.length;j++){
+                            if("["+this.OwOlist[j].title +"]" == content[i]){
+                                var src = this.OwOlist[j].url;
+                                break;
+                            }
+                        }
+                        str = str.replace(pattern2,'<img src="src/img/emot/image/'+src+'"/>');
+                    }
+                    // console.log(str);
+                }
+                return str;
+          },
+          randomGet:function(){//获取随机标签
+              return this.usertab[Math.floor(Math.random()*this.usertab.length)]
           },
           //发送留言
           sendMsg:function(){//留言
@@ -164,7 +231,7 @@
               if(that.textarea){
                   that.sendTip = '咻~~';
                   if(that.leaveId==0){
-                    //   console.log(that.textarea,that.userId,that.aid,that.leavePid,that.pid);
+                      console.log(that.textarea,that.userId,that.aid,that.leavePid,that.pid);
                       setArticleComment(that.textarea,that.userId,that.aid,that.leavePid,that.pid,function(msg){
                         //   console.log(msg);
                           that.textarea = '';
@@ -189,17 +256,32 @@
                       that.sendTip = '发送~';
                       clearTimeout(timer);
                   },3000)
-
               }
           },
           respondMsg:function(leavePid,pid){//回复留言
               console.log(leavePid,pid);
-              var dom = event.currentTarget;
-              dom = dom.parentNode;
-              this.isRespond = true;
-              this.leavePid = leavePid;
-              this.pid = pid;
-              dom.appendChild(this.respondBox);
+              var that = this;
+              if(localStorage.getItem('userInfo')){
+                  var dom = event.currentTarget;
+                  dom = dom.parentNode;
+                  this.isRespond = true;
+                  this.leavePid = leavePid;
+                  this.pid = pid;
+                  dom.appendChild(this.respondBox);
+              }else{
+                  that.$confirm('登录后即可点赞和收藏，是否前往登录页面?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                    }).then(() => {//确定，跳转至登录页面
+                        //储存当前页面路径，登录成功后跳回来
+                        localStorage.setItem('logUrl',that.$route.fullPath);
+                        that.$router.push({path:'/Login?login=1'});
+                   }).catch(() => {
+
+                   });
+              }
+
           },
           removeRespond:function(){//取消回复留言
               this.isRespond = false;
@@ -209,10 +291,10 @@
               var that = this;
               that.aid = that.$route.query.aid==undefined?1:parseInt(that.$route.query.aid);//获取传参的aid
               //判断当前用户是否登录
-              if(sessionStorage.getItem('userInfo')){
+              if(localStorage.getItem('userInfo')){
                   that.haslogin = true;
-                  that.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-                  that.userId = that.userInfo.user_id;
+                  that.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                  that.userId = that.userInfo.userId;
                   console.log(that.userInfo);
               }else{
                   that.haslogin = false;
@@ -227,7 +309,7 @@
               function setData(result){
                   if(result.code==1001){//查询数据
                       var msg = result.data;
-                    //   console.log(result.data);
+                      console.log(666,result.data);
                       if(msg.length>0&&msg.length<8){
                           that.hasMore = false
                       }else{
@@ -250,7 +332,7 @@
               }else{//其他评论
                   if(that.$route.name == 'Reward'){//（1：赞赏 2：友情链接 3：留言板 4：关于我）
                       that.leaveId = 1
-                  }else if(that.$route.name == 'Friendslink'){
+                  }else if(that.$route.name == 'FriendsLink'){
                       that.leaveId = 2
                   }else if(that.$route.name == 'Message'){
                       that.leaveId = 3
@@ -262,9 +344,6 @@
                   })
 
               }
-
-
-
           },
           addMoreFun:function(){//查看更多
               this.showCommentList(false);

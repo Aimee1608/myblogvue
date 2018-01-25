@@ -9,16 +9,10 @@
                             <el-submenu index="/Share">
                               <template slot="title"><i class="fa fa-wa fa-archive"></i> 分类</template>
                               <el-menu-item v-for="(item,index) in classList" key="item.class_id" :index="'/Share?classId='+item.class_id" >{{item.cate_name}}</el-menu-item>
-                              <!-- <el-menu-item index="/Share?classId=2">闲言碎语</el-menu-item>
-                              <el-menu-item index="/Share?classId=3">事件簿</el-menu-item>
-                              <el-menu-item index="/Share?classId=4">创作集</el-menu-item> -->
                             </el-submenu>
                             <el-submenu index="/Aboutme">
                               <template slot="title"><i class="fa fa-wa fa-flask"></i> 实验室</template>
-                              <el-menu-item index="">H5作品集</el-menu-item>
-                              <el-menu-item index="">美食美荟网站</el-menu-item>
-                              <el-menu-item index="">美食美荟小程序</el-menu-item>
-                              <el-menu-item index="">简历模板</el-menu-item>
+                              <el-menu-item v-for="(item,index) in projectList" index=""><a :href="item.nav_url"  target="_blank">{{item.nav_name}}</a></el-menu-item>
                             </el-submenu>
                             <el-menu-item index="/Reward"><i class="fa fa-wa fa-cutlery"></i> 赞赏</el-menu-item>
                             <el-menu-item index="/Friendslink"><i class="fa fa-wa fa-users"></i> 伙伴</el-menu-item>
@@ -59,6 +53,7 @@
                             </div>
                         </el-menu>
                     </div>
+                    <!-- 移动端导航 -->
                     <div class="mobileBox">
                         <div class="hideMenu">
                             <i @click="pMenu=!pMenu" class="el-icon-menu"></i>
@@ -67,17 +62,11 @@
                                     <el-menu-item index="/Home"><i class="fa fa-wa fa-home"></i> 首页</el-menu-item>
                                      <el-submenu index="/Share" >
                                           <template slot="title"><i class="fa fa-wa fa-archive"></i> 分类</template>
-                                         <el-menu-item v-for="(item,index) in classList" :index="'/Share?classId='+item.class_id" >{{item.cate_name}}</el-menu-item>
-                                         <!-- <el-menu-item index="/Share?classId=2">闲言碎语</el-menu-item>
-                                         <el-menu-item index="/Share?classId=3">事件簿</el-menu-item>
-                                         <el-menu-item index="/Share?classId=4">创作集</el-menu-item> -->
+                                          <el-menu-item v-for="(item,index) in classList" :index="'/Share?classId='+item.class_id" >{{item.cate_name}}</el-menu-item>
                                      </el-submenu>
                                      <el-submenu index="2">
                                             <template slot="title"><i class="fa fa-wa fa-flask"></i> 实验室</template>
-                                           <el-menu-item index="/Home">H5作品集</el-menu-item>
-                                           <el-menu-item index="/Home">美食美荟网站</el-menu-item>
-                                           <el-menu-item index="/Home">美食美荟小程序</el-menu-item>
-                                           <el-menu-item index="/Home">简历模板</el-menu-item>
+                                            <el-menu-item v-for="(item,index) in projectList" index=""><a :href="item.nav_url" target="_blank">{{item.nav_name}}</a></el-menu-item>
                                      </el-submenu>
                                      <el-menu-item index="/Reward"><i class="fa fa-wa fa-cutlery"></i> 赞赏</el-menu-item>
                                      <el-menu-item index="/Friendslink"><i class="fa fa-wa fa-users"></i> 伙伴</el-menu-item>
@@ -122,19 +111,20 @@
     </div>
 </template>
 <script>
-    import {ArtClassData} from '../../pubJS/server.js'
+    import {ArtClassData,LoginOut,navMenList} from '../../pubJS/server.js'
     export default {
         data() { //选项 / 数据
             return {
-                userInfo:'',
-                haslogin:false,
-                classList:'',
-                activeIndex: '/',
+                userInfo:'',//用户信息
+                haslogin:false,//是否已登录
+                classList:'',//技术分类
+                activeIndex: '/',//当前选择的路由模块
                 state: '',//icon点击状态
                 pMenu:true,//手机端菜单打开
                 // path:'',//当前打开页面的路径
                 input:'',//input输入内容
-                headBg:'url(src/img/headbg05.jpg)'
+                headBg:'url(src/img/headbg05.jpg)',//头部背景图
+                projectList:''//项目列表
             }
         },
         watch:{
@@ -165,7 +155,7 @@
             },
             logoinFun: function(msg){//用户登录和注册跳转
                 // console.log(msg);
-                sessionStorage.setItem('logUrl',this.$route.fullPath);
+                localStorage.setItem('logUrl',this.$route.fullPath);
                 // console.log(666,this.$router.currentRoute.fullPath);
                 if(msg==0){
                     this.$router.push({path:'/Login?login=0'});
@@ -181,17 +171,23 @@
                      cancelButtonText: '取消',
                      type: 'warning'
                    }).then(() => {
-                       if(sessionStorage.getItem('userInfo')){
-                           sessionStorage.removeItem('userInfo');
-                           that.haslogin = false;
-                           that.$router.replace({path:that.$route.fullPath});
-                           this.$message({
-                             type: 'success',
-                             message: '退出成功!'
-                           });
-                       }
-
-
+                        // console.log(that.$route.path);
+                       LoginOut(localStorage.getItem('accessToken'),function(result){
+                        //    console.log(result);
+                           if(localStorage.getItem('userInfo')){
+                               localStorage.removeItem('userInfo');
+                               that.haslogin = false;
+                            //    that.$router.replace({path:that.$route.fullPath});
+                               window.location.reload();
+                               that.$message({
+                                 type: 'success',
+                                 message: '退出成功!'
+                               });
+                           }
+                           if(that.$route.path=='/UserInfo'){
+                               that.$router.push({path:'/'});
+                           }
+                       })
                    }).catch(() => {
                     //
                    });
@@ -201,16 +197,20 @@
                 var that = this;
                 this.activeIndex = this.$route.path=='/'?'/Home':this.$route.path;
                 // console.log(this.$router,this.$route);
-                if(sessionStorage.getItem('userInfo')){
+                if(localStorage.getItem('userInfo')){
                     that.haslogin = true;
-                    that.userInfo = JSON.parse(sessionStorage.getItem('userInfo'));
-                    console.log(that.userInfo);
+                    that.userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                    // console.log(that.userInfo);
                 }else{
                     that.haslogin = false;
                 }
-                ArtClassData(function(msg){
+                ArtClassData(function(msg){//文章分类
                     // console.log(msg);
                     that.classList = msg;
+                })
+                navMenList(function(msg){//实验室项目列表获取
+                    // console.log(msg);
+                    that.projectList = msg[0].ChildsSon;
                 })
             }
 
@@ -227,7 +227,29 @@
            '$route':'routeChange'
          },
         created() { //生命周期函数
-            console.log( this.$store);
+            //判断当前页面是否被隐藏
+            var that = this;
+            var hiddenProperty = 'hidden' in document ? 'hidden' :
+               'webkitHidden' in document ? 'webkitHidden' :
+               'mozHidden' in document ? 'mozHidden' :
+               null;
+           var visibilityChangeEvent = hiddenProperty.replace(/hidden/i, 'visibilitychange');
+           var onVisibilityChange = function(){
+               if (document[hiddenProperty]) {//被隐藏
+                   document.title='藏好啦(つд⊂)';
+               }else{
+                   document.title='被发现啦(*´∇｀*)';//当前窗口打开
+                   if(that.$route.path!='/DetailShare'){
+                       if(localStorage.getItem('userInfo')){
+                           that.haslogin = true;
+                       }else{
+                           that.haslogin = false;
+                       }
+                   }
+               }
+           }
+           document.addEventListener(visibilityChangeEvent, onVisibilityChange);
+            // console.log();
             this.routeChange();
 
         }
@@ -282,7 +304,6 @@
     border:none;
     padding:0;
 }
-
 
 .headBox>ul li.el-menu-item:hover,.headBox>ul li.el-submenu:hover .el-submenu__title{
     background:#48456C;
@@ -392,6 +413,7 @@
     position: relative;
     height:38px;
     line-height: 38px;
+    color:#fff;
 }
 .hideMenu{
     position: relative;
@@ -445,7 +467,7 @@
 .hideMenu ul.mlistmenu.pshow{
     display: block;
 }
-.hideMenu ul.mlistmenu .el-submenu__icon-arrow{
+.hideMenu ul.mlistmenu .el-submenu__icon-arrow,.mobileBox  li.el-menu-item a{
     color:#fff;
 }
 

@@ -6,12 +6,12 @@
                     留言板
                 </a>
             </h1>
-            
+
         </header>
         <section>
-            <h2>有什么话要对我说吗？这里是你畅所欲言的地方，可以咨询，可以交流，可以感叹，可以发飙，但不可以订外卖。</h2>
+            <h2>走过路过不要错过！交流、咨询、吐槽、感叹、勾搭都在这里，尽情畅谈！</h2>
             <div class="">
-                <img src="src/img/message0.jpg" alt="">
+                <img src="src/img/timg.jpg"  alt="">
             </div>
         </section>
     </div>

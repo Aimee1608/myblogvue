@@ -191,10 +191,12 @@ import {getRegister,UserLogin} from '../../pubJS/server.js'
                 }
                 if(!that.emailErr&&!that.passwordErr){
                     UserLogin(that.email,that.password,function(msg){
+                        // console.log(msg);
                         if(msg.code==1010){//登录成功
-                             sessionStorage.setItem('userInfo',JSON.stringify(msg.data));
-                             if(sessionStorage.getItem('logUrl')){
-                                 that.$router.push({path:sessionStorage.getItem('logUrl')});
+                             localStorage.setItem('userInfo',JSON.stringify(msg.data));
+                             localStorage.setItem('accessToken',msg.token);
+                             if(localStorage.getItem('logUrl')){
+                                 that.$router.push({path:localStorage.getItem('logUrl')});
                              }else{
                                  that.$router.push({path:'/'});
                              }

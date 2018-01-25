@@ -37,7 +37,7 @@
                 </div>
             </header>
             <div class="article-content">
-                <p>
+                <p style="text-indent:2em;">
                     {{item.description}}
                 </p>
                 <p>
