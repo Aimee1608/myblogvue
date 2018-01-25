@@ -15,6 +15,7 @@
         <wbc-footer></wbc-footer>
     </div>
 </template>
+
 <script>
 import header from '../publicTem/header.vue'
 import footer from '../publicTem/footer.vue'
