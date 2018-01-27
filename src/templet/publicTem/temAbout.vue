@@ -9,9 +9,10 @@
         </header>
         <section>
             <p class="">
-                <img src="src/img/aboutme.jpg" alt="" class="aboutmeImg">
+                <img :src="this.$store.state.aboutmeObj.image?this.$store.state.aboutmeObj.image:'src/img/aboutme.jpg'" alt="" class="aboutmeImg">
             </p>
-            <p>
+            <p v-html="this.$store.state.aboutmeObj.brief">{{this.$store.state.aboutmeObj.brief}}</p>
+            <!-- <p>
                 欢迎来到Mango Ya！我是Aimee，是一个可爱的girl，前端程序媛，喜欢各种有趣的事物，爱好各种动手的小玩意儿
             </p>
             <p>
@@ -22,7 +23,7 @@
             </p>
             <p>
                 博客建于2017年2月9日，2018年1月23日更新到Vue
-            </p>
+            </p> -->
         </section>
     </div>
 </template>
@@ -42,9 +43,7 @@ import {AboutMeData} from '../../pubJS/server.js'
 
         },
         created() { //生命周期函数
-            AboutMeData(function(msg){
-                console.log(msg);
-            })
+
         }
     }
 </script>

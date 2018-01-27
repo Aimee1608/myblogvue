@@ -188,14 +188,21 @@ const FriendUrlData = (callback) =>{
 
 //查询关于我
 const AboutMeData = (callback) =>{
-    let url = portUrl + 'outh/AboutMeData';
-    Vue.http.get(url).then(response => response.json()).then(num => {
-        if(num.code==1001){
-            callback && callback(num.data);
-        }else{
-            alert("查询失败");
-        }
-    })
+    if(sessionStorage.getItem('AboutMeData')){
+        var data = JSON.parse(sessionStorage.getItem('AboutMeData'));
+        callback && callback(data)
+    }else{
+        let url = portUrl + 'outh/AboutMeData';
+        Vue.http.get(url).then(response => response.json()).then(num => {
+            if(num.code==1001){
+                sessionStorage.setItem('AboutMeData',JSON.stringify(num.data));
+                callback && callback(num.data);
+            }else{
+                alert("查询失败");
+            }
+        })
+    }
+
 }
 
 //文章点击收藏 点击喜欢
@@ -276,7 +283,7 @@ const UserInfoSave = (obj,callback) =>{
     })
 }
 
-
+//初始化时间
 const initDate = (oldDate,full) => {
     var odate = new Date(oldDate);
     var year =  odate.getFullYear();
@@ -293,6 +300,33 @@ const initDate = (oldDate,full) => {
         return date
     }
 }
+
+//获取主题信息
+const changeTheme = (callback) => {
+    // var obj = {
+    //     headBg:"https://diygod.me/images/header-sagiri.jpg",
+    //     myTou:"https://diygod.me/images/DIYgod.jpg",
+    //     rightTou:"https://diygod.me/images/card.jpg",
+    //     footBg:"https://diygod.me/images/footer.png",
+    //     scrollTop:"https://diygod.me/images/scroll.png"
+    // }
+    if(sessionStorage.getItem('changeThemeObj')){
+        var data = JSON.parse(sessionStorage.getItem('changeThemeObj'));
+        callback && callback(data)
+    }else{
+        let url = portUrl + 'outh/ThemeMy';
+        Vue.http.get(url).then(response => response.json()).then(num => {
+            if(num.code==1001){
+                sessionStorage.setItem('changeThemeObj',JSON.stringify(num.data))
+                callback && callback(num.data);
+            }else{
+                alert("查询失败");
+            }
+        })
+    }
+}
+
+
 
 export {
         getRegister,//注册
@@ -318,5 +352,5 @@ export {
         getUserInfo,//用户信息查询
         UserInfoSave,//修改用户信息
         initDate,//设置时间
-        vuexStore
+        changeTheme,//获取主题信息
     }

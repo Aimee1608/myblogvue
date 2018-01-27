@@ -40,7 +40,7 @@
                 <p style="text-indent:2em;">
                     {{item.description}}
                 </p>
-                <p>
+                <p  style="max-height:300px;overflow:hidden">
                     <img :src="item.image" alt="" class="fitImg">
                 </p>
             </div>
@@ -124,7 +124,7 @@ import {ShowArticleAll,ArtClassData,initDate} from '../../pubJS/server.js'
                 ShowArticleAll(that.artId,that.sendId,that.keywords,(result)=>{
                     if(result.code==1001){
                         var msg = result.data;
-                        console.log(result.data);
+                        // console.log(result.data);
                         if(msg.length>0&&msg.length<8){
                             that.hasMore = false
                         }else{
@@ -132,7 +132,7 @@ import {ShowArticleAll,ArtClassData,initDate} from '../../pubJS/server.js'
                         }
                         that.articleList = that.articleList.concat(msg);
                         that.artId = msg[msg.length-1].id;
-                        console.log(that.artId);
+                        // console.log(that.artId);
                     }else if(result.code==1003){
                         that.hasMore = false;
                     }

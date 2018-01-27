@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
+import store from "./store/index.js"
 // import VueLess from 'less-loader'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
@@ -9,6 +10,7 @@ import 'element-ui/lib/theme-default/index.css'
 
 import routes from './routes.js'
 import './css/style.css'
+
 
 Vue.use(Vuex)
 Vue.use(VueRouter)
@@ -23,7 +25,7 @@ const router = new VueRouter({
 
 
 
-/** 验证用户是否登录 **/
+// /** 验证用户是否登录 **/
 // router.beforeEach((to,from,next) => {
 //     let token = sessionStorage.getItem('accessToken');  //获取token
 //     console.log(888);
@@ -51,5 +53,5 @@ const router = new VueRouter({
 var vm = new Vue({
   el: '#app',
   router,
-
+  store
 })

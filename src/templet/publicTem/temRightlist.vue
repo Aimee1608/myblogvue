@@ -2,9 +2,9 @@
     <div class="rightlistBox">
         <section >
             <div class="r1-head">
-                <img src="src/img/snjz.jpg" alt="">
-                <h1>
-                    <span>网红</span>diygod
+                <img :src="this.$store.state.themeObj.center_smailimg?this.$store.state.themeObj.center_smailimg:'src/img/headtou02.jpg'" alt="">
+                <h1 v-if="this.$store.state.themeObj.user_start!=0">
+                    <span>女王</span>Aimee
                 </h1>
             </div>
             <div class="r1-body">
@@ -76,8 +76,11 @@
                 </li>
             </ul>
         </section>
-        <div :class="gotoTop?'toTop':'toTop goTop'" @click="toTopfun">
-            <img src="src/img/long.png" alt="">
+        <div v-if="this.$store.state.themeObj.user_start!=0" :class="gotoTop?'toTop':'toTop goTop'" @click="toTopfun">
+            <img :src="this.$store.state.themeObj.right_img?this.$store.state.themeObj.right_img:'src/img/scroll.png'" alt="">
+        </div>
+        <div v-else :class="gotoTop?'toTophui':'toTophui goTophui'" @click="toTopfun">
+            <img :src="this.$store.state.themeObj.right_img?this.$store.state.themeObj.right_img:'src/img/scroll.png'" alt="">
         </div>
     </div>
 </template>
@@ -95,7 +98,8 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
                 browseList:'',
                 artCommentList:'',
                 likeNum:0,
-                initLikeNum:0,
+                initLikeNum:0
+
             }
         },
         methods: { //事件处理器
@@ -190,7 +194,7 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
     border-radius: 4px 4px 0 0 ;
     text-align: center;
     position: relative;
-    box-shadow: inset 0 -70px 100px -50px rgba(0,0,0,.5);
+    /*box-shadow: inset 0 -70px 100px -50px rgba(0,0,0,.5);*/
 }
 .rightlistBox .r1-head img{
     width:100%;
@@ -209,7 +213,7 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
     left:50%;
 }
 .rightlistBox .r1-head h1 span{
-    opacity: 0.2;
+    opacity: 0.3;
 }
 .rightlistBox .r1-body p{
     font-size: 14px;
@@ -362,16 +366,44 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
     right:40px;
     top:-360px;
     z-index: 99;
-    width:100px;
+    width:70px;
     height:900px;
-    transition: all .5s ease-in-out;
+    transition: all .5s 0.3s ease-in-out;
     cursor: pointer;
 }
 .goTop{
     top:-900px;
 }
-.toTop img{
+.toTop img,.toTophui img{
     width:100%;
-    height:100%;
+    height:auto;
+}
+.toTophui{
+    position: fixed;
+    right:10px;
+    bottom:80px;
+    z-index: 99;
+    width:120px;
+    height:120px;
+    transition: all .5s 0.3s ease-in-out;
+    cursor: pointer;
+    animation: toflow 2s ease-in-out infinite;
+}
+@keyframes toflow {
+    0%{
+        /*top:400px;*/
+        transform: scale(0.95) translate(0,10px);
+    }
+    50%{
+        /*top:410px;*/
+        transform:scale(1) translate(0,0px);
+    }
+    100%{
+        /*top:400px;*/
+        transform:scale(0.95) translate(0,10px);
+    }
+}
+.goTophui{
+    bottom:1000px;
 }
 </style>

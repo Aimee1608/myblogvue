@@ -8,7 +8,7 @@
                             <el-menu-item index="/Home"><i class="fa fa-wa fa-home"></i> 首页</el-menu-item>
                             <el-submenu index="/Share">
                               <template slot="title"><i class="fa fa-wa fa-archive"></i> 分类</template>
-                              <el-menu-item v-for="(item,index) in classList" key="item.class_id" :index="'/Share?classId='+item.class_id" >{{item.cate_name}}</el-menu-item>
+                              <el-menu-item v-for="(item,index) in classListObj" key="item.class_id" :index="'/Share?classId='+item.class_id" >{{item.cate_name}}</el-menu-item>
                             </el-submenu>
                             <el-submenu index="/Aboutme">
                               <template slot="title"><i class="fa fa-wa fa-flask"></i> 实验室</template>
@@ -62,7 +62,7 @@
                                     <el-menu-item index="/Home"><i class="fa fa-wa fa-home"></i> 首页</el-menu-item>
                                      <el-submenu index="/Share" >
                                           <template slot="title"><i class="fa fa-wa fa-archive"></i> 分类</template>
-                                          <el-menu-item v-for="(item,index) in classList" :index="'/Share?classId='+item.class_id" >{{item.cate_name}}</el-menu-item>
+                                          <el-menu-item v-for="(item,index) in classListObj" :index="'/Share?classId='+item.class_id" >{{item.cate_name}}</el-menu-item>
                                      </el-submenu>
                                      <el-submenu index="2">
                                             <template slot="title"><i class="fa fa-wa fa-flask"></i> 实验室</template>
@@ -96,14 +96,17 @@
                 </el-col>
             </el-row>
         </div>
-        <div class="headImgBox" :style="{backgroundImage:headBg}">
+        <div class="headImgBox" :style="{backgroundImage:this.$store.state.themeObj.top_image?'url('+this.$store.state.themeObj.top_image+')':'url(src/img/headbg05.jpg)'}">
+            <div class="scene">
+                <div><span id="luke"></span></div>
+            </div>
             <div class="h-information">
                 <a href="#">
-                    <img src="../../img/head.jpg" alt="">
+                    <img :src="this.$store.state.themeObj.head_portrait?this.$store.state.themeObj.head_portrait:'url(src/img/tou.png)'" alt="">
                 </a>
                 <h2 class="h-description">
                     <a href="#">
-                        Write the Code. Change the World.
+                        {{this.$store.state.themeObj.autograph?this.$store.state.themeObj.autograph:"Write the Code. Change the World."}}
                     </a>
                 </h2>
             </div>
@@ -111,19 +114,21 @@
     </div>
 </template>
 <script>
-    import {ArtClassData,LoginOut,navMenList} from '../../pubJS/server.js'
+    import {ArtClassData,LoginOut,navMenList,changeTheme,AboutMeData} from '../../pubJS/server.js'
+    import {Typeit} from '../../pubJS/plug.js'
     export default {
         data() { //选项 / 数据
             return {
                 userInfo:'',//用户信息
                 haslogin:false,//是否已登录
-                classList:'',//技术分类
+                classListObj:'',//技术分类
                 activeIndex: '/',//当前选择的路由模块
                 state: '',//icon点击状态
                 pMenu:true,//手机端菜单打开
                 // path:'',//当前打开页面的路径
                 input:'',//input输入内容
                 headBg:'url(src/img/headbg05.jpg)',//头部背景图
+                headTou:'',//头像
                 projectList:''//项目列表
             }
         },
@@ -206,7 +211,7 @@
                 }
                 ArtClassData(function(msg){//文章分类
                     // console.log(msg);
-                    that.classList = msg;
+                    that.classListObj = msg;
                 })
                 navMenList(function(msg){//实验室项目列表获取
                     // console.log(msg);
@@ -214,9 +219,6 @@
                 })
             }
 
-
-        },
-        mounted() {
 
         },
         components: { //定义组件
@@ -251,12 +253,29 @@
            document.addEventListener(visibilityChangeEvent, onVisibilityChange);
             // console.log();
             this.routeChange();
+            //设置主题
+            changeTheme(function(msg){
+                // console.log(msg);
+                that.$store.state.themeObj = msg
+                console.log('主题',that.$store.state.themeObj );
+            });
+            //关于我的信息
+            AboutMeData(function(msg){
+                console.log('关于我',msg);
+                that.$store.state.aboutmeObj = msg
+                console.log(that.$store.state.aboutmeObj );
+            })
+            // console.log(this.$store.state.UserList);
+        },
+        mounted(){//页面元素加载完成
+            Typeit("#luke");//打字机效果
 
         }
     }
 </script>
 
 <style>
+
 /*********头部导航栏********/
 /*头部导航栏盒子*/
 .headBack{
@@ -525,6 +544,30 @@
     font-size: 18px;
     font-weight: 700;
 }
-
-
+.headImgBox .scene{
+    width:100%;
+    /*height:300px;*/
+    text-align: center;
+    font-size: 100px;
+    color:#fff;
+    position: absolute;
+    left:0;
+    top:160px;
+    font-family: 'Sigmar One';
+    text-shadow: 0 2px 2px #47456d;
+}
+.saying:after {
+  content: "|";
+  font-family: Arial, sans-serif;
+  font-size: 1em;
+  /*line-height: 0;*/
+  display: inline-block;
+  vertical-align: baseline;
+  opacity: 1;
+  animation: caret 500ms infinite;
+}
+@keyframes caret {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
 </style>
