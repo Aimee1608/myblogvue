@@ -1,10 +1,11 @@
+<!-- 友情链接模块 -->
 <template>
 <div class="tFriendsBox">
     <h1>棒棒哒</h1>
     <el-row>
         <el-col :span="12" class="tf-item" v-for="item in friendslink" key="item">
             <a :href="item.url" target="_blank">
-                <img :src="item.image"  onerror="this.onerror=null;this.src='src/img/tou.jpg'">
+                <img :src="item.image?item.image:'src/img/tou.jpg'"  onerror="this.onerror=null;this.src='src/img/tou.jpg'">
                 <h4>{{item.name}}</h4>
                 <p>{{item.description}}</p>
             </a>
@@ -18,7 +19,7 @@ import {FriendUrlData} from '../../pubJS/server.js'
 export default {
     data() { //选项 / 数据
         return {
-            friendslink:''
+            friendslink:''//友情链接
         }
     },
     methods: { //事件处理器

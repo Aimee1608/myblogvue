@@ -1,3 +1,4 @@
+<!-- 友情链接 -->
 <template>
     <div>
         <wbc-nav></wbc-nav>

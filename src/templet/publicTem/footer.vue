@@ -1,4 +1,6 @@
+<!-- 底部公用 -->
 <template>
+    <!-- Aimee的 -->
     <div v-if="this.$store.state.themeObj.user_start!=0" class="footBack footBackQian">
         <div class="footer-img" :style="{background:this.$store.state.themeObj.bottom_img?'url('+this.$store.state.themeObj.bottom_img+') no-repeat 50%':'url(/src/img/footer01.png) no-repeat 50%'}">
         </div>
@@ -17,6 +19,7 @@
             </p>
         </div>
     </div>
+    <!-- Qinlh的 -->
     <div v-else class="footBack footBackHui">
         <div class="footer-img" >
             <img :src="this.$store.state.themeObj.bottom_img?this.$store.state.themeObj.bottom_img:'/src/img/footer01.png'" alt="">
@@ -60,7 +63,6 @@
                       var seconds = parseInt(longTime / 1000 % 60, 10);//计算剩余的秒数
                       that.longTime = days+"天" + hours+"小时" + minutes+"分"+seconds+"秒";
                 },1000)
-
             }
         },
         components: { //定义组件
@@ -69,13 +71,6 @@
         created() { //生命周期函数
             //替换底部图片
             var that = this;
-            // console.log(that.$store.state.themeObj);
-            if(that.$store.state.themeObj&&that.$store.state.themeObj.bottom_img){
-                var obj = that.$store.state.themeObj
-                that.footBg ="url("+ obj.bottom_img+") no-repeat 50%";
-            }else{
-                that.footBg ="url(/src/img/footer01.png) no-repeat 50%";
-            }
             that.runTime();
         }
     }
@@ -150,6 +145,7 @@
 .footBack a:hover{
     color:#000;
 }
+/*心脏呼吸*/
 .footBack .fheart{
     width:25px;
     height:25px;
@@ -166,6 +162,12 @@
     50%{transform: scale(0.8)}
     100%{transform: scale(1)}
 }
+@-webkit-keyframes heartScale {
+    0%{transform: scale(1)}
+    50%{transform: scale(0.8)}
+    100%{transform: scale(1)}
+}
+/*时间跳动*/
 .timeJump{
     animation:my-face 5s infinite ease-in-out;
     -webkit-animation:my-face 5s infinite ease-in-out;

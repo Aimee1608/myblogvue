@@ -1,8 +1,10 @@
+<!-- 头部公用 -->
 <template>
     <div class="">
         <div class="headBack">
             <el-row class="container">
                 <el-col :span="24">
+                    <!-- pc端导航 -->
                     <div class="headBox">
                         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" :router="true">
                             <el-menu-item index="/Home"><i class="fa fa-wa fa-home"></i> 首页</el-menu-item>
@@ -102,7 +104,7 @@
             </div>
             <div class="h-information">
                 <a href="#">
-                    <img :src="this.$store.state.themeObj.head_portrait?this.$store.state.themeObj.head_portrait:'url(src/img/tou.png)'" alt="">
+                    <img :src="this.$store.state.themeObj.head_portrait?this.$store.state.themeObj.head_portrait:'src/img/tou.png'" alt="">
                 </a>
                 <h2 class="h-description">
                     <a href="#">
@@ -202,7 +204,7 @@
                 var that = this;
                 this.activeIndex = this.$route.path=='/'?'/Home':this.$route.path;
                 // console.log(this.$router,this.$route);
-                if(localStorage.getItem('userInfo')){
+                if(localStorage.getItem('userInfo')){//存储用户信息
                     that.haslogin = true;
                     that.userInfo = JSON.parse(localStorage.getItem('userInfo'));
                     // console.log(that.userInfo);
@@ -218,8 +220,6 @@
                     that.projectList = msg[0].ChildsSon;
                 })
             }
-
-
         },
         components: { //定义组件
 
@@ -256,19 +256,17 @@
             //设置主题
             changeTheme(function(msg){
                 // console.log(msg);
-                that.$store.state.themeObj = msg
-                console.log('主题',that.$store.state.themeObj );
+                that.$store.state.themeObj = msg;
+                // console.log('主题',that.$store.state.themeObj );
             });
             //关于我的信息
             AboutMeData(function(msg){
-                console.log('关于我',msg);
+                // console.log('关于我',msg);
                 that.$store.state.aboutmeObj = msg
-                console.log(that.$store.state.aboutmeObj );
             })
-            // console.log(this.$store.state.UserList);
         },
         mounted(){//页面元素加载完成
-            Typeit("#luke");//打字机效果
+            Typeit(this.$store.state.themeObj.user_start,"#luke");//打字机效果
 
         }
     }
@@ -543,12 +541,14 @@
     margin-top: 20px;
     font-size: 18px;
     font-weight: 700;
+    /*font-family: 'Sigmar One';*/
 }
 .headImgBox .scene{
     width:100%;
     /*height:300px;*/
     text-align: center;
     font-size: 100px;
+    font-weight: 200;
     color:#fff;
     position: absolute;
     left:0;

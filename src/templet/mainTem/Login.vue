@@ -1,7 +1,11 @@
+<!-- 登录注册 -->
 <template>
     <div>
         <div class="container">
-            <h1 class="loginTitle"><a href="#/">Aimee 的博客</a></h1>
+            <h1 class="loginTitle">
+                <a href="#/">{{this.$store.state.themeObj.user_start!=0?"Aimee 的博客":"Qinlh 的博客"}}</a>
+            </h1>
+            <!-- 登录注册 -->
             <div v-show="!err2005" class="">
                 <div v-if="login==1" class="loginBox">
                     <div class="lr-title">
@@ -40,10 +44,10 @@
                     </el-alert>
                     <h3><a href="#">忘记密码？</a></h3>
                     <div class="lr-btn tcolors-bg" @click="gotoHome">登录</div>
-                    <div class="otherLogin">
-                        <a href="#"><i class="fa fa-fw fa-wechat"></i></a>
-                        <a href="#"><i class="fa fa-fw fa-qq"></i></a>
-                        <a href="#"><i class="fa fa-fw fa-weibo"></i></a>
+                    <div class="otherLogin" >
+                        <a href="javascript:void(0)"><i class="fa fa-fw fa-wechat"></i></a>
+                        <a href="javascript:void(0)"><i class="fa fa-fw fa-qq"></i></a>
+                        <a href="javascript:void(0)"><i class="fa fa-fw fa-weibo"></i></a>
                     </div>
                 </div>
                 <div v-else class="registerBox">
@@ -106,6 +110,7 @@
                     <div class="lr-btn tcolors-bg" @click="newRegister" v-loading.fullscreen.lock="fullscreenLoading"  element-loading-text="提交中">注册</div>
                 </div>
             </div>
+            <!-- 注册进度状态 -->
             <div v-show="err2005" class="registerSuc">
                 <div class="sucIcon">
                     <el-steps :space="100" :active="step" finish-status="success">
@@ -134,27 +139,27 @@ import {getRegister,UserLogin} from '../../pubJS/server.js'
     export default {
         data() { //选项 / 数据
             return {
-                username: '',
-                email: '',
-                password: '',
-                nusername: '',
-                nemail: '',
-                npassword: '',
-                npassword2: '',
-                login: 0,
-                emailErr: false,
-                passwordErr: false,
-                loginErr: false,
+                username: '',//用户名
+                email: '',//邮箱
+                password: '',//密码
+                nusername: '',//新用户注册名
+                nemail: '',//新用户注册邮箱
+                npassword: '',//新用户注册密码
+                npassword2: '',//新用户注册重复密码
+                login: 0,//是否已经登录
+                emailErr: false,//登录邮箱错误
+                passwordErr: false,//的轮毂密码错误
+                loginErr: false,//登录错误
                 loginTitle:'用户名或密码错误',
-                nusernameErr:false,
-                nemailErr: false,
-                npasswordErr: false,
-                npassword2Err: false,
-                registerErr: false,
+                nusernameErr:false,//新用户注册用户名错误
+                nemailErr: false,//新用户注册邮箱错误
+                npasswordErr: false,//新用户注册密码错误
+                npassword2Err: false,//新用户注册重复密码错误
+                registerErr: false,//已注册错误
                 registerTitle: '该邮箱已注册',
-                err2005: false,
-                step: 1,
-                fullscreenLoading: false,
+                err2005: false,//是否展示注册进度条状态
+                step: 1,//注册进度
+                fullscreenLoading: false,//全屏loading
                 urlstate: 0,//重新注册
             }
         },
@@ -175,7 +180,7 @@ import {getRegister,UserLogin} from '../../pubJS/server.js'
                     that.step = 1;
                 }
             },
-            gotoHome:function(){
+            gotoHome:function(){//用户登录
                 var that = this;
                 var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/ ;
                 var preg = /^(\w){6,12}$/;
@@ -217,8 +222,8 @@ import {getRegister,UserLogin} from '../../pubJS/server.js'
                         }
                     })
                 }
-            },//注册提交
-            newRegister:function(){
+            },
+            newRegister:function(){//注册提交
                 var that = this;
                 var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/ ;
                 var preg = /^(\w){6,12}$/;
@@ -268,7 +273,7 @@ import {getRegister,UserLogin} from '../../pubJS/server.js'
                 this.err2005 = false;
                 this.$router.push({path:'/Login?login=1'});
             },
-            goRegister: function(){
+            goRegister: function(){//去注册
                 this.err2005 = false;
                 this.$router.push({path:'/Login?login=0'});
             }
@@ -282,7 +287,6 @@ import {getRegister,UserLogin} from '../../pubJS/server.js'
            '$route':'routeChange'
          },
         created() { //生命周期函数
-
             var that = this;
             that.routeChange();
         }
@@ -290,6 +294,7 @@ import {getRegister,UserLogin} from '../../pubJS/server.js'
 </script>
 
 <style>
+/*登录注册标题*/
 .loginTitle{
     text-align: center;
     font-size: 26px;
@@ -358,6 +363,11 @@ import {getRegister,UserLogin} from '../../pubJS/server.js'
     text-align: center;
     margin-left:-40px;
     margin-right: -40px;
+    visibility: hidden;
+}
+.loginBox .otherLogin p{
+    margin-bottom:20px;
+    font-size: 16px;
 }
 .loginBox .otherLogin a i{
     display: inline-block;

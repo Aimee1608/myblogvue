@@ -1,3 +1,4 @@
+<!-- 右侧固定导航栏 -->
 <template>
     <div class="rightlistBox">
         <section >
@@ -9,27 +10,27 @@
             </div>
             <div class="r1-body">
                 <p>你能抓到我么？</p>
-                <div class="catch-me">
+                <div class="catch-me" >
                     <div class="">
                         <el-tooltip class="item" effect="dark" content="Github" placement="top">
-                            <a href="https://github.com/Aimee1608" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                            <a :href="catchMeObj[isAimee].git" target="_blank"><i class="fa fa-fw fa-github"></i></a>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="QQ" placement="top">
-                            <a href="src/img/QQ.jpg" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+                            <a :href="catchMeObj[isAimee].qq" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="微博" placement="top">
-                            <a href="https://weibo.com/u/2242812941?refer_flag=1001030101_&is_all=1" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+                            <a :href="catchMeObj[isAimee].sina" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
                         </el-tooltip>
                     </div>
                     <div class="">
                         <el-tooltip class="item" effect="dark" content="微信公众号" placement="top">
-                            <a href="src/img/erwm.jpg" target="_blank"><i class="fa fa-fw fa-wechat"></i></a>
+                            <a :href="catchMeObj[isAimee].wechat" target="_blank"><i class="fa fa-fw fa-wechat"></i></a>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="CSDN" placement="top">
-                            <a href="http://blog.csdn.net/Aimee1608" target="_blank"><i class="">C</i></a>
+                            <a :href="catchMeObj[isAimee].csdn" target="_blank"><i class="">C</i></a>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="简历模板" placement="top">
-                            <a href="#" target="_blank"><i class="fa fa-fw fa-file-code-o"></i></a>
+                            <a :href="catchMeObj[isAimee].job" target="_blank"><i class="fa fa-fw fa-file-code-o"></i></a>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="更多" placement="top">
                             <a href="#/Aboutme" ><i class="el-icon-more"></i></a>
@@ -54,7 +55,7 @@
             </h2>
             <ul class="rs3-textwidget">
                 <li class="rs3-item" v-for="(item,index) in artCommentList" key="item">
-                    <a :href="'#/DetailShare?aid='+item.id">
+                    <a :href="'#/DetailShare?aid='+item.id" target="_blank">
                         <div class="rs3-photo">
                             <img :src="item.avatar"  onerror="this.onerror=null;this.src='src/img/tou.jpg'">
                         </div>
@@ -72,14 +73,15 @@
             </h2>
             <ul>
                 <li v-for="(item,index) in browseList" key="item">
-                    <a href="#">{{item.title}}</a> —— {{item.browse_count}} 次围观
+                    <a :href="'#/DetailShare?aid='+item.id" target="_blank">{{item.title}}</a> —— {{item.browse_count}} 次围观
                 </li>
             </ul>
         </section>
-        <div v-if="this.$store.state.themeObj.user_start!=0" :class="gotoTop?'toTop':'toTop goTop'" @click="toTopfun">
+        <!-- 右侧上滑小图片 -->
+        <div  v-if="this.$store.state.themeObj.user_start!=0" :class="gotoTop?'toTop hidden':'toTop goTop hidden'" @click="toTopfun">
             <img :src="this.$store.state.themeObj.right_img?this.$store.state.themeObj.right_img:'src/img/scroll.png'" alt="">
         </div>
-        <div v-else :class="gotoTop?'toTophui':'toTophui goTophui'" @click="toTopfun">
+        <div v-else :class="gotoTop?'toTophui hidden':'toTophui goTophui hidden'" @click="toTopfun">
             <img :src="this.$store.state.themeObj.right_img?this.$store.state.themeObj.right_img:'src/img/scroll.png'" alt="">
         </div>
     </div>
@@ -93,13 +95,31 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
             return {
                 fixDo:false,
                 loveme:false,
-                gotoTop:false,
-                going:false,
-                browseList:'',
-                artCommentList:'',
-                likeNum:0,
-                initLikeNum:0
-
+                gotoTop:false,//返回顶部
+                going:false,//是否正在执行上滑动作
+                browseList:'',//浏览量最多
+                artCommentList:'',//评论量最多
+                likeNum:0,//do you like me 点击量
+                initLikeNum:0,//初始化喜欢数量
+                catchMeObj:{//抓住我 个人信息
+                    Qinlh:{
+                        git:'https://gitee.com/qinlh',
+                        qq:'src/img/qinlh/qq.jpg',
+                        sina:'https://weibo.com/u/2313631533',
+                        wechat:'src/img/qinlh/wechat.jpg',
+                        csdn:'http://www.qinlinhui.cn',
+                        job:'http://qinlh.mangoya.cn/MyResume/'
+                    },
+                    Aimee:{
+                        git:'https://github.com/Aimee1608',
+                        qq:'src/img/aimee/QQ.jpg',
+                        sina:'https://weibo.com/u/2313631533',
+                        wechat:'src/img/aimee/erwm.jpg',
+                        csdn:'http://blog.csdn.net/Aimee1608',
+                        job:'http://aimee.mangoya.cn'
+                    }
+                },
+                isAimee:this.$store.state.themeObj.user_start!=0?"Aimee":"Qinlh"//判断是哪个的博客
             }
         },
         methods: { //事件处理器
@@ -158,17 +178,18 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
             }
             //查询浏览量最多的10篇文章数据
             ShowBrowseCount(function(data){
-                // console.log(data);
+                // console.log('浏览最多10文章数据',data);
                 that.browseList = data;
             });
             //查询文章评论量最大的10篇文章
             ShowArtCommentCount(function(data){
-                // console.log(data);
+                // console.log('评论最多10文章数据',data);
                 that.artCommentList = data;
             })
             showLikeData(function(data){
                 that.likeNum = that.initLikeNum = data;
             })
+
         }
     }
 </script>

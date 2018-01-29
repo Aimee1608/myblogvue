@@ -1,3 +1,4 @@
+<!-- 赞赏模块 -->
 <template>
     <div class="tRewardBox tcommonBox">
         <header>
@@ -9,11 +10,11 @@
         </header>
         <section>
             <div class="">
-                <img src="https://diygod.b0.upaiyun.com/donate.jpg" alt="">
+                <img src="src/img/timg.jpg" alt="" class="maxW" >
             </div>
             <h1>@赞赏说明：</h1>
             <p>
-                若无特殊说明，赞赏之款项用于给我和酸奶改善饮食（*/∇＼*）
+                若无特殊说明，赞赏之款项用于给我补充大脑（*/∇＼*）
             </p>
             <p>如果我给你带来过欢乐，或者对你有所帮助，欢迎赞赏支持:)</p>
             <p>有任何疑问请在下面留言。</p>
@@ -48,9 +49,8 @@
     export default {
         data() { //选项 / 数据
             return {
-                rateValue:2,
-                rewardData:'',
-                tableData: [{
+                rewardData:'',//赞赏二维码
+                tableData: [{//赞赏数据
                      date: '2016-05-02',
                      name: '王小虎',
                      address: '555'
@@ -70,7 +70,7 @@
             }
         },
         methods: { //事件处理器
-            showInitDate:function(date,full){
+            showInitDate:function(date,full){//时间处理
                 return initDate(date,full)
             }
         },
@@ -79,7 +79,7 @@
         },
         created() { //生命周期函数
             var that = this;
-            AdmireData(function(msg){
+            AdmireData(function(msg){//获取用户赞赏数据
                 // console.log(msg);
                 that.tableData = msg.data;
                 that.rewardData = msg.admire_code;

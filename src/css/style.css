@@ -327,6 +327,9 @@ a {
   .toTop {
     display: none!important;
   }
+  .hidden {
+    display: none!important;
+  }
 }
 @media screen and (min-width: 801px) {
   .headBox li.el-menu-item,
@@ -335,9 +338,6 @@ a {
   }
 }
 @media screen and (max-width: 990px) {
-  .hidden {
-    display: none!important;
-  }
   div.rightlistBox .rs2.fixed {
     position: relative;
     top: 0;
@@ -382,6 +382,9 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.maxW {
+  max-width: 100%;
 }
 .fwb {
   font-weight: bold;

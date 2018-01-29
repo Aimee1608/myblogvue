@@ -1,3 +1,4 @@
+<!-- 留言评论模块 -->
 <template>
     <div class="tmsgBox" id="tmsgBox" >
         <div class="tmsg-respond" id="respondChild">
@@ -45,7 +46,7 @@
                                     {{item.username}}
                                 </div>
                                 <div class="i-class">
-                                    {{randomGet()}}
+                                    {{item.label}}
                                 </div>
                                 <div class="i-time">
                                     <time>{{item.time}}</time>
@@ -67,7 +68,7 @@
                                                 {{citem.username}} <span>回复</span> {{citem.reply_name}}
                                             </div>
                                             <div class="i-class">
-                                                {{randomGet()}}
+                                                {{citem.label}}
                                             </div>
                                             <div class="i-time">
                                                 <time>{{citem.time}}</time>
@@ -87,7 +88,6 @@
                 </ul>
                 <h1 v-show='hasMore' class="tcolors-bg" @click="addMoreFun" >查看更多</h1>
                 <h1 v-show='!hasMore' class="tcolors-bg" >没有更多</h1>
-
             </div>
         </div>
     </div>
@@ -114,14 +114,6 @@
                 leavePid:'',//赞赏等其他模块的分类id
                 pid:'',//回复评论的一级commentId
                 sendTip:'发送~',
-                usertab:[//用户标签
-                    "天然呆",
-                    "小萌新",
-                    "学霸",
-                    "萌萌哒",
-                    "技术宅",
-                    "忠实粉"
-                ],
                 OwOlist:[//表情包和表情路径
                     {'title':'微笑','url':'weixiao.gif'},
                    {'title':'嘻嘻','url':'xixi.gif'},
@@ -222,16 +214,13 @@
                 }
                 return str;
           },
-          randomGet:function(){//获取随机标签
-              return this.usertab[Math.floor(Math.random()*this.usertab.length)]
-          },
           //发送留言
           sendMsg:function(){//留言
               var that = this;
               if(that.textarea){
                   that.sendTip = '咻~~';
                   if(that.leaveId==0){
-                      console.log(that.textarea,that.userId,that.aid,that.leavePid,that.pid);
+                    //   console.log(that.textarea,that.userId,that.aid,that.leavePid,that.pid);
                       setArticleComment(that.textarea,that.userId,that.aid,that.leavePid,that.pid,function(msg){
                         //   console.log(msg);
                           that.textarea = '';
@@ -244,7 +233,7 @@
                       })
                   }else{
                       setOuthComment(that.textarea,that.userId,that.aid,that.leaveId,that.pid,function(msg){
-                          console.log(msg);
+                        //   console.log(msg);
                           that.textarea = '';
                           that.removeRespond();
                         that.routeChange();
@@ -295,7 +284,7 @@
                   that.haslogin = true;
                   that.userInfo = JSON.parse(localStorage.getItem('userInfo'));
                   that.userId = that.userInfo.userId;
-                  console.log(that.userInfo);
+                //   console.log(that.userInfo);
               }else{
                   that.haslogin = false;
               }
@@ -309,15 +298,13 @@
               function setData(result){
                   if(result.code==1001){//查询数据
                       var msg = result.data;
-                    //   console.log(666,result.data);
+                      console.log("留言数据",result.data);
                       if(msg.length>0&&msg.length<8){
                           that.hasMore = false
                       }else{
                           that.hasMore = true;
                       }
-
                       that.commentList = that.commentList.concat(msg);
-
                       that.pageId = msg[msg.length-1].comment_id;
 
                   }else if(result.code==1003){//查询数据为空
@@ -348,7 +335,7 @@
           addMoreFun:function(){//查看更多
               this.showCommentList(false);
           },
-          routeChange:function(){
+          routeChange:function(){//重新加载
               var that = this;
               this.showCommentList(true);
           }

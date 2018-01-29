@@ -1,5 +1,5 @@
+<!-- 文章列表 -->
 <template>
-
     <el-row class="sharelistBox">
         <div v-if="this.$route.name=='Share'&&!this.$route.query.keywords" class="shareTitle">
             <div class="ui label" >
@@ -40,8 +40,8 @@
                 <p style="text-indent:2em;">
                     {{item.description}}
                 </p>
-                <p  style="max-height:300px;overflow:hidden">
-                    <img :src="item.image" alt="" class="fitImg">
+                <p  style="max-height:300px;overflow:hidden;text-align:center;">
+                    <img :src="item.image" alt="" class="maxW">
                 </p>
             </div>
             <div class="viewdetail">

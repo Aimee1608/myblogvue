@@ -1,3 +1,4 @@
+<!-- 关于我 -->
 <template>
     <div class="tcommonBox">
         <header>
@@ -9,7 +10,7 @@
         </header>
         <section>
             <p class="">
-                <img :src="this.$store.state.aboutmeObj.image?this.$store.state.aboutmeObj.image:'src/img/aboutme.jpg'" alt="" class="aboutmeImg">
+                <img :src="this.$store.state.aboutmeObj.image?this.$store.state.aboutmeObj.image:'src/img/maoto.png'" alt="" onerror="this.onerror=null;this.src='src/img/maoto.png'" class="aboutmeImg">
             </p>
             <p v-html="this.$store.state.aboutmeObj.brief">{{this.$store.state.aboutmeObj.brief}}</p>
             <!-- <p>
@@ -29,11 +30,10 @@
 </template>
 
 <script>
-import {AboutMeData} from '../../pubJS/server.js'
     export default {
         data() { //选项 / 数据
             return {
-                rateValue:2,
+
             }
         },
         methods: { //事件处理器
@@ -50,7 +50,7 @@ import {AboutMeData} from '../../pubJS/server.js'
 
 <style>
 .aboutmeImg{
-    width:300px;
-    height:300px;
+    max-width:100%;
+    /*height:300px;*/
 }
 </style>

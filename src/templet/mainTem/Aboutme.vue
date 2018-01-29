@@ -1,3 +1,4 @@
+<!-- 关于我 -->
 <template>
     <div>
         <wbc-nav></wbc-nav>
@@ -39,7 +40,7 @@ import temMessage from '../publicTem/temMessage.vue'
             'wbc-footer':footer
         },
         created() { //生命周期函数
-            
+
 
         }
     }

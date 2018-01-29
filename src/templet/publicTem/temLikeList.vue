@@ -1,3 +1,4 @@
+<!-- 用户喜欢收藏列表模块 -->
 <template>
     <div>
         <div class="container">
@@ -35,12 +36,12 @@
                         <p style="text-indent:2em;">
                             {{item.description}}
                         </p>
-                        <p>
-                            <img :src="'http://'+item.image" alt="" class="fitImg">
+                        <p style="max-height:300px;overflow:hidden;text-align:center;">
+                            <img :src="item.image" alt="" class="maxW">
                         </p>
                     </div>
                     <div class="viewdetail">
-                        <a class="cancelbtn" href="javascript:void(0);" @click="cancelLikeCollect(item.id)">取消{{like==1?'喜欢':'收藏'}}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a class="cancelbtn tcolors-bg" href="javascript:void(0);" @click="cancelLikeCollect(item.id)">取消{{like==1?'喜欢':'收藏'}}</a>&nbsp;&nbsp;&nbsp;&nbsp;
                         <a class="tcolors-bg" :href="'#/DetailShare?aid='+item.id" target="_blank">
                             阅读全文>>
                         </a>
@@ -154,6 +155,6 @@ import {ShowArticleAll,initDate,getLikeCollectList,getArtLikeCollect} from '../.
     font-size: 30px;
 }
 .cancelbtn{
-    background: #efefef;
+    background: #ddd;
 }
 </style>

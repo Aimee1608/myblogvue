@@ -4,15 +4,18 @@ import Vuex from 'vuex'
 // @param {[Function]} callback [回调参数]
 // @return {[type]} [返回类型]
 //公共路径
-let portUrl = "http://www.vuebook.com/port/";
+// let portUrl = "http://www.vuebook.com/port/";
+let portUrl = "http://"+window.location.host+"/port/";
+
+// console.log('http666',window.location.host);
 //用户注册
 const getRegister = (username,password,email,callback) =>{
     let url = portUrl+'login/getRegister?username='+username+'&email='+email+'&password='+password;
     Vue.http.get(url).then(response => response.json()).then(num => {
             callback && callback(num)
     })
-
 }
+
 //用户登录
 const UserLogin =  (email,password,callback) =>{
     let url = portUrl + 'login/UserLogin?email='+email+'&password='+password;
@@ -20,6 +23,7 @@ const UserLogin =  (email,password,callback) =>{
             callback && callback(num);
     })
 }
+
 //用户退出
 const LoginOut = (token,callback) =>{
     let url = portUrl + 'login/LoginOut?token='+token;
@@ -27,8 +31,10 @@ const LoginOut = (token,callback) =>{
             callback && callback(num);
     })
 }
+
 //文章分类查询
 const ArtClassData = (callback) => {
+
     if(sessionStorage.getItem('classList')){
         var data = JSON.parse(sessionStorage.getItem('classList'));
         callback && callback(data)
@@ -45,6 +51,8 @@ const ArtClassData = (callback) => {
         })
     }
 }
+
+//实验室 列表项目
 const navMenList  = (callback) => {
     if(sessionStorage.getItem('navMenList')){
         var data = JSON.parse(sessionStorage.getItem('navMenList'));
@@ -91,6 +99,8 @@ const ShowBrowseCount = (callback) =>{
     Vue.http.get(url).then(response => response.json()).then(num => {
         if(num.code==1001){
             callback && callback(num.data);
+        }else if(num.code==1005){
+            return;
         }else{
             alert("查询失败");
         }
@@ -103,6 +113,8 @@ const ShowArtCommentCount = (callback) =>{
     Vue.http.get(url).then(response => response.json()).then(num => {
         if(num.code==1001){
             callback && callback(num.data);
+        }else if(num.code==1005){
+            return;
         }else{
             alert("查询失败");
         }
@@ -179,6 +191,8 @@ const FriendUrlData = (callback) =>{
     Vue.http.get(url).then(response => response.json()).then(num => {
         if(num.code==1001){
             callback && callback(num.data);
+        }else if(num.code==1005){
+            return;
         }else{
             alert("查询失败");
         }
@@ -271,9 +285,10 @@ const UserInfoSave = (obj,callback) =>{
         'frie_name':obj.name,
         'frie_url':obj.url,
         'frie_description':obj.description,
-        'friend_img':obj.image
+        'friend_img':obj.image,
+        'label':obj.label
     };
-    console.log(data);
+    // console.log(data);
     Vue.http.get(url,{params:data}).then(response => response.json()).then(num => {
         if(num.code==1001){
             callback && callback(num.msg);

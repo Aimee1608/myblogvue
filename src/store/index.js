@@ -8,8 +8,9 @@ Vue.use(Vuex)
 export const state = {
   loading: false,
   UserList: [111,222,333], //用户列表
-  themeObj: 0,
-  aboutmeObj:''
+  themeObj: 0,//主题
+  aboutmeObj:'',//关于我的信息
+  host:"http://"+window.location.host+"/port/"//接口路径
 }
 
 export default new Vuex.Store({

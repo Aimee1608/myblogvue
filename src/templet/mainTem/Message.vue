@@ -1,3 +1,4 @@
+<!-- 留言板 -->
 <template>
     <div>
         <wbc-nav></wbc-nav>

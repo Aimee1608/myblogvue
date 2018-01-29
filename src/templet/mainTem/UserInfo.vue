@@ -1,3 +1,4 @@
+<!-- 用户中心 -->
 <template>
     <div>
         <wbc-nav></wbc-nav>
@@ -16,11 +17,11 @@
                             <span class="leftTitle">头像</span>
                             <el-upload
                               class="avatar-uploader"
-                              action="http://www.vuebook.com/port/Userinfo/UploadImg"
+                               :action="this.$store.state.host+'Userinfo/UploadImg'"
                               :show-file-list="false"
                               :on-success="handleAvatarSuccess"
                               :before-upload="beforeAvatarUpload">
-                              <img v-if="userInfoObj.avatar" :src="userInfoObj.avatar"   onerror="this.onerror=null;this.src='src/img/tou.jpg'" class="avatar">
+                              <img v-if="userInfoObj.avatar" :src="userInfoObj.avatar?userInfoObj.avatar:'src/img/tou.jpg'"   onerror="this.onerror=null;this.src='src/img/tou.jpg'" class="avatar">
                               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                               <div slot="tip" class="el-upload__tip">点击上传头像，只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
@@ -39,6 +40,14 @@
                             <template>
                               <el-radio class="radio" v-model="userInfoObj.sex" label="0">男</el-radio>
                               <el-radio class="radio" v-model="userInfoObj.sex" label="1">女</el-radio>
+                            </template>
+                        </li>
+                        <li>
+                            <span class="leftTitle">个性标签</span>
+                            <template>
+                                <el-radio-group v-model="userInfoObj.label">
+                                   <el-radio v-for="(item,index) in usertab" :label="item" >{{item}}</el-radio>
+                               </el-radio-group>
                             </template>
                         </li>
                         <li>
@@ -68,13 +77,14 @@
                         </li>
                         <li  class="avatarlist">
                             <span class="leftTitle">网站logo</span>
+                            <!-- 上传图片 -->
                             <el-upload
                               class="avatar-uploader"
-                              action="http://www.vuebook.com/port/Userinfo/UploadImg"
+                              :action="this.$store.state.host+'Userinfo/UploadImg'"
                               :show-file-list="false"
                               :on-success="handleLogoSuccess"
                               :before-upload="beforeLogoUpload">
-                              <img v-if="userInfoObj.image" :src="userInfoObj.image"  onerror="this.onerror=null;this.src='src/img/tou.jpg'"  class="avatar">
+                              <img v-if="userInfoObj.image" :src="userInfoObj.image?userInfoObj.image:'src/img/tou.jpg'"  onerror="this.onerror=null;this.src='src/img/tou.jpg'"  class="avatar">
                               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                               <div slot="tip" class="el-upload__tip">点击上传头像，只能上传jpg/png文件，且不超过500kb</div>
                             </el-upload>
@@ -117,7 +127,10 @@
                             <span class="leftTitle">性别</span>
                             <span>{{userInfoObj.sex==0?'男':'女'}}</span>
                         </li>
-                        <!-- <li></li> -->
+                        <li>
+                            <span class="leftTitle">个性标签</span>
+                            <span>{{userInfoObj.label?userInfoObj.label:"未设置"}}</span>
+                        </li>
                         <li>
                             <span class="leftTitle">是否展示友链</span>
                             <el-switch
@@ -162,7 +175,16 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                 isEdit: false,
                 userInfo:'',//本地存储的用户信
                 userInfoObj:'',//用户的信息
-                state:true //是否展示友链开关
+                state:true, //是否展示友链开关
+                usertabChosed:'天然呆',
+                usertab:[//用户标签
+                    "天然呆",
+                    "小萌新",
+                    "学霸",
+                    "萌萌哒",
+                    "技术宅",
+                    "忠实粉"
+                ]
             }
         },
         methods: { //事件处理器
@@ -171,7 +193,7 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                 this.userInfoObj.avatar = URL.createObjectURL(file.raw);
             },
             beforeAvatarUpload(file) {//判断头像大小
-                const isJPG = file.type === 'image/jpeg';
+                const isJPG = file.type === 'image/jpeg/png';
                 const isLt2M = file.size / 1024 / 1024 < 2;
 
                 if (!isJPG) {
@@ -226,10 +248,11 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                     that.userInfo = JSON.parse(localStorage.getItem('userInfo'));
                     that.userId = that.userInfo.userId;
                     getUserInfo(that.userId,function(msg){
+                        // console.log('用户中心',msg.data);
                         that.userInfoObj = msg.data;
                         that.state = msg.data.state==1?true:false;
                     })
-                    console.log(that.userInfo);
+                    // console.log(that.userInfo);
                 }else{
                     that.haslogin = false;
                 }

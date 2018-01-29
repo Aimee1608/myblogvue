@@ -1,3 +1,4 @@
+<!-- 文章详情 -->
 <template>
     <div>
         <wbc-nav></wbc-nav>

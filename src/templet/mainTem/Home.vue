@@ -1,3 +1,4 @@
+<!-- 首页 -->
 <template>
     <div>
         <wbc-nav></wbc-nav>
@@ -6,7 +7,7 @@
                 <el-col :sm="24" :md="16" style="transition:all .5s ease-out;margin-bottom:30px;">
                     <wbc-sharelist></wbc-sharelist>
                 </el-col>
-                <el-col :sm="24"  :md="8" class="hidden">
+                <el-col :sm="24"  :md="8" >
                     <wbc-rightlist></wbc-rightlist>
                 </el-col>
             </el-row>

@@ -1,3 +1,4 @@
+<!-- 用户喜欢和收藏列表 -->
 <template>
     <div>
         <wbc-nav></wbc-nav>

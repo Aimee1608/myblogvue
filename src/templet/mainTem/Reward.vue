@@ -1,3 +1,4 @@
+<!-- 赞赏页面 -->
 <template>
     <div>
         <wbc-nav></wbc-nav>
