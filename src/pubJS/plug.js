@@ -385,6 +385,7 @@ import Vue from 'vue'
 })(window, document);
 
 
+//调用
 const Typeit = (isAimee,emId) =>{
     var theater = new TheaterJS();
         //使用TheaterJS，你可以建立多个角色，每个角色都有自己的“经验”，它们使用这些“经验”可以互相“交谈”。

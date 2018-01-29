@@ -132,7 +132,7 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
                 }
                 //获取详情接口
                 getArticleInfo(that.aid,that.userId,function(msg){
-                    // console.log(msg);
+                    // console.log('文章详情',msg);
                     that.detailObj = msg;
                     that.likeCount = msg.like_count?msg.like_count:0;
                     that.collectCount = msg.collect_count?msg.collect_count:0;

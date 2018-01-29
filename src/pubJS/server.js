@@ -225,9 +225,9 @@ const AboutMeData = (callback) =>{
 const getArtLikeCollect = (userId,artId,islike,callback) =>{
     var url = '';
     if(islike==1){
-        url = portUrl + 'article/getArtCollect?user_id='+userId+'&art_id='+artId;
-    }else{
         url = portUrl + 'article/getArtLike?user_id='+userId+'&art_id='+artId;
+    }else{
+        url = portUrl + 'article/getArtCollect?user_id='+userId+'&art_id='+artId;
     }
     Vue.http.get(url).then(response => response.json()).then(num => {
         if(num.code==1001){

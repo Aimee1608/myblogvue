@@ -61,10 +61,10 @@ import {ShowArticleAll,initDate,getLikeCollectList,getArtLikeCollect} from '../.
     export default {
         data() { //选项 / 数据
             return {
-                artId:0,
-                hasMore:true,
-                articleList:'',
-                like:1,
+                artId:0,//文章id
+                hasMore:true,//是否还有更多数据
+                articleList:'',//文章列表
+                like:1,//
                 articleName:'',
                 userId:''
             }
@@ -77,7 +77,7 @@ import {ShowArticleAll,initDate,getLikeCollectList,getArtLikeCollect} from '../.
                 var that = this;
                 // console.log(id);
                 getArtLikeCollect(that.userId,id,that.like,function(msg){
-                    console.log(msg);
+                    console.log('取消成功',msg);
                     that.routeChange();
                 })
             },
