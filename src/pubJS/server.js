@@ -211,6 +211,8 @@ const AboutMeData = (callback) =>{
             if(num.code==1001){
                 sessionStorage.setItem('AboutMeData',JSON.stringify(num.data));
                 callback && callback(num.data);
+            }else if(num.code==1005){
+                return;
             }else{
                 alert("查询失败");
             }
