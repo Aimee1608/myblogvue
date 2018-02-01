@@ -23,17 +23,16 @@
                               :before-upload="beforeAvatarUpload">
                               <img v-if="userInfoObj.avatar" :src="userInfoObj.avatar?userInfoObj.avatar:'src/img/tou.jpg'"   onerror="this.onerror=null;this.src='src/img/tou.jpg'" class="avatar">
                               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                              <div slot="tip" class="el-upload__tip">点击上传头像，只能上传jpg/png文件，且不超过500kb</div>
+                              <div slot="tip" class="el-upload__tip">点击上传头像，只能上传jpg/png文件，且不超过1mb</div>
                             </el-upload>
                         </li>
                         <li class="username">
                             <span class="leftTitle">昵称</span>
-                            <el-input v-model="userInfoObj.username" placeholder="昵称"></el-input> <i v-show="state" class="fa fa-wa fa-asterisk"></i>
+                            <el-input v-model="userInfoObj.username" placeholder="昵称"></el-input> <i  class="fa fa-wa fa-asterisk"></i>
                         </li>
                         <li>
                             <span class="leftTitle">电子邮件</span>
-                            <el-input v-model="userInfoObj.email" placeholder="email" ></el-input>
-
+                            <span>{{userInfoObj.email}}</span>
                         </li>
                         <li>
                             <span class="leftTitle">性别</span>
@@ -60,7 +59,7 @@
                         </li>
                         <li >
                             <span class="leftTitle">网站名称</span>
-                            <el-input v-model="userInfoObj.name" placeholder="网站名称"></el-input>
+                            <el-input v-model="userInfoObj.name" placeholder="网站名称"></el-input><i v-show="state" class="fa fa-wa fa-asterisk"></i>
                         </li>
                         <li >
                             <span class="leftTitle">网站地址</span>
@@ -73,7 +72,7 @@
                               :rows="3"
                               placeholder="请输入内容"
                               v-model="userInfoObj.description" >
-                            </el-input>
+                            </el-input><i v-show="state" class="fa fa-wa fa-asterisk"></i>
                         </li>
                         <li  class="avatarlist">
                             <span class="leftTitle">网站logo</span>
@@ -86,7 +85,7 @@
                               :before-upload="beforeLogoUpload">
                               <img v-if="userInfoObj.image" :src="userInfoObj.image?userInfoObj.image:'src/img/tou.jpg'"  onerror="this.onerror=null;this.src='src/img/tou.jpg'"  class="avatar">
                               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                              <div slot="tip" class="el-upload__tip">点击上传头像，只能上传jpg/png文件，且不超过500kb</div>
+                              <div slot="tip" class="el-upload__tip">点击上传头像，只能上传jpg/png文件，且不超过1mb</div>
                             </el-upload>
                         </li>
                     </ul>
@@ -193,7 +192,7 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                 this.userInfoObj.avatar = URL.createObjectURL(file.raw);
             },
             beforeAvatarUpload(file) {//判断头像大小
-                const isJPG = file.type === 'image/jpeg/png';
+                const isJPG = file.type === ('image/png'||'image/jpg');
                 const isLt2M = file.size / 1024 / 1024 < 2;
 
                 if (!isJPG) {
@@ -208,7 +207,7 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                 this.userInfoObj.image = URL.createObjectURL(file.raw);
             },
             beforeLogoUpload(file) { //控制网站logo图片大小
-                const isJPG = file.type === 'image/jpeg/png';
+                const isJPG = file.type === ('image/png'||'image/jpg');
                 const isLt2M = file.size / 1024 / 1024 < 2;
 
                 if (!isJPG) {
@@ -227,7 +226,16 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                 }
                 if(that.state){
                     if(!that.userInfoObj.url){//如果展示友链 网址为必填项
-                         that.$message.error('请正确填写网址');
+                         that.$message.error('请填写网址');
+                         return;
+                    }
+                    if(!that.userInfoObj.name){//如果展示友链 网址为必填项
+                         that.$message.error('请填写网站名称');
+                         return;
+                    }
+                    userInfoObj.description
+                    if(!that.userInfoObj.description){//如果展示友链 网址为必填项
+                         that.$message.error('请填写网站简介');
                          return;
                     }
 

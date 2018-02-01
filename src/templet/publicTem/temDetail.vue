@@ -84,25 +84,35 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
             likecollectHandle: function(islike){//用户点击喜欢0,用户点击收藏1
                 var that = this;
                 if(localStorage.getItem('userInfo')){//判断是否登录
+                    var tip = '';
                     if(islike==1){
                         if(!that.likeArt){
                             that.likeCount+=1;
                             that.likeArt = true;
+                            tip = '已点赞';
                         }else{
                             that.likeCount-=1;
                             that.likeArt = false;
+                            tip = '已取消点赞'
                         }
+
                     }else{
                         if(!that.collectArt){
                             that.collectCount+=1;
                             that.collectArt = true;
+                            tip = '已收藏';
                         }else{
                             that.collectCount-=1;
                             that.collectArt = false;
+                            tip = '已取消收藏';
                         }
                     }
                     getArtLikeCollect(that.userId,that.aid,islike,function(msg){
-                        console.log(msg);
+                        console.log('喜欢收藏成功',msg);
+                        that.$message({
+                             message: tip,
+                             type: 'success'
+                           });
                     })
                 }else{//未登录 前去登录。
                     that.$confirm('登录后即可点赞和收藏，是否前往登录页面?', '提示', {

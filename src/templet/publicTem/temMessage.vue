@@ -75,7 +75,7 @@
                                             </div>
                                     </header>
                                     <section>
-                                        <p>{{citem.content}}</p>
+                                        <p v-html="analyzeEmoji(citem.content)">{{citem.content}}</p>
                                         <div v-show="haslogin" class="tmsg-replay" @click="respondMsg(citem.comment_id,item.comment_id)">
                                             回复
                                         </div>
@@ -232,7 +232,8 @@
                           },1000)
                       })
                   }else{
-                      setOuthComment(that.textarea,that.userId,that.aid,that.leaveId,that.pid,function(msg){
+                      //其他模块留言回复
+                      setOuthComment(that.textarea,that.userId,that.aid,that.leaveId,that.leavePid,that.pid,function(msg){
                         //   console.log(msg);
                           that.textarea = '';
                           that.removeRespond();

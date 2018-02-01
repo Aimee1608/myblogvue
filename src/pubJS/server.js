@@ -150,8 +150,8 @@ const setArticleComment = (content,user_id,article_id,leave_pid,pid,callback) =>
 
 
 //其他评论
-const setOuthComment = (content,user_id,article_id,leave_id,pid,callback) =>{
-    let url = portUrl + 'comment/setOuthComment?content='+content+'&user_id='+user_id+'&article_id='+article_id+'&leave_id='+leave_id+'&pid='+pid;
+const setOuthComment = (content,user_id,article_id,leave_id,leave_pid,pid,callback) =>{
+    let url = portUrl + 'comment/setOuthComment?content='+content+'&user_id='+user_id+'&article_id='+article_id+'&leave_id='+leave_id+'&leave_pid='+leave_pid+'&pid='+pid;
     Vue.http.get(url).then(response => response.json()).then(num => {
             callback && callback(num);
     })
