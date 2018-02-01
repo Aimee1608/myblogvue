@@ -192,14 +192,14 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                 this.userInfoObj.avatar = URL.createObjectURL(file.raw);
             },
             beforeAvatarUpload(file) {//判断头像大小
-                const isJPG = file.type === ('image/png'||'image/jpg');
-                const isLt2M = file.size / 1024 / 1024 < 2;
-
+                const isJPG = file.type == 'image/png'||file.type=='image/jpg'||file.type=='image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 1;
+                // console.log(file);
                 if (!isJPG) {
-                  this.$message.error('上传头像图片只能是 JPG 格式!');
+                  this.$message.error('上传头像图片只能是 JPG/JPEG/PNG 格式!');
                 }
                 if (!isLt2M) {
-                  this.$message.error('上传头像图片大小不能超过 2MB!');
+                  this.$message.error('上传头像图片大小不能超过 1MB!');
                 }
                 return isJPG && isLt2M;
             },
@@ -207,14 +207,14 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                 this.userInfoObj.image = URL.createObjectURL(file.raw);
             },
             beforeLogoUpload(file) { //控制网站logo图片大小
-                const isJPG = file.type === ('image/png'||'image/jpg');
-                const isLt2M = file.size / 1024 / 1024 < 2;
+                const isJPG = file.type == 'image/png'||file.type=='image/jpg'||file.type=='image/jpeg';
+                const isLt2M = file.size / 1024 / 1024 < 1;
 
                 if (!isJPG) {
-                  this.$message.error('上传头像图片只能是 JPG 格式!');
+                  this.$message.error('上传头像图片只能是 JPG/JPEG/PNG 格式!');
                 }
                 if (!isLt2M) {
-                  this.$message.error('上传头像图片大小不能超过 2MB!');
+                  this.$message.error('上传头像图片大小不能超过 1MB!');
                 }
                 return isJPG && isLt2M;
             },
@@ -233,7 +233,6 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                          that.$message.error('请填写网站名称');
                          return;
                     }
-                    userInfoObj.description
                     if(!that.userInfoObj.description){//如果展示友链 网址为必填项
                          that.$message.error('请填写网站简介');
                          return;
