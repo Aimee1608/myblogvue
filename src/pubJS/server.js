@@ -23,7 +23,6 @@ const UserLogin =  (email,password,callback) =>{
             callback && callback(num);
     })
 }
-
 //用户退出
 const LoginOut = (token,callback) =>{
     let url = portUrl + 'login/LoginOut?token='+token;
