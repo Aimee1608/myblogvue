@@ -278,6 +278,36 @@ a {
   line-height: 30px;
   display: block;
 }
+@media screen and (max-width: 500px) {
+  .dlikeColBox {
+    display: block!important;
+    float: none!important;
+    margin: 10px auto!important;
+    text-align: center!important;
+  }
+  .el-message-box {
+    max-width: 80%;
+  }
+  .userInfoBox .el-input,
+  .userInfoBox .el-textarea {
+    max-width: 280px!important;
+  }
+  .userInfoBox li {
+    padding: 15px 10px!important;
+  }
+  .userInfoBox li .el-radio-group .el-radio {
+    margin-left: 15px!important;
+    margin-bottom: 5px;
+  }
+  .tFriendsBox .tf-item a {
+    padding: 0 5px 0 60px!important;
+  }
+  .tFriendsBox .tf-item a img {
+    width: 50px!important;
+    height: 50px!important;
+    left: 5px!important;
+  }
+}
 @media screen and (max-width: 700px) {
   .headBox {
     display: none;
@@ -295,6 +325,9 @@ a {
   .headImgBox .scene {
     font-size: 50px!important;
     top: 120px;
+  }
+  .donate-item div {
+    width: 100%!important;
   }
 }
 @media screen and (min-width: 701px) {

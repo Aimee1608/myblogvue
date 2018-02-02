@@ -216,6 +216,36 @@ a {
     display: block;
 }
 
+@media screen and (max-width: 500px) {//500px 手机尺寸
+    .dlikeColBox{//点赞收藏手机端换行
+        display: block!important;
+        float:none!important;
+        margin: 10px auto!important;
+        text-align: center!important;
+    }
+    .el-message-box{//提示弹框手机框展示
+        max-width: 80%;
+    }
+    .userInfoBox  .el-input, .userInfoBox  .el-textarea{//用户中心表框
+        max-width:280px!important;
+    }
+    .userInfoBox li{//li 更改padding  缩小距离
+        padding:15px 10px!important;
+    }
+    .userInfoBox li .el-radio-group .el-radio{//标签样式调整
+        margin-left: 15px!important;
+        margin-bottom: 5px;
+    }
+    .tFriendsBox .tf-item a{//好友列表自适应缩小尺寸
+        padding:0 5px 0 60px!important;
+         img{
+            width:50px!important;
+            height:50px!important;
+            left:5px!important;
+        }
+    }
+}
+
 @media screen and (max-width: 700px) {
     .headBox{
         display: none;
@@ -233,6 +263,10 @@ a {
     .headImgBox .scene{
         font-size: 50px!important;
         top:120px;
+    }
+
+     .donate-item div{//赞赏图片
+        width:100%!important;
     }
 }
 

@@ -44,16 +44,16 @@
                     <span @click="pdonate=!pdonate">赞赏</span>
                 </div>
                 <el-row :class="pdonate?'donate-body':'donate-body donate-body-show'" :gutter="30">
-                    <el-col  :span="8" :offset="4"  class="donate-item">
-                        <img :src="detailObj.wechat_image" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
+                    <el-col  :span="12"   class="donate-item">
                         <div class="donate-tip">
-                            微信扫一扫，向我赞赏
+                            <img :src="detailObj.wechat_image?detailObj.wechat_image:'src/img/tou.jpg'" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
+                            <span>微信扫一扫，向我赞赏</span>
                         </div>
                     </el-col>
-                    <el-col :span="8"  class="donate-item">
-                        <img :src="detailObj.alipay_image" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
+                    <el-col :span="12"  class="donate-item">
                         <div class="donate-tip">
-                            支付宝扫一扫，向我赞赏
+                            <img :src="detailObj.alipay_image?detailObj.alipay_image:'src/img/tou.jpg'" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
+                            <span>支付宝扫一扫，向我赞赏</span>
                         </div>
                     </el-col>
                 </el-row>
@@ -172,16 +172,23 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
     white-space: normal;
     word-wrap: break-word;
     word-break: break-all;
+    overflow-x: hidden;
 }
 .detailBox .article-content p{
     margin:10px 0;
     line-height:24px;
     word-wrap: break-word;
     word-break: break-all;
+    overflow-x: hidden;
 }
 .detailBox .article-content pre{
     word-wrap: break-word;
     word-break: break-all;
+    overflow-x: hidden;
+}
+.detailBox .article-content img{
+    max-width: 100%;
+    overflow-x: hidden;
 }
 .detailBox .viewdetail{
     margin:10px 0 ;
@@ -279,14 +286,28 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
     display: block;
 }
 .donate-item{
-    text-align: center;
+    text-align: right;
+}
+.donate-item:last-child{
+    text-align: left;
 }
 .donate-item img{
     width:100%;
+    display: block;
     height:auto;
 }
 .donate-item div{
-    margin:10px 0;
+    display: inline-block;
+    width: 200px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    text-align: center;
+}
+.donate-item div span{
+    display: inline-block;
+    width:100%;
+    margin: 10px 0;
+    text-align: center;
 }
 .donate-body .donate-item:first-of-type div{
     color:#44b549;

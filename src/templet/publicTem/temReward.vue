@@ -21,16 +21,16 @@
             <hr>
             <h1>@赞赏方式：</h1>
             <el-row   :gutter="30">
-                <el-col  :span="8" :offset="4"  class="donate-item">
-                    <img :src="rewardData.wechat_image" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
+                <el-col  :span="12"   class="donate-item">
                     <div class="donate-tip">
-                        微信扫一扫，向我赞赏
+                        <img :src="rewardData.wechat_image?rewardData.wechat_image:'src/img/tou.jpg'" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
+                        <span>微信扫一扫，向我赞赏</span>
                     </div>
                 </el-col>
-                <el-col :span="8"  class="donate-item">
-                    <img :src="rewardData.alipay_image" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
+                <el-col :span="12"  class="donate-item">
                     <div class="donate-tip">
-                        支付宝扫一扫，向我赞赏
+                        <img :src="rewardData.alipay_image?rewardData.alipay_image:'src/img/tou.jpg'" onerror="this.onerror=null;this.src='src/img/tou.jpg'">
+                        <span>支付宝扫一扫，向我赞赏</span>
                     </div>
                 </el-col>
             </el-row>
@@ -109,22 +109,31 @@
 }
 
 .tRewardBox .donate-item{
-    text-align: center;
-    margin-top:30px;
-    margin-bottom:30px;
+    text-align: right;
+    color:#44b549;
+
+}
+.tRewardBox .donate-item:last-child{
+    text-align: left;
+    color:#00a0e9;
 }
 .tRewardBox .donate-item img{
     width:100%;
+    display: block;
     height:auto;
 }
 .tRewardBox .donate-item div{
-    margin:10px 0;
+    display: inline-block;
+    width:200px;
+    padding:0 10px;
+    text-align: center;
+    box-sizing: border-box;
 }
-.tRewardBox  .donate-item:first-of-type div{
-    color:#44b549;
-}
-.tRewardBox .donate-item:nth-of-type(2) div{
-    color:#00a0e9;
+.tRewardBox .donate-item div span{
+    display: inline-block;
+    width:100%;
+    margin: 10px 0;
+    text-align: center;
 }
 .tRewardBox .el-table__body-wrapper{
     overflow: hidden;
