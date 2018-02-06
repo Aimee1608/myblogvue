@@ -243,8 +243,10 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                      return;
                 }
                 if(that.state){
-                    if(!that.userInfoObj.url){//如果展示友链 网址为必填项
-                         that.$message.error('请填写网址');
+                    var pattern = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
+                    console.log(pattern.test(that.userInfoObj.url));
+                    if(!that.userInfoObj.url ||!pattern.test(that.userInfoObj.url)){//如果展示友链 网址为必填项
+                         that.$message.error('请正确填写网址，如http://www.xxx.com');
                          return;
                     }
                     if(!that.userInfoObj.name){//如果展示友链 网址为必填项

@@ -1,6 +1,6 @@
 <!-- 文章详情模块 -->
 <template>
-        <div class="detailBox tcommonBox">
+        <div class="detailBox tcommonBox" >
             <span class="s-round-date">
                 <span class="month" v-html="showInitDate(detailObj.create_time,'month')+'月'"></span>
                 <span class="day" v-html="showInitDate(detailObj.create_time,'date')"></span>
@@ -160,8 +160,10 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
         },
         created() { //生命周期函数
             var that = this;
+
             this.routeChange();
-        }
+        },
+
     }
 </script>
 
