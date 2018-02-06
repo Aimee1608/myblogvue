@@ -2,8 +2,8 @@
 <template>
         <div class="detailBox tcommonBox">
             <span class="s-round-date">
-                <span class="month">{{showInitDate(detailObj.create_time,'month')}}月</span>
-                <span class="day">{{showInitDate(detailObj.create_time,'date')}}</span>
+                <span class="month" v-html="showInitDate(detailObj.create_time,'month')+'月'"></span>
+                <span class="day" v-html="showInitDate(detailObj.create_time,'date')"></span>
             </span>
             <header>
                 <h1>
@@ -12,7 +12,7 @@
                     </a>
                 </h1>
                 <h2>
-                    <i class="fa fa-fw fa-user"></i>发表于 {{showInitDate(detailObj.create_time,'all')}} •
+                    <i class="fa fa-fw fa-user"></i>发表于 <span v-html="showInitDate(detailObj.create_time,'all')"></span> •
                     <i class="fa fa-fw fa-eye"></i>{{detailObj.browse_count}} 次围观 •
                     <i class="fa fa-fw fa-comments"></i>活捉 {{detailObj.comment_count}} 条 •
                     <span class="rateBox">
@@ -187,7 +187,7 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
     overflow-x: hidden;
 }
 .detailBox .article-content img{
-    max-width: 100%;
+    max-width: 100%!important;
     overflow-x: hidden;
 }
 .detailBox .viewdetail{

@@ -14,7 +14,7 @@
                             </el-submenu>
                             <el-submenu index="/Aboutme">
                               <template slot="title"><i class="fa fa-wa fa-flask"></i> 实验室</template>
-                              <el-menu-item v-for="(item,index) in projectList" index=""><a :href="item.nav_url"  target="_blank">{{item.nav_name}}</a></el-menu-item>
+                              <el-menu-item v-for="(item,index) in projectList" key="item" index=""><a :href="item.nav_url"  target="_blank">{{item.nav_name}}</a></el-menu-item>
                             </el-submenu>
                             <el-menu-item index="/Reward"><i class="fa fa-wa fa-cny"></i> 赞赏</el-menu-item>
                             <el-menu-item index="/Friendslink"><i class="fa fa-wa fa-users"></i> 伙伴</el-menu-item>
@@ -27,7 +27,7 @@
                                       placeholder="搜索"
                                       icon="search"
                                       v-model="input"
-                                      :on-icon-click="pchandleIconClick">
+                                      :on-icon-click="pchandleIconClick" @keyup.enter.native="searchEnterFun">
                                     </el-input>
                                 </div>
                             </div>
@@ -64,11 +64,11 @@
                                     <el-menu-item index="/Home"><i class="fa fa-wa fa-home"></i> 首页</el-menu-item>
                                      <el-submenu index="/Share" >
                                           <template slot="title"><i class="fa fa-wa fa-archive"></i> 分类</template>
-                                          <el-menu-item v-for="(item,index) in classListObj" :index="'/Share?classId='+item.class_id" >{{item.cate_name}}</el-menu-item>
+                                          <el-menu-item v-for="(item,index) in classListObj" key="item.class_id" :index="'/Share?classId='+item.class_id" >{{item.cate_name}}</el-menu-item>
                                      </el-submenu>
                                      <el-submenu index="2">
                                             <template slot="title"><i class="fa fa-wa fa-flask"></i> 实验室</template>
-                                            <el-menu-item v-for="(item,index) in projectList" index=""><a :href="item.nav_url" target="_blank">{{item.nav_name}}</a></el-menu-item>
+                                            <el-menu-item v-for="(item,index) in projectList" key="item" index=""><a :href="item.nav_url" target="_blank">{{item.nav_name}}</a></el-menu-item>
                                      </el-submenu>
                                      <el-menu-item index="/Reward"><i class="fa fa-wa fa-cny"></i> 赞赏</el-menu-item>
                                      <el-menu-item index="/Friendslink"><i class="fa fa-wa fa-users"></i> 伙伴</el-menu-item>
@@ -90,6 +90,7 @@
                                   placeholder=""
                                   icon="search"
                                   v-model="input"
+                                  @keyup.enter.native="searchEnterFun"
                                   :on-icon-click="pchandleIconClick">
                                 </el-input>
                             </div>
@@ -148,17 +149,17 @@
                 if(this.input){
                     this.$router.push({path:'/Share?keywords='+this.input});
                 }
+            },
+            searchEnterFun:function(e){
+                 var keyCode = window.event? e.keyCode:e.which;
+                //  console.log('回车搜索',keyCode,e);
+                 if(keyCode == 13 && this.input){
+                     this.$router.push({path:'/Share?keywords='+this.input});
+                 }
 
             },
             handleSelect(key, keyPath) {//pc菜单选择
                 //    console.log(key, keyPath);
-            },
-
-            handleIconClick(ev) {//搜索
-                    //   console.log(this.state);
-                      if(this.state!=""&&this.state!=undefined&&this.state!=null){
-                            this.$router.push({path:'/Foodlist?keywords='+this.state});
-                      }
             },
             logoinFun: function(msg){//用户登录和注册跳转
                 // console.log(msg);
@@ -257,6 +258,7 @@
             changeTheme(function(msg){
                 // console.log(msg);
                 that.$store.state.themeObj = msg;
+
                 // console.log('主题',that.$store.state.themeObj );
             });
             //关于我的信息
@@ -266,8 +268,12 @@
             })
         },
         mounted(){//页面元素加载完成
-            Typeit(this.$store.state.themeObj.user_start,"#luke");//打字机效果
-
+            // console.log('是否是慧慧',this.$store.state.themeObj.user_start);
+            var that = this;
+            var timer  = setTimeout(function(){
+                Typeit(that.$store.state.themeObj.user_start,"#luke");//打字机效果
+                clearTimeout(timer);
+            },500);
         }
     }
 </script>

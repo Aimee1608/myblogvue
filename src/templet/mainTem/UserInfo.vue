@@ -15,13 +15,15 @@
                     <ul class="userInfoBox">
                         <li class="avatarlist">
                             <span class="leftTitle">头像</span>
+                            <!-- this.$store.state.host -->
+                             <!-- action="http://www.vuebook.com/port/Userinfo/UploadImg" -->
                             <el-upload
                               class="avatar-uploader"
-                               :action="this.$store.state.host+'Userinfo/UploadImg'"
+                              :action="this.$store.state.host+'Userinfo/UploadImg'"
                               :show-file-list="false"
                               :on-success="handleAvatarSuccess"
                               :before-upload="beforeAvatarUpload">
-                              <img v-if="userInfoObj.avatar" :src="userInfoObj.avatar?userInfoObj.avatar:'src/img/tou.jpg'"   onerror="this.onerror=null;this.src='src/img/tou.jpg'" class="avatar">
+                              <img v-if="userInfoObj.avatar" :src="userInfoObj.avatar?wwwHost+userInfoObj.avatar:'src/img/tou.jpg'"   onerror="this.onerror=null;this.src='src/img/tou.jpg'" class="avatar">
                               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                               <div slot="tip" class="el-upload__tip">点击上传头像，只能上传jpg/png文件，且不超过1mb</div>
                             </el-upload>
@@ -45,7 +47,7 @@
                             <span class="leftTitle">个性标签</span>
                             <template>
                                 <el-radio-group v-model="userInfoObj.label">
-                                   <el-radio v-for="(item,index) in usertab" :label="item" >{{item}}</el-radio>
+                                   <el-radio v-for="(item,index) in usertab" key="item" :label="item" >{{item}}</el-radio>
                                </el-radio-group>
                             </template>
                         </li>
@@ -77,13 +79,15 @@
                         <li  class="avatarlist">
                             <span class="leftTitle">网站logo</span>
                             <!-- 上传图片 -->
+                            <!-- :action="this.$store.state.host+'Userinfo/UploadImg'" -->
+                             <!-- action="http://www.vuebook.com/port/Userinfo/UploadImg" -->
                             <el-upload
                               class="avatar-uploader"
                               :action="this.$store.state.host+'Userinfo/UploadImg'"
                               :show-file-list="false"
                               :on-success="handleLogoSuccess"
                               :before-upload="beforeLogoUpload">
-                              <img v-if="userInfoObj.image" :src="userInfoObj.image?userInfoObj.image:'src/img/tou.jpg'"  onerror="this.onerror=null;this.src='src/img/tou.jpg'"  class="avatar">
+                              <img v-if="userInfoObj.image" :src="userInfoObj.image?wwwHost+userInfoObj.image:'src/img/tou.jpg'"  onerror="this.onerror=null;this.src='src/img/tou.jpg'"  class="avatar">
                               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                               <div slot="tip" class="el-upload__tip">点击上传头像，只能上传jpg/png文件，且不超过1mb</div>
                             </el-upload>
@@ -110,7 +114,7 @@
                         <li class="avatarlist">
                             <span class="leftTitle">头像</span>
                             <div class="avatar-uploader">
-                                <img  :src="userInfoObj.avatar?userInfoObj.avatar:'src/img/tou.jpg'"   onerror="this.onerror=null;this.src='src/img/tou.jpg'" class="avatar">
+                                <img  :src="userInfoObj.avatar?wwwHost+userInfoObj.avatar:'src/img/tou.jpg'"   onerror="this.onerror=null;this.src='src/img/tou.jpg'" class="avatar">
                             </div>
                         </li>
                         <li class="username">
@@ -152,7 +156,7 @@
                         <li  class="avatarlist">
                             <span class="leftTitle">网站logo</span>
                             <div class="avatar-uploader">
-                                <img  :src="userInfoObj.image?userInfoObj.image:'src/img/tou.jpg'"  onerror="this.onerror=null;this.src='src/img/tou.jpg'"  class="avatar">
+                                <img  :src="userInfoObj.image?wwwHost+userInfoObj.image:'src/img/tou.jpg'"  onerror="this.onerror=null;this.src='src/img/tou.jpg'"  class="avatar">
                             </div>
                         </li>
                     </ul>
@@ -183,13 +187,21 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                     "萌萌哒",
                     "技术宅",
                     "忠实粉"
-                ]
+                ],
+                wwwHost:this.$store.state.host,//图片域名
             }
         },
         methods: { //事件处理器
             handleAvatarSuccess(res, file) {//上传头像
-                // console.log(res,file);
-                this.userInfoObj.avatar = URL.createObjectURL(file.raw);
+                console.log('用户头像',res.image_name,file);
+                console.log(URL.createObjectURL(file.raw));
+                if(res.code==1001){//存储
+                    this.userInfoObj.avatar = res.image_name;
+                    this.userInfoObj.head_start = 1;
+                }else{
+                    this.$message.error('上传图片失败');
+                }
+
             },
             beforeAvatarUpload(file) {//判断头像大小
                 const isJPG = file.type == 'image/png'||file.type=='image/jpg'||file.type=='image/jpeg';
@@ -204,7 +216,12 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                 return isJPG && isLt2M;
             },
             handleLogoSuccess(res, file) { //上传网站logo
-                this.userInfoObj.image = URL.createObjectURL(file.raw);
+                if(res.code==1001){//存储
+                    this.userInfoObj.image = res.image_name;
+                    this.userInfoObj.logo_start = 1;
+                }else{
+                    this.$message.error('上传图片失败');
+                }
             },
             beforeLogoUpload(file) { //控制网站logo图片大小
                 const isJPG = file.type == 'image/png'||file.type=='image/jpg'||file.type=='image/jpeg';
@@ -220,6 +237,7 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
             },
             saveInfoFun: function(){//保存编辑的用户信息
                 var that = this;
+
                 if(!that.userInfoObj.username){ //昵称为必填
                      that.$message.error('昵称为必填项，请填写昵称');
                      return;
@@ -255,8 +273,10 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                     that.userInfo = JSON.parse(localStorage.getItem('userInfo'));
                     that.userId = that.userInfo.userId;
                     getUserInfo(that.userId,function(msg){
-                        // console.log('用户中心',msg.data);
+                        console.log('用户中心',msg.data);
                         that.userInfoObj = msg.data;
+                        that.userInfoObj.head_start = 0;
+                        that.userInfoObj.logo_start = 0;
                         that.state = msg.data.state==1?true:false;
                     })
                     // console.log(that.userInfo);

@@ -13,8 +13,8 @@
         </div>
         <el-col :span="24" class="s-item tcommonBox" v-for="(item,index) in articleList" key="item">
             <span class="s-round-date">
-                <span class="month">{{showInitDate(item.create_time,'month')}}月</span>
-                <span class="day">{{showInitDate(item.create_time,'date')}}</span>
+                <span class="month" v-html="showInitDate(item.create_time,'month')+'月'"></span>
+                <span class="day" v-html="showInitDate(item.create_time,'date')"></span>
             </span>
             <header>
                 <h1>
@@ -24,7 +24,7 @@
                 </h1>
                 <h2>
                     <i class="fa fa-fw fa-user"></i>发表于
-                    <i class="fa fa-fw fa-clock-o"></i>{{showInitDate(item.create_time,'all')}} •
+                    <i class="fa fa-fw fa-clock-o"></i><span v-html="showInitDate(item.create_time,'all')"></span> •
                     <i class="fa fa-fw fa-eye"></i>{{item.browse_count}} 次围观 •
                     <i class="fa fa-fw fa-comments"></i>活捉 {{item.comment_count}} 条 •
                     <span class="rateBox">

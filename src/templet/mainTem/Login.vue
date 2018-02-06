@@ -34,6 +34,7 @@
                     <el-input
                             type="password"
                           placeholder="密码"
+                           @keyup.enter.native="loginEnterFun"
                           v-model="password">
                     </el-input>
                     <el-alert
@@ -99,6 +100,7 @@
                     <el-input
                             type="password"
                           placeholder="确认密码"
+                           @keyup.enter.native="registerEnterFun"
                           v-model="npassword2">
                     </el-input>
                     <el-alert
@@ -180,6 +182,13 @@ import {getRegister,UserLogin} from '../../pubJS/server.js'
                     that.step = 1;
                 }
             },
+            loginEnterFun: function(e){
+                var keyCode = window.event? e.keyCode:e.which;
+                // console.log('回车登录',keyCode,e);
+                if(keyCode == 13 ){
+                    this.gotoHome();
+                }
+            },
             gotoHome:function(){//用户登录
                 var that = this;
                 var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/ ;
@@ -221,6 +230,13 @@ import {getRegister,UserLogin} from '../../pubJS/server.js'
                             that.loginTitle = '登录失败';
                         }
                     })
+                }
+            },
+            registerEnterFun: function(e){
+                var keyCode = window.event? e.keyCode:e.which;
+                // console.log('回车注册',keyCode,e);
+                if(keyCode == 13 ){
+                    this.newRegister();
                 }
             },
             newRegister:function(){//注册提交

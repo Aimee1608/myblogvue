@@ -287,7 +287,9 @@ const UserInfoSave = (obj,callback) =>{
         'frie_url':obj.url,
         'frie_description':obj.description,
         'friend_img':obj.image,
-        'label':obj.label
+        'label':obj.label,
+        'head_start':obj.head_start,
+        'logo_start':obj.logo_start
     };
     // console.log(data);
     Vue.http.get(url,{params:data}).then(response => response.json()).then(num => {
