@@ -188,7 +188,7 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                     "技术宅",
                     "忠实粉"
                 ],
-                wwwHost:this.$store.state.host,//图片域名
+                wwwHost:"http://"+window.location.host,//图片域名
             }
         },
         methods: { //事件处理器
