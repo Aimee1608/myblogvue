@@ -10,13 +10,6 @@
                 <p>{{item.description}}</p>
             </a>
         </el-col>
-        <el-col :span="12" class="tf-item" v-for="item in friendslink" key="item">
-            <a :href="item.url" target="_blank">
-                <img :src="item.image?item.image:'src/img/tou.jpg'"  onerror="this.onerror=null;this.src='src/img/tou.jpg'">
-                <h4>{{item.name}}</h4>
-                <p>{{item.description}}</p>
-            </a>
-        </el-col>
     </el-row>
 </div>
 </template>
