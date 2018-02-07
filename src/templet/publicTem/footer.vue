@@ -112,6 +112,7 @@
 .footBackHui{
     /*min-height: 50px;*/
     margin-top: -50px;
+    z-index: -1;
 }
 .footBackHui .footer-img{
     position: relative;

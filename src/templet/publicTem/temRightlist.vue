@@ -385,7 +385,7 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
 .toTop{
     position: fixed;
     right:40px;
-    top:-360px;
+    bottom:90px;
     z-index: 99;
     width:70px;
     height:900px;
@@ -393,7 +393,7 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
     cursor: pointer;
 }
 .goTop{
-    top:-900px;
+    bottom:100vh;
 }
 .toTop img,.toTophui img{
     width:100%;

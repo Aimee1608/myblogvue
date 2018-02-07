@@ -169,10 +169,10 @@
                    {'title':'猪','url':'zhu.gif'},
                    {'title':'熊猫','url':'xiongmao.gif'},
                    {'title':'兔子','url':'tuzi.gif'},
-                   {'title':'OK','url':'ok.gif'},
+                   {'title':'喔克','url':'ok.gif'},
                    {'title':'耶','url':'ye.gif'},
-                   {'title':'GOOD','url':'good.gif'},
-                   {'title':'NO','url':'no.gif'},
+                   {'title':'棒棒','url':'good.gif'},
+                   {'title':'不','url':'no.gif'},
                    {'title':'赞','url':'zan.gif'},
                    {'title':'来','url':'lai.gif'},
                    {'title':'弱','url':'ruo.gif'},
@@ -299,7 +299,7 @@
               function setData(result){
                   if(result.code==1001){//查询数据
                       var msg = result.data;
-                      console.log("留言数据",result.data);
+                    //   console.log("留言数据",result.data);
                       if(msg.length>0&&msg.length<8){
                           that.hasMore = false
                       }else{
