@@ -24,7 +24,7 @@
                 </h1>
                 <h2>
                     <i class="fa fa-fw fa-user"></i>发表于
-                    <i class="fa fa-fw fa-clock-o"></i><span v-html="showInitDate(item.create_time,'all')"></span> •
+                    <i class="fa fa-fw fa-clock-o"></i><span v-html="showInitDate(item.create_time,'all')">{{showInitDate(item.create_time,'all')}}</span> •
                     <i class="fa fa-fw fa-eye"></i>{{item.browse_count}} 次围观 •
                     <i class="fa fa-fw fa-comments"></i>活捉 {{item.comment_count}} 条 •
                     <span class="rateBox">

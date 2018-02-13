@@ -12,7 +12,7 @@
                     </a>
                 </h1>
                 <h2>
-                    <i class="fa fa-fw fa-user"></i>发表于 <span v-html="showInitDate(detailObj.create_time,'all')"></span> •
+                    <i class="fa fa-fw fa-user"></i>发表于 <span v-html="showInitDate(detailObj.create_time,'all')">{{showInitDate(detailObj.create_time,'all')}}</span> •
                     <i class="fa fa-fw fa-eye"></i>{{detailObj.browse_count}} 次围观 •
                     <i class="fa fa-fw fa-comments"></i>活捉 {{detailObj.comment_count}} 条 •
                     <span class="rateBox">
