@@ -24,7 +24,7 @@
                 </h1>
                 <h2>
                     <i class="fa fa-fw fa-user"></i>发表于
-                    <i class="fa fa-fw fa-clock-o"></i><span>{{item.create_time.split('-')[0]+'年'+item.create_time.split('-')[1]+'月'+item.create_time.split('-')[2].split(' ')[0]+'日'}}</span> •
+                    <i class="fa fa-fw fa-clock-o"></i><span v-html="showInitDate(item.create_time,'all')">{{showInitDate(item.create_time,'all')}}</span> •
                     <i class="fa fa-fw fa-eye"></i>{{item.browse_count}} 次围观 •
                     <i class="fa fa-fw fa-comments"></i>活捉 {{item.comment_count}} 条 •
                     <span class="rateBox">
@@ -92,7 +92,6 @@ import {ShowArticleAll,ArtClassData,initDate} from '../../pubJS/server.js'
 
         methods: { //事件处理器
             showInitDate: function(oldDate,full){
-                // return date.slice(0,4)+'年'+data.slice(5,2)+'月'+data.slice(8,2)
                 return initDate(oldDate,full)
             },
             showSearchShowList:function(initpage){//展示数据

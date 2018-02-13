@@ -308,8 +308,10 @@ const initDate = (oldDate,full) => {
     var month = odate.getMonth()<9? '0' + (odate.getMonth()+1) : odate.getMonth()+1;
     var date = odate.getDate()<10? '0'+odate.getDate() : odate.getDate();
     // console.log(year);
+
     if(full=='all'){
-        return year+'年'+month+'月'+date+'日'
+        var t = oldDate.split(' ')[0];
+        return t.split('-')[0]+'年'+t.split('-')[1]+'月'+t.split('-')[2]+'日'
     }else if(full=='year'){
         return year
     }else if(full== 'month'){
