@@ -192,6 +192,29 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
     max-width: 100%!important;
     overflow-x: hidden;
 }
+.detailBox .article-content a{
+    color:#df2050;
+}
+.detailBox .article-content a:hover{
+    text-decoration: underline;
+}
+.detailBox .article-content i{
+    font-style: italic;
+}
+.detailBox .article-content strong{
+    font-weight: bold;
+}
+.detailBox .article-content ul{
+    list-style-type: disc;
+}
+.detailBox .article-content h1, .detailBox .article-content h2, .detailBox .article-content h3{
+    font-size: 200%;
+    font-weight: bold;
+}
+ .detailBox .article-content h4, .detailBox .article-content h5, .detailBox .article-content h6{
+    font-size: 150%;
+    font-weight: bold;
+}
 .detailBox .viewdetail{
     margin:10px 0 ;
     line-height: 24px;
