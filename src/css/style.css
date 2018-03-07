@@ -313,9 +313,6 @@ a {
     font-size: 50px!important;
     top: 120px;
   }
-  .donate-item div {
-    width: 100%!important;
-  }
 }
 @media screen and (min-width: 701px) {
   .headBox {

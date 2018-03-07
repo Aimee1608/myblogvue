@@ -103,12 +103,11 @@
 .footBack .footer-img{
     height:368px;
     z-index: 1;
-    position: absolute;
+    position: relative;
     width:100%;
-    bottom:50px;
+    bottom:-74px;
     pointer-events:none;
 }
-
 .footBackHui{
     /*min-height: 50px;*/
     margin-top: -50px;
