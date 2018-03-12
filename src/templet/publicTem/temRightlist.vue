@@ -12,11 +12,11 @@
                 <p>你能抓到我么？</p>
                 <div class="catch-me" >
                     <div class="">
-                        <el-tooltip class="item" effect="dark" content="Github" placement="top">
-                            <a :href="catchMeObj[isAimee].git" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+                        <el-tooltip  class="item"  content="Github" placement="top" >
+                            <a  :href="catchMeObj[isAimee].git" target="_blank" ><i class="fa fa-fw fa-github"></i></a>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="QQ" placement="top">
-                            <a :href="catchMeObj[isAimee].qq" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+                            <a  :href="catchMeObj[isAimee].qq" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="微博" placement="top">
                             <a :href="catchMeObj[isAimee].sina" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
@@ -30,7 +30,7 @@
                             <a :href="catchMeObj[isAimee].csdn" target="_blank"><i class="">C</i></a>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="简历模板" placement="top">
-                            <a :href="catchMeObj[isAimee].job" target="_blank"><i class="fa fa-fw fa-file-code-o"></i></a>
+                            <a :href="catchMeObj[isAimee].job" target="_blank"><i class="fa fa-fw fa-file-word-o"></i></a>
                         </el-tooltip>
                         <el-tooltip class="item" effect="dark" content="更多" placement="top">
                             <a href="#/Aboutme" ><i class="el-icon-more"></i></a>

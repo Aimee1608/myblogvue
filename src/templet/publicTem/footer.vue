@@ -85,7 +85,7 @@
     text-align: center;
     width:100%;
     min-height: 50px;
-    margin-top:300px;
+    margin-top:-25px;
     /*position: relative;*/
     position: absolute;
     /*min-height: 368px;*/
