@@ -71,6 +71,7 @@ import {ShowArticleAll,ArtClassData,initDate} from '../../pubJS/server.js'
                 classtwoId:5,
                 keywords:'',
                 hasMore:true,
+                level:1,
                 shareClass:[
                     {classId:1,name:'技术分享',detshare:[
                         {classId:5,name:'移动端H5',pid:1},
@@ -100,7 +101,7 @@ import {ShowArticleAll,ArtClassData,initDate} from '../../pubJS/server.js'
                 that.keywords = that.$route.query.keywords==undefined?'':that.$route.query.keywords;//获取传参的keywords
                 that.classtwoId = that.$route.query.classtwoId==undefined?'':parseInt(that.$route.query.classtwoId);//获取传参的classtwoId
                 that.sendId = that.classtwoId?that.classtwoId:that.classId;
-
+                that.level = that.classtwoId?0:1;
                 // console.log(that.classId);
                 ArtClassData(function(msg){
                     // console.log(msg);
@@ -121,10 +122,9 @@ import {ShowArticleAll,ArtClassData,initDate} from '../../pubJS/server.js'
                     that.artId=0;
                     that.articleList = [];
                 }
-                ShowArticleAll(that.artId,that.sendId,that.keywords,(result)=>{
+                ShowArticleAll(that.artId,that.sendId,that.keywords,that.level,(result)=>{
                     if(result.code==1001){
                         var msg = result.data;
-                        // console.log(result.data);
                         if(msg.length>0&&msg.length<8){
                             that.hasMore = false
                         }else{

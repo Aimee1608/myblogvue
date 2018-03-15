@@ -71,8 +71,12 @@ const navMenList  = (callback) => {
 }
 
 //查询文章列表
-const ShowArticleAll = (artId,cateId,articleName,callback) =>{
-    let url = portUrl + 'article/ShowArticleAll?art_id='+artId+'&cate_id='+cateId+'&article_name='+articleName;
+const ShowArticleAll = (artId,cateId,articleName,level,callback) =>{
+    if(level == 1){
+        var url = portUrl + 'nav/ActiveClassAllData?art_id='+artId+'&cate_id='+cateId+'&article_name='+articleName;
+    }else{
+        var url = portUrl + 'article/ShowArticleAll?art_id='+artId+'&cate_id='+cateId+'&article_name='+articleName;
+    }
     Vue.http.get(url).then(response => response.json()).then(num => {
             callback && callback(num);
     })
