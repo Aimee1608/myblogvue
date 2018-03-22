@@ -113,7 +113,7 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
                     Aimee:{
                         git:'https://github.com/Aimee1608',
                         qq:'src/img/aimee/QQ.jpg',
-                        sina:'https://weibo.com/u/2313631533',
+                        sina:'https://weibo.com/u/2242812941',
                         wechat:'src/img/aimee/erwm.jpg',
                         csdn:'http://blog.csdn.net/Aimee1608',
                         job:'http://aimee.mangoya.cn'

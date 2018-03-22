@@ -53,4 +53,16 @@
     max-width:100%;
     /*height:300px;*/
 }
+.tcommonBox p a{
+    color:#01AAED;
+}
+.tcommonBox p a:hover{
+    color:#48456d;
+}
+.tcommonBox p i{
+    font-style: italic;
+}
+.tcommonBox p b{
+    font-weight: bold;
+}
 </style>
