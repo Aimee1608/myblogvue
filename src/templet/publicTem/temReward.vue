@@ -124,8 +124,8 @@
 }
 .tRewardBox .donate-item div{
     display: inline-block;
-    width:200px;
-    padding:0 10px;
+    width:150px;
+    padding:0 6px;
     text-align: center;
     box-sizing: border-box;
 }

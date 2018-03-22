@@ -2,8 +2,8 @@
 <template>
         <div class="detailBox tcommonBox" >
             <span class="s-round-date">
-                <span class="month" v-html="showInitDate(detailObj.create_time,'month')+'月'"></span>
-                <span class="day" v-html="showInitDate(detailObj.create_time,'date')"></span>
+                <!-- <span class="month" v-html="showInitDate(detailObj.create_time,'month')+'月'"></span> -->
+                <!-- <span class="day" v-html="showInitDate(detailObj.create_time,'date')"></span> -->
             </span>
             <header>
                 <h1>
@@ -12,7 +12,7 @@
                     </a>
                 </h1>
                 <h2>
-                    <i class="fa fa-fw fa-user"></i>发表于 <span v-html="showInitDate(detailObj.create_time,'all')">{{showInitDate(detailObj.create_time,'all')}}</span> •
+                    <i class="fa fa-fw fa-user"></i>发表于 <span >{{create_time}}</span> •
                     <i class="fa fa-fw fa-eye"></i>{{detailObj.browse_count}} 次围观 •
                     <i class="fa fa-fw fa-comments"></i>活捉 {{detailObj.comment_count}} 条 •
                     <span class="rateBox">
@@ -74,12 +74,14 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
                 collectCount:500,//收藏数量
                 collectArt:false,//是否收藏
                 haslogin:false,//是否已经登录
-                userId:''//用户id
+                userId:'',//用户id
+                create_time:''
             }
         },
         methods: { //事件处理器
             showInitDate:function(date,full){//年月日的编辑
-                return initDate(date,full)
+                // console.log(detailObj.create_time,date,full);
+                return initDate(date,full);
             },
             likecollectHandle: function(islike){//用户点击喜欢0,用户点击收藏1
                 var that = this;
@@ -108,7 +110,7 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
                         }
                     }
                     getArtLikeCollect(that.userId,that.aid,islike,function(msg){
-                        console.log('喜欢收藏成功',msg);
+                        // console.log('喜欢收藏成功',msg);
                         that.$message({
                              message: tip,
                              type: 'success'
@@ -136,7 +138,7 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
                     that.haslogin = true;
                     that.userInfo = JSON.parse(localStorage.getItem('userInfo'));
                     that.userId = that.userInfo.userId;
-                    console.log(that.userInfo);
+                    // console.log(that.userInfo);
                 }else{
                     that.haslogin = false;
                 }
@@ -148,6 +150,7 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
                     that.collectCount = msg.collect_count?msg.collect_count:0;
                     that.likeArt = msg.user_like_start==0?false:true;
                     that.collectArt = msg.user_collect_start==0?false:true;
+                    that.create_time = initDate(that.detailObj.create_time,'all');
                 })
             }
         },
@@ -323,8 +326,8 @@ import {getArticleInfo,getArtLikeCollect,initDate} from '../../pubJS/server.js'
 }
 .donate-item div{
     display: inline-block;
-    width: 200px;
-    padding: 0 10px;
+    width: 150px;
+    padding: 0 6px;
     box-sizing: border-box;
     text-align: center;
 }

@@ -632,10 +632,13 @@
     border-radius: 50%;
     float: left;
     transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
     margin-right: 15px;
+    object-fit: cover;
 }
 .tmsg-c-item article header img:hover{
     transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
 }
 .tmsg-c-item article header .i-name{
     font-size: 14px;
@@ -660,6 +663,9 @@
 }
 .tmsg-c-item article section{
     margin-left: 80px;
+}
+.tmsg-c-item article section p img{
+    vertical-align: middle;
 }
 .tmsg-c-item article section .tmsg-replay{
     margin:10px 0;

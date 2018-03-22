@@ -1,13 +1,8 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
-// @param {[type]} id [数据id]
-// @param {[Function]} callback [回调参数]
-// @return {[type]} [返回类型]
 //公共路径
 // let portUrl = "http://www.vuebook.com/port/";
 let portUrl = "http://"+window.location.host+"/port/";
 
-// console.log('http666',window.location.host);
 //用户注册
 const getRegister = (username,password,email,callback) =>{
     let url = portUrl+'login/getRegister?username='+username+'&email='+email+'&password='+password;
@@ -33,7 +28,6 @@ const LoginOut = (token,callback) =>{
 
 //文章分类查询
 const ArtClassData = (callback) => {
-
     if(sessionStorage.getItem('classList')){
         var data = JSON.parse(sessionStorage.getItem('classList'));
         callback && callback(data)
@@ -82,7 +76,6 @@ const ShowArticleAll = (artId,cateId,articleName,level,callback) =>{
     })
 }
 
-
 //查询文章详情
 const getArticleInfo = (artId,userId,callback) =>{
     let url = portUrl + 'article/getArticleInfo?art_id='+artId+'&user_id='+userId;
@@ -94,7 +87,6 @@ const getArticleInfo = (artId,userId,callback) =>{
         }
     })
 }
-
 
 //查询浏览量最多的10篇文章数据
 const ShowBrowseCount = (callback) =>{
@@ -123,8 +115,6 @@ const ShowArtCommentCount = (callback) =>{
         }
     })
 }
-
-
 //查询文章评论数据
 const ArticleComment = (artId,commentId,callback) =>{
     let url = portUrl + 'comment/ArticleComment?art_id='+artId+'&comment_id='+commentId;
@@ -132,7 +122,6 @@ const ArticleComment = (artId,commentId,callback) =>{
             callback && callback(num);
     })
 }
-
 
 //查询其他评论数据
 const OtherComment = (leaveId,commentId,callback) =>{//分类类型ID（1：赞赏 2：友情链接 3：留言板 4：关于我）
@@ -142,7 +131,6 @@ const OtherComment = (leaveId,commentId,callback) =>{//分类类型ID（1：赞�
     })
 }
 
-
 //文章评论
 const setArticleComment = (content,user_id,article_id,leave_pid,pid,callback) =>{
     let url = portUrl + 'comment/setArticleComment?content='+content+'&user_id='+user_id+'&article_id='+article_id+'&leave_pid='+leave_pid+'&pid='+pid;
@@ -151,7 +139,6 @@ const setArticleComment = (content,user_id,article_id,leave_pid,pid,callback) =>
     })
 }
 
-
 //其他评论
 const setOuthComment = (content,user_id,article_id,leave_id,leave_pid,pid,callback) =>{
     let url = portUrl + 'comment/setOuthComment?content='+content+'&user_id='+user_id+'&article_id='+article_id+'&leave_id='+leave_id+'&leave_pid='+leave_pid+'&pid='+pid;
@@ -159,7 +146,6 @@ const setOuthComment = (content,user_id,article_id,leave_id,leave_pid,pid,callba
             callback && callback(num);
     })
 }
-
 
 //查询网址点赞总数
 const showLikeData = (callback) =>{
@@ -174,7 +160,6 @@ const showLikeData = (callback) =>{
     })
 }
 
-
 //点赞功能修改
 const GetLike = (like_num,callback) =>{
     let url = portUrl + 'outh/GetLike?like_num='+like_num;
@@ -186,7 +171,6 @@ const GetLike = (like_num,callback) =>{
         }
     })
 }
-
 
 //查询友情链接数据
 const FriendUrlData = (callback) =>{
@@ -201,7 +185,6 @@ const FriendUrlData = (callback) =>{
         }
     })
 }
-
 
 //查询关于我
 const AboutMeData = (callback) =>{
@@ -221,7 +204,6 @@ const AboutMeData = (callback) =>{
             }
         })
     }
-
 }
 
 //文章点击收藏 点击喜欢
@@ -311,29 +293,23 @@ const initDate = (oldDate,full) => {
     var year =  odate.getFullYear();
     var month = odate.getMonth()<9? '0' + (odate.getMonth()+1) : odate.getMonth()+1;
     var date = odate.getDate()<10? '0'+odate.getDate() : odate.getDate();
-    // console.log(year);
-
     if(full=='all'){
-        var t = oldDate.split(' ')[0];
-        return t.split('-')[0]+'年'+t.split('-')[1]+'月'+t.split('-')[2]+'日'
+        var t = oldDate.split(" ")[0];
+        // console.log(oldDate,t.split('-')[0],t.split('-')[1],t.split('-')[2]);
+        return t.split('-')[0]+'年'+t.split('-')[1]+'月'+t.split('-')[2]+'日';
     }else if(full=='year'){
         return year
     }else if(full== 'month'){
         return odate.getMonth()+1
     }else if(full == 'date'){
         return date
+    }else if(full== 'newDate'){
+        return year+'年'+month+'月'+date+'日';
     }
 }
 
 //获取主题信息
 const changeTheme = (callback) => {
-    // var obj = {
-    //     headBg:"https://diygod.me/images/header-sagiri.jpg",
-    //     myTou:"https://diygod.me/images/DIYgod.jpg",
-    //     rightTou:"https://diygod.me/images/card.jpg",
-    //     footBg:"https://diygod.me/images/footer.png",
-    //     scrollTop:"https://diygod.me/images/scroll.png"
-    // }
     if(sessionStorage.getItem('changeThemeObj')){
         var data = JSON.parse(sessionStorage.getItem('changeThemeObj'));
         callback && callback(data)
@@ -349,8 +325,6 @@ const changeTheme = (callback) => {
         })
     }
 }
-
-
 
 export {
         getRegister,//注册

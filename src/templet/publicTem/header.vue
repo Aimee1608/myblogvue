@@ -104,11 +104,11 @@
                 <div><span id="luke"></span></div>
             </div>
             <div class="h-information">
-                <a href="#">
+                <a href="#/Aboutme">
                     <img :src="this.$store.state.themeObj.head_portrait?this.$store.state.themeObj.head_portrait:'src/img/tou.png'" alt="">
                 </a>
                 <h2 class="h-description">
-                    <a href="#">
+                    <a href="#/Aboutme">
                         {{this.$store.state.themeObj.autograph?this.$store.state.themeObj.autograph:"Write the Code. Change the World."}}
                     </a>
                 </h2>
@@ -351,6 +351,7 @@
     position: absolute;
     top:0;
     right:0;
+    cursor: pointer;
 }
 .headBox .pcsearchbox:hover .pcsearchinput{
     opacity: 1;
@@ -410,6 +411,7 @@
     text-align: right;
     position: relative;
     min-width: 80px;
+    cursor: pointer;
 }
 .headBox .haslogin:hover ul{
     visibility: visible;
@@ -542,7 +544,15 @@
     width:100px;
     height:100px;
     border-radius: 100%;
+    transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    object-fit: cover;
 }
+.h-information img:hover{
+    transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+}
+
 .h-information h2{
     margin-top: 20px;
     font-size: 18px;
@@ -559,8 +569,14 @@
     position: absolute;
     left:0;
     top:160px;
-    font-family: 'Sigmar One';
+    font-family: 'Sigmar One', Arial;
     text-shadow: 0 2px 2px #47456d;
+
+}
+.headImgBox .scene span{
+    transform: matrix(1, 0, 0, 1, 0, 0);
+    -webkit-transform: matrix(1, 0, 0, 1, 0, 0);
+    text-shadow: 1px 1px 0 #ff3f1a, -1px -1px 0 #00a7e0;
 }
 .saying:after {
   content: "|";
@@ -570,6 +586,7 @@
   display: inline-block;
   vertical-align: baseline;
   opacity: 1;
+  text-shadow: 1px 1px 0 #ff3f1a, -1px -1px 0 #00a7e0;
   animation: caret 500ms infinite;
 }
 @keyframes caret {

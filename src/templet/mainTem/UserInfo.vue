@@ -6,9 +6,7 @@
             <div v-show="isEdit" class="tcommonBox">
                 <header>
                     <h1>
-                        <a href="#/DetailShare" target="_blank">
                             编辑个人资料
-                        </a>
                     </h1>
                 </header>
                 <section>
@@ -59,15 +57,15 @@
                               off-color="#aaa">
                             </el-switch>
                         </li>
-                        <li >
+                        <li v-show="state">
                             <span class="leftTitle">网站名称</span>
                             <el-input v-model="userInfoObj.name" placeholder="网站名称"></el-input><i v-show="state" class="fa fa-wa fa-asterisk"></i>
                         </li>
-                        <li >
+                        <li v-show="state">
                             <span class="leftTitle">网站地址</span>
                             <el-input v-model="userInfoObj.url" placeholder="网站" value="userWeb"></el-input> <i v-show="state" class="fa fa-wa fa-asterisk"></i>
                         </li>
-                        <li >
+                        <li v-show="state">
                             <span class="leftTitle">网站简介</span>
                             <el-input
                               type="textarea"
@@ -76,7 +74,7 @@
                               v-model="userInfoObj.description" >
                             </el-input><i v-show="state" class="fa fa-wa fa-asterisk"></i>
                         </li>
-                        <li  class="avatarlist">
+                        <li  v-show="state" class="avatarlist">
                             <span class="leftTitle">网站logo</span>
                             <!-- 上传图片 -->
                             <!-- :action="this.$store.state.host+'Userinfo/UploadImg'" -->
@@ -102,9 +100,7 @@
             <div v-show="!isEdit" class="tcommonBox">
                 <header>
                     <h1>
-                        <a href="#/DetailShare" target="_blank">
                             个人中心
-                        </a>
                         <span class="gotoEdit" @click="isEdit=!isEdit"><i class="fa fa-wa fa-edit"></i>编辑</span>
                     </h1>
 
@@ -193,8 +189,8 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
         },
         methods: { //事件处理器
             handleAvatarSuccess(res, file) {//上传头像
-                console.log('用户头像',res.image_name,file);
-                console.log(URL.createObjectURL(file.raw));
+                // console.log('用户头像',res.image_name,file);
+                // console.log(URL.createObjectURL(file.raw));
                 if(res.code==1001){//存储
                     this.userInfoObj.avatar = res.image_name;
                     this.userInfoObj.head_start = 1;
@@ -244,7 +240,7 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                 }
                 if(that.state){
                     var pattern = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?/;
-                    console.log(pattern.test(that.userInfoObj.url));
+                    // console.log(pattern.test(that.userInfoObj.url));
                     if(!that.userInfoObj.url ||!pattern.test(that.userInfoObj.url)){//如果展示友链 网址为必填项
                          that.$message.error('请正确填写网址，如http://www.xxx.com');
                          return;
@@ -275,7 +271,7 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
                     that.userInfo = JSON.parse(localStorage.getItem('userInfo'));
                     that.userId = that.userInfo.userId;
                     getUserInfo(that.userId,function(msg){
-                        console.log('用户中心',msg.data);
+                        // console.log('用户中心',msg.data);
                         that.userInfoObj = msg.data;
                         that.userInfoObj.head_start = 0;
                         that.userInfoObj.logo_start = 0;
@@ -339,6 +335,7 @@ import {getUserInfo,UserInfoSave} from '../../pubJS/server.js'//获取用户信�
     height: 120px;
     border-radius: 50%;
     display: block;
+    object-fit: cover;
   }
 .gotoEdit{
     font-size: 15px;

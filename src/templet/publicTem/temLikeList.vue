@@ -20,7 +20,7 @@
                         </h1>
                         <h2>
                             <i class="fa fa-fw fa-user"></i>发表于
-                            <i class="fa fa-fw fa-clock-o"></i>{{showInitDate(item.create_time,'all')}} •
+                            <i class="fa fa-fw fa-clock-o"></i>{{showInitDate(item.create_time,'newDate')}} •
                             <i class="fa fa-fw fa-eye"></i>{{item.browse_count}} 次围观 •
                             <i class="fa fa-fw fa-comments"></i>活捉 {{item.comment_count}} 条 •
                             <span class="rateBox">
@@ -77,7 +77,7 @@ import {ShowArticleAll,initDate,getLikeCollectList,getArtLikeCollect} from '../.
                 var that = this;
                 // console.log(id);
                 getArtLikeCollect(that.userId,id,that.like,function(msg){
-                    console.log('取消成功',msg);
+                    // console.log('取消成功',msg);
                     that.routeChange();
                 })
             },
@@ -86,7 +86,7 @@ import {ShowArticleAll,initDate,getLikeCollectList,getArtLikeCollect} from '../.
                 if(localStorage.getItem('userInfo')){
                     that.userInfo = JSON.parse(localStorage.getItem('userInfo'));
                     that.userId = that.userInfo.userId;
-                    console.log(that.userInfo);
+                    // console.log(that.userInfo);
                 }
                 that.like = that.$route.query.like ==undefined?1:parseInt(that.$route.query.like);
                 // console.log(that.classId);
@@ -97,7 +97,7 @@ import {ShowArticleAll,initDate,getLikeCollectList,getArtLikeCollect} from '../.
                 getLikeCollectList(that.userId,that.artId,that.articleName,that.like,(result)=>{
                     if(result.code==1001){
                         var msg = result.data;
-                        console.log(result.data);
+                        // console.log(result.data);
                         if(msg.length>0&&msg.length<8){
                             that.hasMore = false
                         }else{
@@ -105,7 +105,7 @@ import {ShowArticleAll,initDate,getLikeCollectList,getArtLikeCollect} from '../.
                         }
                         that.articleList = that.articleList.concat(msg);
                         that.artId = msg[msg.length-1].id;
-                        console.log(that.artId);
+                        // console.log(that.artId);
                     }else if(result.code==1003){
                         that.hasMore = false;
                     }

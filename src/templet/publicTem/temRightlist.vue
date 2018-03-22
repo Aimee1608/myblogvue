@@ -353,6 +353,7 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
     border-radius: 50%;
     width:32px;
     height:32px;
+    object-fit: cover;
 }
 .rightlistBox .rs3 .rs3-inner{
     margin-left: 40px;

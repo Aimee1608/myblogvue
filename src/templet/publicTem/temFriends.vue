@@ -31,7 +31,7 @@ export default {
     created() { //生命周期函数
         var that = this;
         FriendUrlData(function(msg){
-            console.log(msg);
+            // console.log(msg);
             that.friendslink = msg;
         })
     }
@@ -71,6 +71,7 @@ export default {
     top:15px;
     left:15px;
     cursor: pointer;
+    object-fit: cover;
 }
 .tFriendsBox .tf-item a h4{
     cursor: pointer;

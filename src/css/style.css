@@ -153,6 +153,8 @@ input[type="search"] {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
+  overflow-x: hidden;
+  -webkit-overflow-x: hidden;
   color: #444;
 }
 h1,
@@ -244,7 +246,6 @@ a {
   text-align: center;
 }
 .s-item .viewdetail a {
-  /*background-color: #97dffd;*/
   color: #fff;
   font-size: 12px;
   padding: 5px 10px;

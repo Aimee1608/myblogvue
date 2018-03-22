@@ -93,6 +93,7 @@ import {ShowArticleAll,ArtClassData,initDate} from '../../pubJS/server.js'
 
         methods: { //事件处理器
             showInitDate: function(oldDate,full){
+                // console.log(oldDate,full);
                 return initDate(oldDate,full)
             },
             showSearchShowList:function(initpage){//展示数据

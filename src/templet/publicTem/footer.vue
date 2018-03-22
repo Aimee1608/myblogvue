@@ -6,7 +6,7 @@
         </div>
         <div class="fcontainer">
             <p>
-                博客已萌萌哒运行<span>{{longTime}}</span><span class="timeJump">(●'◡'●)ﾉ♥</span>
+                博客已萌萌哒运行<span v-html='longTime'>{{longTime}}</span><span class="timeJump">(●'◡'●)ﾉ♥</span>
             </p>
             <p>
                 托管于 <a href="https://github.com/Aimee1608/myblogvue" target="_blank">GitHub</a>. <a href="https://www.aliyun.com/?spm=a2c49.11131515.0.0.5Z9AkR" target="_blank">阿里云</a> 提供静态文件云存储服务. <a href="https://tongji.baidu.com/web/welcome/login" target="_blank">百度统计</a> 提供网站统计服务. <a href="https://www.cloudxns.net/Order/index.html" target="_blank">CloudXNS</a> 提供 DNS 解析服务.
@@ -26,7 +26,7 @@
         </div>
         <div class="fcontainer">
             <p>
-                博客已萌萌哒运行<span>{{longTime}}</span><span class="timeJump">(●'◡'●)ﾉ♥</span>
+                博客已萌萌哒运行<span v-html='longTime'>{{longTime}}</span><span class="timeJump">(●'◡'●)ﾉ♥</span>
             </p>
             <p>
                 托管于 <a href="https://gitee.com/qinlh/" target="_blank">GitHub</a>. <a href="https://www.aliyun.com/?spm=a2c49.11131515.0.0.5Z9AkR" target="_blank">阿里云</a> 提供静态文件云存储服务. <a href="https://tongji.baidu.com/web/welcome/login" target="_blank">百度统计</a> 提供网站统计服务. <a href="https://www.cloudxns.net/Order/index.html" target="_blank">CloudXNS</a> 提供 DNS 解析服务.
@@ -53,7 +53,7 @@
         methods: { //事件处理器
             runTime:function(){//运行倒计时
                 var that = this;
-                var oldTime =new Date("2015-6-10");
+                var oldTime =new Date('2016/06/01 00:00:00');
                 var timer = setInterval(function(){
                     var nowTime = new Date();
                     var longTime = nowTime - oldTime;
@@ -96,7 +96,8 @@
     /*top:294px;*/
     /*left:0;*/
     /*position: absolute;*/
-    padding:15px 0 10px 0;
+    padding:15px 10px 10px 10px;
+    box-sizing: border-box;
     /*z-index: 1;*/
     width: 100%!important;
 }
