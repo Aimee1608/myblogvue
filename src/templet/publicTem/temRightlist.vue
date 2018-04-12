@@ -150,6 +150,7 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
                       if (osTop == 0) {
                           that.going = false;
                         clearInterval(timer);
+                        timer = null;
                       };
                 },30);
             },
@@ -386,7 +387,7 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
 .toTop{
     position: fixed;
     right:40px;
-    bottom:90px;
+    top:-150px;
     z-index: 99;
     width:70px;
     height:900px;
@@ -394,7 +395,7 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
     cursor: pointer;
 }
 .goTop{
-    bottom:100vh;
+    top:-120vh;
 }
 .toTop img,.toTophui img{
     width:100%;
@@ -426,6 +427,6 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
     }
 }
 .goTophui{
-    bottom:1000px;
+    bottom:120vh;
 }
 </style>

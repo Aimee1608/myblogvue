@@ -2,8 +2,8 @@
 <template>
         <div class="detailBox tcommonBox" >
             <span class="s-round-date">
-                <!-- <span class="month" v-html="showInitDate(detailObj.create_time,'month')+'月'"></span> -->
-                <!-- <span class="day" v-html="showInitDate(detailObj.create_time,'date')"></span> -->
+                <span class="month" v-html="showInitDate(detailObj.create_time,'month')+'月'"></span>
+                <span class="day" v-html="showInitDate(detailObj.create_time,'date')"></span>
             </span>
             <header>
                 <h1>
