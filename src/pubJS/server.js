@@ -1,6 +1,6 @@
 import Vue from 'vue'
 //公共路径
-// let portUrl = "http://www.vuebook.com/port/";
+// let portUrl = "http://www.mangoya.cn/port/";
 let portUrl = "http://"+window.location.host+"/port/";
 
 //用户注册

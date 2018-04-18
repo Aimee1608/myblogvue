@@ -3,7 +3,7 @@
 <div class="tFriendsBox">
     <h1>棒棒哒</h1>
     <el-row>
-        <el-col :span="12" class="tf-item" v-for="item in friendslink" key="item">
+        <el-col :span="12" class="tf-item" v-for="(item,index) in friendslink" :key="'f'+index">
             <a :href="item.url" target="_blank">
                 <img :src="item.image?item.image:'src/img/tou.jpg'"  onerror="this.onerror=null;this.src='src/img/tou.jpg'">
                 <h4>{{item.name}}</h4>

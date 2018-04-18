@@ -54,7 +54,7 @@
                 这些人都排着队来跟我说话
             </h2>
             <ul class="rs3-textwidget">
-                <li class="rs3-item" v-for="(item,index) in artCommentList" key="item">
+                <li class="rs3-item" v-for="(item,index) in artCommentList" :key="'artCommentList'+index">
                     <a :href="'#/DetailShare?aid='+item.id" target="_blank">
                         <div class="rs3-photo">
                             <img :src="item.avatar"  onerror="this.onerror=null;this.src='src/img/tou.jpg'">
@@ -72,7 +72,7 @@
                 大家都排队来看这些
             </h2>
             <ul>
-                <li v-for="(item,index) in browseList" key="item">
+                <li v-for="(item,index) in browseList" :key="'browseList'+index">
                     <a :href="'#/DetailShare?aid='+item.id" target="_blank">{{item.title}}</a> —— {{item.browse_count}} 次围观
                 </li>
             </ul>
@@ -395,7 +395,7 @@ import {ShowBrowseCount,ShowArtCommentCount,showLikeData,GetLike} from '../../pu
     cursor: pointer;
 }
 .goTop{
-    top:-120vh;
+    top:-950px;
 }
 .toTop img,.toTophui img{
     width:100%;

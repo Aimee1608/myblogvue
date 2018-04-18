@@ -11,7 +11,7 @@
                 </li>
             </ul>
         </div>
-        <el-col :span="24" class="s-item tcommonBox" v-for="(item,index) in articleList" key="item">
+        <el-col :span="24" class="s-item tcommonBox" v-for="(item,index) in articleList" :key="'article'+index">
             <span class="s-round-date">
                 <span class="month" v-html="showInitDate(item.create_time,'month')+'月'"></span>
                 <span class="day" v-html="showInitDate(item.create_time,'date')"></span>
@@ -99,7 +99,7 @@ import {ShowArticleAll,ArtClassData,initDate} from '../../pubJS/server.js'
             showSearchShowList:function(initpage){//展示数据
                 var that = this;
                 that.classId = (that.$route.query.classId==undefined?0:parseInt(that.$route.query.classId));//获取传参的classId
-                that.keywords = that.$route.query.keywords==undefined?'':that.$route.query.keywords;//获取传参的keywords
+                that.keywords = that.$store.state.keywords;//获取传参的keywords
                 that.classtwoId = that.$route.query.classtwoId==undefined?'':parseInt(that.$route.query.classtwoId);//获取传参的classtwoId
                 that.sendId = that.classtwoId?that.classtwoId:that.classId;
                 that.level = that.classtwoId?0:1;
@@ -124,9 +124,10 @@ import {ShowArticleAll,ArtClassData,initDate} from '../../pubJS/server.js'
                     that.articleList = [];
                 }
                 ShowArticleAll(that.artId,that.sendId,that.keywords,that.level,(result)=>{
+                    // console.log(result);
                     if(result.code==1001){
                         var msg = result.data;
-                        if(msg.length>0&&msg.length<8){
+                        if(msg.length>0&&msg.length<10){
                             that.hasMore = false
                         }else{
                             that.hasMore = true;
@@ -135,7 +136,7 @@ import {ShowArticleAll,ArtClassData,initDate} from '../../pubJS/server.js'
                         that.artId = msg[msg.length-1].id;
                         // console.log(that.artId);
                     }else if(result.code==1003){
-                        that.hasMore = false;
+                        that.hasMore = false;                        
                     }
                 })
             },
@@ -152,7 +153,8 @@ import {ShowArticleAll,ArtClassData,initDate} from '../../pubJS/server.js'
         },
         watch: {
            // 如果路由有变化，会再次执行该方法
-           '$route':'routeChange'
+           '$route':'routeChange',
+           '$store.state.keywords':'routeChange'
          },
         created() { //生命周期函数
             // console.log(this.$route);

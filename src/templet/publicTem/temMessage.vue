@@ -16,7 +16,7 @@
                     </div>
                     <div class="OwO-body">
                         <ul class="OwO-items OwO-items-show">
-                            <li class="OwO-item" v-for="(oitem,index) in OwOlist" key="oitem" @click="choseEmoji(oitem.title)">
+                            <li class="OwO-item" v-for="(oitem,index) in OwOlist" :key="'oitem'+index" @click="choseEmoji(oitem.title)">
                                 <img :src="'src/img/emot/image/'+oitem.url" alt="">
                             </li>
                         </ul>
@@ -38,7 +38,7 @@
             <a href="#" class="tmsg-comments-tip">活捉 {{commentList?commentList.length:0}} 条</a>
             <div class="tmsg-commentshow">
                 <ul class="tmsg-commentlist">
-                    <li class="tmsg-c-item" v-for="(item,index) in commentList" key="item.comment_id">
+                    <li class="tmsg-c-item" v-for="(item,index) in commentList" :key="'common'+index">
                         <article class="">
                             <header>
                                 <img  :src="item.avatar"  onerror="this.onerror=null;this.src='src/img/tou.jpg'">
@@ -60,7 +60,7 @@
                             </section>
                         </article>
                         <ul v-show="item.ChildsSon" class="tmsg-commentlist" style="padding-left:60px;">
-                            <li class="tmsg-c-item" v-for="(citem,cindex) in item.ChildsSon" key="citem">
+                            <li class="tmsg-c-item" v-for="(citem,cindex) in item.ChildsSon" :key="'citem'+cindex">
                                 <article class="">
                                     <header>
                                             <img :src="citem.avatar"  onerror="this.onerror=null;this.src='src/img/tou.jpg'">
@@ -249,7 +249,7 @@
               }
           },
           respondMsg:function(leavePid,pid){//回复留言
-              console.log(leavePid,pid);
+              // console.log(leavePid,pid);
               var that = this;
               if(localStorage.getItem('userInfo')){
                   var dom = event.currentTarget;

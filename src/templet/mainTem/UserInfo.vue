@@ -45,7 +45,7 @@
                             <span class="leftTitle">个性标签</span>
                             <template>
                                 <el-radio-group v-model="userInfoObj.label">
-                                   <el-radio v-for="(item,index) in usertab" key="item" :label="item" >{{item}}</el-radio>
+                                   <el-radio v-for="(item,index) in usertab" :key="'usertab'+index" :label="item" >{{item}}</el-radio>
                                </el-radio-group>
                             </template>
                         </li>

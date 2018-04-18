@@ -7,7 +7,7 @@
                     <h1 v-show="like==1"><i class="fa fa-wa fa-heart"></i>喜欢的文章</h1>
                     <h1 v-show="like!=1"><i class="fa fa-wa fa-star"></i>收藏的文章</h1>
                 </div>
-                <el-col :span="24" class="s-item tcommonBox" v-for="(item,index) in articleList" key="item">
+                <el-col :span="24" class="s-item tcommonBox" v-for="(item,index) in articleList" :key="'like'+index">
                     <span class="s-round-date">
                         <span class="month">{{showInitDate(item.create_time,'month')}}月</span>
                         <span class="day">{{showInitDate(item.create_time,'date')}}</span>
@@ -89,6 +89,7 @@ import {ShowArticleAll,initDate,getLikeCollectList,getArtLikeCollect} from '../.
                     // console.log(that.userInfo);
                 }
                 that.like = that.$route.query.like ==undefined?1:parseInt(that.$route.query.like);
+                that.articleName = that.$store.state.keywords;
                 // console.log(that.classId);
                 if(initpage){//初始化 文章id为0开始
                     that.artId=0;
@@ -125,7 +126,8 @@ import {ShowArticleAll,initDate,getLikeCollectList,getArtLikeCollect} from '../.
         watch: {
            // 如果路由有变化，会再次执行该方法
 
-           '$route':'routeChange'
+           '$route':'routeChange',//路由变换
+           '$store.state.keywords':'routeChange'//搜索关键词变换
 
          },
         created() { //生命周期函数
