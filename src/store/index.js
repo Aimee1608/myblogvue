@@ -11,7 +11,8 @@ export const state = {
   themeObj: 0,//主题
   aboutmeObj:'',//关于我的信息
   host:"http://"+window.location.host+"/port/",//接口路径
-  keywords:''//关键词
+  keywords:'',//关键词
+  errorImg: 'this.onerror=null;this.src="' + require('../../static/img/tou.jpg') +'"'
 }
 
 export default new Vuex.Store({
